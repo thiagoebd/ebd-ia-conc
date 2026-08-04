@@ -54,7 +54,7 @@ def validate_routemap_spec(spec: dict) -> str | None:
     if not (spec.get("rca") or "").strip():
         return "rca obrigatorio"
     if not (spec.get("footer") or "").strip():
-        return "footer obrigatorio: fonte + escopo (ex: 'Roteiro RCA 3366 de 21/07 - coord PCCLIENT')"
+        return "footer obrigatorio: fonte + escopo (ex: 'Roteiro do consultor de 21/07 - coord do cadastro')"
     pts = spec.get("points")
     if not isinstance(pts, list) or not pts:
         return "points deve ter ao menos 1 ponto"
@@ -137,10 +137,10 @@ def build_route_map(spec: dict) -> tuple[str, Path, str, int]:
 # --- autoteste contra pontos reais de Boa Vista (roda: python3 app/tools/routemap_builder.py) ---
 if __name__ == "__main__":
     fixture = {
-        "title": "Roteiro RCA 3366 - 21/07",
+        "title": "Roteiro do consultor - 21/07",
         "rca": "3366 - Antonio Fernando (fil 08)",
         "dia": "2026-07-21",
-        "footer": "Roteiro do RCA 3366 de 21/07 - coord de cadastro PCCLIENT",
+        "footer": "Roteiro do consultor de 21/07 - coord do cadastro",
         "points": [
             {"seq": 1, "codcli": 49922, "cliente": "COMERCIAL LEAO LTDA-ME", "lat": "2.8491217", "lng": "-60.7464633", "municipio": "BOA VISTA"},
             {"seq": 2, "codcli": 49922, "cliente": "COMERCIAL LEAO LTDA-ME", "lat": "2.8491217", "lng": "-60.7464633", "municipio": "BOA VISTA"},  # dup

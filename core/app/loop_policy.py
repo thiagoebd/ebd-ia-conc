@@ -103,7 +103,7 @@ _MSG = {
 
 
 def teve_dado_apurado(tool_outcomes) -> bool:
-    """True se alguma consulta ao Winthor deu certo neste turno."""
+    """True se alguma consulta ao banco deu certo neste turno."""
     return any(ok for (nome, ok) in (tool_outcomes or [])
                if nome == "oracle_query")
 

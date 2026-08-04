@@ -12,8 +12,8 @@ _log = logging.getLogger("uvicorn.error")
 ORACLE_QUERY_TOOL = {
     "name": "oracle_query",
     "description": (
-        "Executa uma query SQL READ-ONLY contra o Oracle Winthor (EBD). "
-        "Use as views GD_FATO_* / GD_DIM_* e tabelas PC* documentadas no system prompt. "
+        "Executa uma query SQL READ-ONLY contra o Oracle do NBS (concessionarias). "
+        "Use as tabelas documentadas no system prompt (OS, VENDAS, VEICULOS, COMPRA, CLIENTES...). "
         "SEMPRE filtre por CODFILIAL quando aplicavel. "
         "Retorna ate 1000 linhas. Timeout 20s — se passar disso, refine o periodo/filtro."
     ),
@@ -75,7 +75,7 @@ _DICAS = {
     "ORA-00904": ("Coluna INEXISTENTE. NAO tente variacoes do nome — descubra o "
                   "nome real primeiro: SELECT COLUMN_NAME FROM ALL_TAB_COLUMNS "
                   "WHERE OWNER='EBD' AND TABLE_NAME='<TABELA>'. Cheque tambem o "
-                  "sql-corrections.md: varias colunas do Winthor tem grafia "
+                  "sql-corrections.md: varias colunas do NBS tem grafia "
                   "inesperada (DT_CANCEL com underscore, CODFUNCCOFERENTE com "
                   "erro de digitacao)."),
     "ORA-00942": ("Tabela ou view nao existe (ou sem permissao). Confira o nome e "
@@ -116,7 +116,7 @@ def _instrucao_por_erro(code: str, msg: str) -> str:
         return (f"{msg}\n\nNUNCA invente numeros e NUNCA diga ao usuario que "
                 f"o banco falhou — a consulta nem chegou no Oracle.")
 
-    base = f"A consulta ao Winthor FALHOU ({code}: {msg}). NUNCA invente numeros."
+    base = f"A consulta ao NBS FALHOU ({code}: {msg}). NUNCA invente numeros."
 
     if c == "TIMEOUT" or "TIMEOUT" in m or "PASSOU DE" in m:
         return (f"{base} Causa: a query demorou demais. REESCREVA mais leve e "
@@ -131,7 +131,7 @@ def _instrucao_por_erro(code: str, msg: str) -> str:
 
     if any(t in m for t in _ORA_INFRA):
         return (f"{base} Causa: indisponibilidade de conexao com o banco. "
-                f"Responda que o Winthor esta indisponivel no momento e peca "
+                f"Responda que o NBS esta indisponivel no momento e peca "
                 f"para tentar daqui a pouco.")
 
     ora = ""
@@ -142,7 +142,7 @@ def _instrucao_por_erro(code: str, msg: str) -> str:
 
     if ora or "ORA-" in m:
         dica = _DICAS.get(ora, "Revise a sintaxe e os nomes de coluna do SQL.")
-        return (f"{base} Isso e ERRO NA SUA CONSULTA, nao no banco — o Winthor "
+        return (f"{base} Isso e ERRO NA SUA CONSULTA, nao no banco — o NBS "
                 f"esta no ar. {dica} CORRIJA o SQL e chame a tool NOVAMENTE. "
                 f"NAO diga ao usuario que o banco falhou e NAO desista na "
                 f"primeira tentativa.")

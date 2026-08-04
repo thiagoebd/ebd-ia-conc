@@ -119,6 +119,28 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
             await db.add_message(conv_id, "user", {"text": body.message})
             _lap('user msg gravada')
 
+            # ---- comandos de curadoria da KB: nao passam pelo agente ----
+            _cmd = (body.message or "").strip()
+            if _cmd.startswith("/aprovar") or _cmd.startswith("/descartar"):
+                from app.tools.knowledge_append import (
+                    approve_proposal, discard_proposal, tool_list_proposals)
+                partes = _cmd.split(maxsplit=1)
+                acao = partes[0]
+                pid = partes[1].strip() if len(partes) > 1 else ""
+                if not pid:
+                    texto = tool_list_proposals(user_id)
+                elif acao == "/aprovar":
+                    r = approve_proposal(pid, user_name=(_email or user_id))
+                    texto = r.get("msg", str(r))
+                else:
+                    r = discard_proposal(pid)
+                    texto = r.get("msg", str(r))
+                logger.info("KB_CURADORIA %s %s -> %s", acao, pid, texto[:200])
+                await db.add_message(conv_id, "assistant", {"text": texto})
+                yield _sse({"type": "token", "text": texto})
+                yield _sse({"type": "done", "stop_reason": "comando_kb"})
+                return
+
             assistant_text = ""
             tools_used = []          # so tools com SUCESSO (controla badge)
             tool_outcomes = []       # [(name, success)] reportado pelo agent
@@ -212,7 +234,7 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                                 tool_outcomes, assistant_text[:200],
                             )
                             assistant_text = ("Nao consegui trazer esses dados do "
-                                              "Winthor e nao vou arriscar numeros "
+                                              "NBS e nao vou arriscar numeros "
                                               "sem base. Pode reformular a pergunta, "
                                               "de preferencia com filial e periodo?")
                             tools_used = []
@@ -228,7 +250,7 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                     # mesma trava no caminho de excecao/interrupcao
                     if _looks_like_data(assistant_text) and not tools_used:
                         assistant_text = ("Nao consegui trazer esses dados do "
-                                          "Winthor e nao vou arriscar numeros sem "
+                                          "NBS e nao vou arriscar numeros sem "
                                           "base. Pode reformular a pergunta, de "
                                           "preferencia com filial e periodo?")
                         tools_used = []

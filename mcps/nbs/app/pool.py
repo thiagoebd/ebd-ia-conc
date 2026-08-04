@@ -58,6 +58,13 @@ def _session_init(conn: oracledb.Connection, requested_tag: str) -> None:
     """
     with conn.cursor() as cur:
         cur.execute("ALTER SESSION SET TIME_ZONE = 'America/Sao_Paulo'")
+        cur.execute("ALTER SESSION SET NLS_LANGUAGE = 'BRAZILIAN PORTUGUESE'")
+        cur.execute("ALTER SESSION SET NLS_TERRITORY = 'BRAZIL'")
+        cur.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'DD/MM/RRRR'")
+        cur.execute("ALTER SESSION SET NLS_DATE_LANGUAGE = 'BRAZILIAN PORTUGUESE'")
+        cur.execute("ALTER SESSION SET NLS_NUMERIC_CHARACTERS = ',.'")
+        cur.execute("ALTER SESSION SET NLS_SORT = 'WEST_EUROPEAN'")
+        cur.execute("ALTER SESSION SET NLS_COMP = 'BINARY'")
 
 
 def close_pool() -> None:

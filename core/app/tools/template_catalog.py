@@ -76,7 +76,7 @@ def tool_get_template(code: str) -> str:
 LIST_TEMPLATES_TOOL = {
     "name": "list_templates",
     "description": (
-        "Indice dos templates SQL CANONICOS e VALIDADOS do Winthor. "
+        "Indice dos templates SQL CANONICOS e VALIDADOS do NBS. "
         "OBRIGATORIO chamar ANTES de escrever qualquer SQL novo: se existir template "
         "da familia da pergunta, use get_template e execute-o em vez de improvisar. "
         "Instantaneo (leitura local, nao toca o banco)."
@@ -86,9 +86,9 @@ LIST_TEMPLATES_TOOL = {
         "properties": {
             "familia": {
                 "type": "string",
-                "description": ("Filtro opcional: faturamento, fornecedores, pedidos, "
-                                "inadimplencia, equipe_campo, clientes, estoque, "
-                                "regionais, metas. Omitir = indice completo."),
+                "description": ("Filtro opcional: veiculos, oficina, pecas, financeiro, "
+                                "clientes, estoque, "
+                                "garantia. Omitir = indice completo."),
             },
         },
     },

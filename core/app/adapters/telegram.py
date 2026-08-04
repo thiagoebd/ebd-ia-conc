@@ -84,14 +84,14 @@ async def handle_message(chat_id: int, user_first_name: str, text: str) -> list[
         if role == "admin":
             return [
                 f"👋 Olá, *{user_first_name}*\\!\n\n"
-                f"Sou o *EBD\\.ia*, agente comercial conectado ao Winthor\\.\n\n"
+                f"Sou o *Conc\.ia*, agente conectado ao NBS\\.\n\n"
                 f"Você está como `admin` — pode propor auto\\-append na knowledge base\\.\n\n"
                 f"*Comandos:*\n"
                 f"• `/reset` \\- limpa histórico\n"
                 f"• `/saldo` \\- custo da sessão\n"
                 f"• `/aprovar PROP\\-XXXX` \\- aprova proposta\n"
                 f"• `/descartar PROP\\-XXXX` \\- descarta proposta\n\n"
-                f"Manda qualquer pergunta sobre vendas, RCAs, ruptura, estoque\\.\\.\\."
+                f"Manda qualquer pergunta sobre vendas, oficina, veiculos, pecas\\.\\.\\."
             ]
         else:
             return [

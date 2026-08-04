@@ -239,25 +239,25 @@ CREATE_CHART_TOOL = {
 CREATE_ROUTE_MAP_TOOL = {
     "name": "create_route_map",
     "description": (
-        "Plota no MAPA (renderizado na conversa) o roteiro de um vendedor/RCA — "
+        "Plota no MAPA (renderizado na conversa) o roteiro de um vendedor/consultor — "
         "os clientes da rota como marcadores, na ordem de visita. "
         "Chamar quando o usuario pedir 'roteiro', 'rota do vendedor no mapa', "
-        "'onde estao os clientes do RCA', 'mapa da rota'. "
+        "'onde estao os clientes do vendedor', 'mapa da rota'. "
         "Fonte da coordenada: PCCLIENT.LATITUDE/LONGITUDE (join por CODCLI na PCROTACLI). "
         "REUTILIZE as rows que oracle_query acabou de retornar — NAO rode a query de novo. "
         "Passe TODOS os pontos que tem coordenada; o backend deduplica por codcli e "
         "descarta lat/lng invalidos. Idealmente filtre por UM dia (DIASEMANA) para o "
-        "roteiro-dia; a rota inteira do RCA e a carteira toda, nao um roteiro. "
-        "footer OBRIGATORIO: fonte + escopo (ex: 'Rota ativa do RCA X, quarta-feira — "
+        "roteiro-dia; a rota inteira do vendedor e a carteira toda, nao um roteiro. "
+        "footer OBRIGATORIO: fonte + escopo (ex: 'Rota ativa do vendedor X, quarta-feira — "
         "coordenada de cadastro PCCLIENT')."
     ),
     "input_schema": {
         "type": "object",
         "properties": {
             "title": {"type": "string",
-                      "description": "Ex: 'Roteiro RCA 3366 (Antonio Fernando) — quarta'"},
+                      "description": "Ex: 'Roteiro do consultor X — quarta'"},
             "rca": {"type": "string",
-                    "description": "Identificacao do RCA. Ex: '3366 — Antonio Fernando (fil 08)'"},
+                    "description": "Identificacao do vendedor"},
             "points": {
                 "type": "array", "maxItems": 200,
                 "items": {

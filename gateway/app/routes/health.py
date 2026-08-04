@@ -1,7 +1,7 @@
 """Health check — pública, sem autenticação.
 
 Usado por monitoramento e pelo frontend pra mostrar estado dos componentes
-na tela de erro (mockup 07 — Winthor offline + circuit-breaker).
+na tela de erro (mockup 07 — banco offline + circuit-breaker).
 """
 from fastapi import APIRouter
 

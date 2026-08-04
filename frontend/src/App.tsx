@@ -271,8 +271,8 @@ function App() {
     <>
       <UnauthenticatedTemplate>
         <div className="login-screen">
-          <img src="/logo-ebd.png" alt="EBD" className="logo-login" />
-          <p className="subtitle">Agente comercial · dados do Winthor em tempo real</p>
+          <img src="/logo-conc.png" alt="Conc" className="logo-login" />
+          <p className="subtitle">Agente das concessionárias · dados do NBS em tempo real</p>
           <button className="btn-primary" onClick={login}>Entrar com Microsoft</button>
         </div>
       </UnauthenticatedTemplate>
@@ -288,8 +288,8 @@ function App() {
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === "Enter") window.location.reload(); }}
             >
-              <img src="/logo-ebd.png" alt="EBD" />
-              <span className="name">EBD<em>.ia</em></span>
+              <img src="/logo-conc.png" alt="Conc" />
+              <span className="name">Conc<em>.ia</em></span>
             </div>
 
             <button className="new-chat" onClick={newChat}>
@@ -310,7 +310,7 @@ function App() {
 
             <div className="sb-section">Conexões</div>
             <div className="sb-list">
-              <div className="sb-link"><span className="dot-ok" /><span className="lbl">Winthor / Oracle</span></div>
+              <div className="sb-link"><span className="dot-ok" /><span className="lbl">NBS / Oracle</span></div>
             </div>
 
             <div className="sb-history">
@@ -384,7 +384,7 @@ function App() {
                       maxWidth: 680,
                       margin: "20px auto 0",
                     }}>
-                      <p className="empty-sub" style={{ margin: 0 }}>Sou um agente especializado em distribuição. Consulto o Winthor na hora e te devolvo o dado rapidinho.</p>
+                      <p className="empty-sub" style={{ margin: 0 }}>Sou um agente especializado em concessionárias. Consulto o NBS na hora e te devolvo o dado rapidinho.</p>
                       <p className="empty-sub" style={{ margin: "8px 0 0" }}>Vou além de puxar número: comparo períodos, rankeio filiais, vendedores e fornecedores, cruzo meta com realizado e mostro onde está o gap, aponto ruptura e acompanho positivação em campo.</p>
                       <p className="empty-sub" style={{ margin: "8px 0 0" }}>Mostro em texto, tabela, gráfico ou mapa — e gero <strong>Excel, PDF ou PowerPoint</strong> quando você pedir.</p>
                     </div>
@@ -421,9 +421,9 @@ function App() {
                           : <span className="avatar small">{firstName.charAt(0)}</span>}
                       </div>
                       <div className="content">
-                        <div className="who-line">{m.role === "assistant" ? "EBD.ia" : firstName}</div>
+                        <div className="who-line">{m.role === "assistant" ? "Conc.ia" : firstName}</div>
                         {m.role === "assistant" && m.tools && m.tools.length > 0 && (
-                          <div className="tools"><span className="tool-chip">⚡ Winthor consultado</span></div>
+                          <div className="tools"><span className="tool-chip">⚡ NBS consultado</span></div>
                         )}
                         {m.role === "assistant" && m.artifacts && m.artifacts.length > 0 && (
                           <div className="artifacts">
@@ -456,13 +456,13 @@ function App() {
                   value={input}
                   onChange={(e) => { setInput(e.target.value); autosize(); }}
                   onKeyDown={onKey}
-                  placeholder="Pergunte ao EBD.ia…"
+                  placeholder="Pergunte ao Conc.ia…"
                   rows={1}
                   disabled={busy}
                 />
                 <div className="composer-foot">
                   <span className="chips">
-                    <span className="chip"><span className="dot-ok" /> Winthor</span>
+                    <span className="chip"><span className="dot-ok" /> NBS</span>
                     {(() => {
                       const current = me?.models.available.find((m) => m.id === selectedModel);
                       const label = current?.label || selectedModel;
