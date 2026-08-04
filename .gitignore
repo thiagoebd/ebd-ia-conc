@@ -1,0 +1,78 @@
+# ============== Segredos (NUNCA versionar) ==============
+.env
+.env.local
+.env.production
+.env.*.local
+*.key
+*.pem
+*.pfx
+secrets/
+
+# ============== Python ==============
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+# ============== Node.js ==============
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.next/
+.nuxt/
+dist/
+build/
+# ============== Docker ==============
+# Volumes e dados locais não vão pro Git
+.docker-data/
+# ============== Logs ==============
+*.log
+logs/
+*.log.*
+# ============== OS ==============
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+# ============== IDE ==============
+.vscode/
+.idea/
+*.sublime-*
+# ============== Artefatos gerados ==============
+*.xlsx
+*.pptx
+*.pdf
+!docs/**/*.pdf
+# ============== Backups e temporários ==============
+*.bak
+*.tmp
+tmp/
+temp/
+compose.yaml.bak
+# Logs do MCP
+*.jsonl
+docs/sql-corrections.md.bak
+*.bak.*
+data/*.db
+gateway/.env
+core/[0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*
+*.bak*
+.env.bak*
+# observabilidade
+observability/.env
+observability/reports/
+nohup_telegram.log
+core/.env
+
+# artefatos de trabalho
+*.patch
+*.bak.*
