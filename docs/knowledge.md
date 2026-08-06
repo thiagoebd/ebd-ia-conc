@@ -62,3 +62,17 @@
 - "Vendas de hoje" → veículo ou peça? A conta é bem diferente.
 - "OS abertas" → inclui orçamento? inclui agrupadora? (padrão: não)
 - "Mês" → competência de emissão da nota ou de encerramento da OS?
+
+
+<!-- AUTO-APPEND PROP-AC9F4A6A aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Consultor técnico — como identificar (verificado 06/08/2026)
+
+A coluna `EMPRESAS_USUARIOS.CONSULTOR_TECNICO` (VARCHAR2(1)) **existe mas está 100% nula** nos 173 usuários — não é usada nesta instalação. NÃO usar para contar consultores.
+
+O caminho correto é a função:
+- `EMPRESAS_USUARIOS.COD_FUNCAO = 42` → `EMPRESAS_FUNCOES.DESCRICAO = 'Consultor Tecnico'`
+- `EMPRESAS_FUNCOES` é global (PK só `COD_FUNCAO`, sem empresa); `EMPRESAS_USUARIOS.COD_FUNCAO` referencia por FK `SYS_C0024412`.
+- Ativo/inativo: `EMPRESAS_USUARIOS.DEMITIDO` ('S' = demitido; 'N'/NULL = ativo). Não usar `LIBERADO` como critério (quase todo mundo NULL).
+- Empresa 1 (06/08/2026): 10 cadastrados na função 42, 2 demitidos (DANIELLY.P, KATIA.GOME) → 8 ativos.
+- Cuidado: AG.BMW (agendamento), CARLOS.CON e NEYLA.CONS são perfis de sistema com essa função — se a pergunta for "pessoas físicas", excluir.
