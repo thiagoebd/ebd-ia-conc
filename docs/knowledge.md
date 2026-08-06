@@ -76,3 +76,21 @@ O caminho correto é a função:
 - Ativo/inativo: `EMPRESAS_USUARIOS.DEMITIDO` ('S' = demitido; 'N'/NULL = ativo). Não usar `LIBERADO` como critério (quase todo mundo NULL).
 - Empresa 1 (06/08/2026): 10 cadastrados na função 42, 2 demitidos (DANIELLY.P, KATIA.GOME) → 8 ativos.
 - Cuidado: AG.BMW (agendamento), CARLOS.CON e NEYLA.CONS são perfis de sistema com essa função — se a pergunta for "pessoas físicas", excluir.
+
+
+<!-- AUTO-APPEND PROP-54A904B2 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Equipe comercial — regra de consulta (aprovado por admin, 06/08/2026)
+
+**Regra:** toda consulta a funções de equipe (consultor de vendas, consultor técnico, vendedor, supervisor, gerente comercial, balcão) deve retornar **somente ativos** — `EMPRESAS_USUARIOS.DEMITIDO <> 'S'` (ou IS NULL). O gestor não quer ver demitidos em ranking, contagem ou listagem. Sempre aplicar o filtro, sem precisar o usuário repetir.
+
+**Cargos mapeados (EMPRESAS_FUNCOES, empresa 1, 06/08/2026):**
+- Função 42 — 'Consultor Tecnico': 10 cadastrados → 8 ativos (2 demitidos: DANIELLY.P, KATIA.GOME)
+- Função 15 — 'Executivo de Vendas' (é o "consultor de vendas" do NBS): 15 cadastrados → 8 ativos
+- Função 44 — 'Vendedor de Pecas' (balcão): 6 → 4 ativos
+- Função 46 — 'Supervisor de Vendas': 1 → 1 ativo
+- Função 13 — 'Gerente Comercial': 8 → 4 ativos
+
+**Observação:** `DEMITIDO` = 'S' demitido; 'N'/NULL = ativo. Não usar `LIBERADO` como critério (quase todo mundo NULL).
+
+**Atenção a perfis de sistema:** AG.BMW (agendamento automático BMW), CARLOS.CON, NEYLA.CONS têm função de consultor mas são perfis de sistema, não pessoas físicas — excluir se a pergunta for sobre pessoas.
