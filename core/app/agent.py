@@ -68,6 +68,10 @@ from app.tools.oracle_bridge import (
     execute_oracle_query_streaming,
     format_result_for_claude,
 )
+from app.tools.dealernet_bridge import (
+    DEALERNET_QUERY_TOOL,
+    execute_dealernet_query,
+)
 from app.tools.artifact_tools import CREATE_EXCEL_TOOL, CREATE_PDF_TOOL, CREATE_PPTX_TOOL, CREATE_CHART_TOOL
 from app.tools.chart_builder import build_chart
 from app.tools.artifact_tools import CREATE_ROUTE_MAP_TOOL
@@ -103,7 +107,7 @@ def _client_for(model: str | None):
         return _deepseek_client, m
     return _client, m
 _system_prompt = build_system_prompt()
-_tools = [ORACLE_QUERY_TOOL, KNOWLEDGE_APPEND_TOOL, LIST_PROPOSALS_TOOL, CREATE_EXCEL_TOOL, CREATE_PDF_TOOL, CREATE_PPTX_TOOL, CREATE_CHART_TOOL, LIST_TEMPLATES_TOOL, GET_TEMPLATE_TOOL, CREATE_ROUTE_MAP_TOOL]
+_tools = [ORACLE_QUERY_TOOL, DEALERNET_QUERY_TOOL, KNOWLEDGE_APPEND_TOOL, LIST_PROPOSALS_TOOL, CREATE_EXCEL_TOOL, CREATE_PDF_TOOL, CREATE_PPTX_TOOL, CREATE_CHART_TOOL, LIST_TEMPLATES_TOOL, GET_TEMPLATE_TOOL, CREATE_ROUTE_MAP_TOOL]
 
 
 def reload_system_prompt() -> int:
@@ -135,6 +139,11 @@ async def _run_tool(tool_name: str, tool_input: dict, user_id: str, user_role: s
         sql = tool_input.get("sql", "")
         max_rows = tool_input.get("max_rows", 100)
         result = await execute_oracle_query(sql, max_rows=max_rows)
+        return format_result_for_claude(result)
+    if tool_name == "dealernet_query":
+        sql = tool_input.get("sql", "")
+        max_rows = tool_input.get("max_rows", 100)
+        result = await execute_dealernet_query(sql, max_rows=max_rows)
         return format_result_for_claude(result)
     if tool_name == "knowledge_append":
         return tool_knowledge_append(

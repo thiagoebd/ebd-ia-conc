@@ -128,7 +128,7 @@ cat >> .env <<EOF
 # ----- NBS (Oracle — concessionaria BMW, somente leitura) -----
 NBS_USER=ebd_consulta
 NBS_PASSWORD=Ebd@2025
-NBS_DSN=ssp06odascan.grupoebd.ebdbr.com.br:1521/bmw.grupoebd.ebdbr.com.br
+NBS_DSN=ssp06orascan.grupoebd.ebdbr.com.br:1521/bmw.grupoebd.ebdbr.com.br
 NBS_POOL_MIN=2
 NBS_POOL_MAX=10
 NBS_QUERY_TIMEOUT_MS=30000

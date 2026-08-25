@@ -5,10 +5,12 @@ from app.config import settings
 
 # Ordem de carregamento (mais geral -> mais especifico)
 KB_FILES = [
-    "CLAUDE.md",          # prompt base do agente
-    "knowledge.md",       # vocabulario e regras de negocio
-    "sql-corrections.md", # cicatrizes / armadilhas
-    "query_templates.md", # templates SQL validados (cache 1h cobre o custo)
+    "CLAUDE.md",               # roteador multi-DMS (camada 0)
+    "dms/CLAUDE-nbs.md",       # NBS / Oracle / ISAR-BMW
+    "dms/CLAUDE-dealernet.md", # DealerNet / SQL Server / 30 concessionarias
+    "knowledge.md",            # vocabulario e regras de negocio
+    "sql-corrections.md",      # cicatrizes / armadilhas
+    "query_templates.md",      # templates SQL validados
 ]
 
 
@@ -21,33 +23,25 @@ def load_kb_file(filename: str) -> str:
 
 ESCOPO = """
 
-## 🎯 ESCOPO DO AGENTE (leia antes de qualquer consulta)
+## 🎯 ESCOPO DO AGENTE
 
-Voce consulta o **NBS** (DMS de concessionaria, Oracle, schema NBS).
-A concessionaria em operacao hoje eh a **ISAR MOTORS** (BMW, Teresina/PI),
-`COD_EMPRESA = 1`, sob a matriz `COD_EMPRESA = 100`.
+Voce atende as concessionarias do Grupo EBD em DOIS DMS:
+- **NBS** (Oracle, tool `oracle_query`) — ISAR MOTORS, BMW/Motorrad/Mini
+- **DealerNet** (SQL Server, tool `dealernet_query`) — 30 concessionarias
+  Toyota, Fiat, Jeep, Hyundai, Ford, Leapmotor
 
-### O que NAO existe nesta base — nunca cite nem tente consultar
-- Nao existe Winthor, ERP de distribuicao, nem tabelas `PC*` (PCNFSAID, PCPEDC,
-  PCPEDI, PCCLIENT, PCEST, PCPRODUT...). **Excecao:** `PC_DEF_ESTATISTICAS_*`
-  existe, mas veja o alerta abaixo.
-- Nao existem views `GD_FATO_*` / `GD_DIM_*`.
-- Nao existe RCA, vendedor externo de distribuicao, carteira de pedido,
-  inadimplencia de distribuidor, ABAD, NielsenIQ, filial/regional da EBD.
-- O vocabulario aqui eh de **concessionaria**: ordem de servico, oficina,
-  consultor tecnico, veiculo novo/usado, chassi, pecas, garantia de fabrica,
-  proposta, agendamento.
+O mapa de unidades, as regras de roteamento e a consolidacao estao no
+CLAUDE.md abaixo. LEIA antes de consultar.
 
-### ⚠️ `PC_DEF_ESTATISTICAS_*` — dado historico morto
-Existem tabelas `PC_DEF_ESTATISTICAS_VEICULOS`, `_OS`, `_FINANCEIRO`. Sao de uma
-carga antiga (dados de 2014 a 2020) e **nao refletem a operacao atual**.
-NUNCA use essas tabelas para responder pergunta sobre hoje, este mes ou este ano.
-As fontes vivas sao `OS`, `VENDAS`, `VEICULOS`, `COMPRA`.
+### O que NAO existe em nenhum dos dois
+Winthor, tabelas `PC*`, views `GD_FATO_*`/`GD_DIM_*`, RCA, carteira de pedido,
+inadimplencia de distribuidor — isso e do EBD.ia (distribuicao), outro produto.
+`PC_DEF_ESTATISTICAS_*` existe no NBS mas tem dado morto de 2014-2020.
 
 ### Regra de ouro
-Se voce nao encontrou a tabela ou a coluna, **diga que nao encontrou e pare**.
-Nunca deduza nome de tabela por semelhanca com outro sistema, e nunca responda
-numero que nao veio de uma consulta desta sessao.
+Nao encontrou a tabela ou a coluna: diga que nao encontrou e pare.
+Nunca deduza nome por semelhanca com outro sistema, e nunca responda numero
+que nao veio de consulta desta sessao.
 """
 
 

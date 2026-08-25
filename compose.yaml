@@ -129,6 +129,61 @@ services:
         max-size: "50m"
         max-file: "5"
 
+
+  # ----------------------------------------------------------
+  # MCP DealerNet — leitura read-only do DealerNet Workflow (SQL Server)
+  # 30 concessionarias: Toyota, Fiat, Jeep, Hyundai, Ford, Leapmotor
+  # ----------------------------------------------------------
+  mcp-dealernet:
+    build:
+      context: ./mcps/dealernet
+      dockerfile: Dockerfile
+    image: conc/mcp-dealernet:0.1.0
+    container_name: conc_mcp_dealernet
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DN_USER: ${DN_USER}
+      DN_PASSWORD: ${DN_PASSWORD}
+      DN_DSN: ${DN_DSN}
+      DN_POOL_MIN: ${DN_POOL_MIN:-2}
+      DN_POOL_MAX: ${DN_POOL_MAX:-10}
+      DN_QUERY_TIMEOUT_MS: ${DN_QUERY_TIMEOUT_MS:-30000}
+      DN_DEFAULT_ROW_LIMIT: ${DN_DEFAULT_ROW_LIMIT:-1000}
+      SCOPE_SHADOW: ${SCOPE_SHADOW:-1}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      TZ: America/Sao_Paulo
+      MCP_DN_TOKEN: ${MCP_DN_TOKEN}
+      MCP_DN_LOG_DIR: /app/logs/mcp-dealernet
+    volumes:
+      - ./logs/mcp-dealernet:/app/logs/mcp-dealernet
+    ports:
+      - "127.0.0.1:8991:8991"
+    networks:
+      - ebdia_net
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8991/health', timeout=12)"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+      start_period: 40s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+
 # ============================================================
 # Rede interna do EBD.ia
 # Containers se enxergam pelos nomes (postgres, redis, mcp-oracle)

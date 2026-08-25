@@ -25,6 +25,10 @@ class Settings(BaseSettings):
     mcp_oracle_url: str = Field(..., alias="MCP_ORACLE_URL")
     mcp_oracle_token: str = Field(..., alias="MCP_ORACLE_TOKEN")
 
+    # MCP DealerNet (SQL Server) — 30 concessionarias
+    mcp_dn_url: str = Field("http://localhost:8991/mcp", alias="MCP_DN_URL")
+    mcp_dn_token: str = Field("", alias="MCP_DN_TOKEN")
+
     # Knowledge base
     kb_path: Path = Field(..., alias="EBD_IA_KB_PATH")
     repo_path: Path = Field(..., alias="EBD_IA_REPO_PATH")

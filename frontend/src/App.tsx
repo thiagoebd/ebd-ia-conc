@@ -311,6 +311,7 @@ function App() {
             <div className="sb-section">Conexões</div>
             <div className="sb-list">
               <div className="sb-link"><span className="dot-ok" /><span className="lbl">NBS / Oracle</span></div>
+              <div className="sb-link"><span className="dot-ok" /><span className="lbl">DealerNet / SQL Server</span></div>
             </div>
 
             <div className="sb-history">
@@ -423,7 +424,16 @@ function App() {
                       <div className="content">
                         <div className="who-line">{m.role === "assistant" ? "Conc.ia" : firstName}</div>
                         {m.role === "assistant" && m.tools && m.tools.length > 0 && (
-                          <div className="tools"><span className="tool-chip">⚡ NBS consultado</span></div>
+                          <div className="tools">{(() => {
+                            const ts = m.tools || [];
+                            const nbs = ts.includes("oracle_query");
+                            const dn  = ts.includes("dealernet_query");
+                            const lbl = nbs && dn ? "NBS + DealerNet consultados"
+                                      : dn ? "DealerNet consultado"
+                                      : nbs ? "NBS consultado"
+                                      : "Consultado";
+                            return <span className="tool-chip">⚡ {lbl}</span>;
+                          })()}</div>
                         )}
                         {m.role === "assistant" && m.artifacts && m.artifacts.length > 0 && (
                           <div className="artifacts">
@@ -463,6 +473,7 @@ function App() {
                 <div className="composer-foot">
                   <span className="chips">
                     <span className="chip"><span className="dot-ok" /> NBS</span>
+                    <span className="chip"><span className="dot-ok" /> DealerNet</span>
                     {(() => {
                       const current = me?.models.available.find((m) => m.id === selectedModel);
                       const label = current?.label || selectedModel;
