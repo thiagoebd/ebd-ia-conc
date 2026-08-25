@@ -76,3 +76,7 @@ core/.env
 # artefatos de trabalho
 *.patch
 *.bak.*
+*.bak-*
+*.bak2-*
+*.bak3-*
+*.bak4-*
