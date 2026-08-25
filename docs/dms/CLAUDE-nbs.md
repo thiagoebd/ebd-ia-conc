@@ -1,162 +1,171 @@
-# Conc.ia — Agente das Concessionárias do Grupo EBD
+# CLAUDE.md — Agente das Concessionárias (NBS / Oracle) — v2
 
-> Você atende **31 concessionárias** em **2 sistemas de gestão (DMS)** diferentes.
-> Este arquivo é o **roteador**: diz onde cada coisa está e como decidir.
-> O detalhe de cada DMS vem sob demanda (`carregar_kb`).
-
----
-
-## 1. Os dois DMS
-
-| | **NBS** (Oracle) | **DealerNet** (SQL Server) |
-| --- | --- | --- |
-| Tool | `oracle_query` | `dealernet_query` |
-| Concessionárias | 1 | 30 |
-| Marcas | BMW · Motorrad · Mini | Toyota · Fiat · Jeep · Hyundai · Ford · Leapmotor |
-| Coluna de escopo | `COD_EMPRESA` | `Empresa_Codigo` |
-| Nota fiscal | `VENDAS` | `NotaFiscal` |
-| Ordem de serviço | `OS` | `OS` |
-| Cliente | `CLIENTES` | `Pessoa` |
-
-⚠️ **Os códigos COLIDEM.** `1` no NBS é ISAR/BMW; `1` no DealerNet é THAI MACAPÁ.
-Nunca dizer "empresa 1" sem dizer o DMS.
-
-⚠️ **Dialetos diferentes.** Oracle: `SYSDATE`, `NVL`, `FETCH FIRST n ROWS ONLY`,
-`TO_DATE`. T-SQL: `GETDATE()`, `ISNULL`, `TOP n`, `CONVERT`. Cada tool aceita só
-o seu — nunca misturar.
+> Base: NBS, schema `NBS`, service `bmw.grupoebd.ebdbr.com.br`.
+> Empresa operacional: **ISAR MOTORS** (BMW, Teresina/PI), `COD_EMPRESA = 1`.
+> Fonte: dicionário Oracle (8.160 tabelas, 114.008 colunas, 24.804 constraints,
+> 2.432 tabelas comentadas), extraído em 04/08/2026. **Nada inferido do Winthor.**
 
 ---
 
-## 2. Mapa de unidades — resolva o nome ANTES de consultar
+## 1. Escopo de empresa — regra de toda consulta
 
-### NBS
-| Cód | Unidade | Marca | Cidade/UF |
-| --- | --- | --- | --- |
-| 1 | ISAR MOTORS | BMW · Motorrad · Mini | Teresina/PI |
+`EMPRESAS` é a tabela mais referenciada do modelo (492 FKs) e `COD_EMPRESA` é a
+**primeira coluna da PK** de toda tabela de movimento.
 
-### DealerNet
-
-**TOYOTA — "Thai" (8)**
-| 1 Macapá · 2 Avaré · 3 Ananindeua · 4 Castanhal · 5 Ourinhos · 6 Botucatu ·
-27 Altamira · 29 TService Belém |
-
-**JEEP — "Way" (10)**
-| 11 Avaré · 14 Macapá · 15 Mundurucus · 16 Ananindeua · 17 STM (Santarém) ·
-18 Diogo · 19 Castanhal · 20 Assis · 21 Itapetininga · 28 Municipalidade |
-
-**FIAT (7)**
-| 9 VM Matriz Manaus · 10 VM Santarém · 12 VM Avaré · 13 VM Cachoeirinha ·
-22 Depósito C Nery Manaus · 23 Viale Castanhal · 26 Viale Paragominas |
-
-**FORD — "Antares" (2)** | 24 Teresina · 25 Barão |
-**HYUNDAI — "Miso" (2)** | 7 Macapá · 8 Santarém |
-**LEAPMOTOR (1)** | 30 Manaus |
-
-### Razões sociais (o gestor às vezes usa)
-- **BACABA VEÍCULOS** = Thai (Toyota)
-- **VIA MARCONI** = VM (Fiat) + Way (Jeep) + Leapmotor
-- **VIALE AUTOMOVEIS** = Viale (Fiat)
-- **ANTARES VEICULOS** = Antares (Ford)
-- **MISO** = Miso (Hyundai)
-
----
-
-## 3. Como resolver o que o gestor falou
-
-| Ele diz | Resolve para |
+| Tabela | Chave primária |
 | --- | --- |
-| "Jeep" / "Way" | 10 empresas DealerNet |
-| "Jeep Avaré" / "Way Avaré" | DealerNet 11 |
-| "Thai" / "Toyota" | 8 empresas DealerNet |
-| "Thai Avaré" | DealerNet 2 |
-| "BMW" / "Isar" / "Motorrad" / "Mini" | NBS 1 |
-| "Antares" / "Ford" | DealerNet 24, 25 |
-| "grupo" / "todas" / "consolidado" | **os dois DMS** |
-| *nada dito* | **os dois DMS** (consolidado — ver seção 4) |
+| `OS` | `COD_EMPRESA`, `NUMERO_OS` |
+| `VENDAS` | `COD_EMPRESA`, `CONTROLE`, `SERIE` |
+| `VEICULOS` | `COD_EMPRESA`, `COD_PRODUTO`, `COD_MODELO`, `CHASSI_RESUMIDO` |
+| `COMPRA` | `COD_EMPRESA`, `COD_CONTROLE` |
+| `CLIENTES` | `COD_CLIENTE` *(global, sem empresa)* |
 
-### ⚠️ Praças ambíguas — SEMPRE perguntar qual marca
+1. Toda consulta a movimento filtra `COD_EMPRESA`.
+2. Todo JOIN entre movimentos inclui `COD_EMPRESA` nos dois lados.
+3. `CLIENTES` é global: não filtrar nem juntar por empresa.
 
-| Praça | Marcas na mesma cidade |
+Hoje: empresa `1` (operacional, filial de `100`) e `100` (matriz, sem movimento),
+mesmo CNPJ. **Uma segunda BMW entrará como `COD_EMPRESA` nova sob a matriz 100.**
+
+---
+
+## 2. Status — valores reais, lidos das tabelas de domínio
+
+### `VENDAS.STATUS` (VARCHAR2 — comparar com aspas)
+
+| Valor | Significado |
 | --- | --- |
-| **Avaré** | Thai (2) · VM Fiat (12) · Way Jeep (11) |
-| **Castanhal** | Thai (4) · Viale Fiat (23) · Way Jeep (19) |
-| **Macapá** | Thai (1) · Miso Hyundai (7) · Way Jeep (14) |
-| **Ananindeua** | Thai (3) · Way Jeep (16) |
-| **Santarém** | VM Fiat (10) · Miso Hyundai (8) · Way STM (17) |
-| **Manaus** | VM Matriz (9) · Depósito (22) · Leapmotor (30) |
+| `0` | Ativa |
+| `1` | Cancelada |
+| `2` | Devolução parcial |
+| `3` | Devolução total |
+| `5` | Cupom pendente |
 
-Se ele disser só a praça, pergunte a marca. **Não escolha por conta própria.**
+**Faturamento sempre com `STATUS = '0'`.** Devolução parcial (`2`) conta o valor
+da nota original: se o indicador precisa do líquido, tratar a devolução à parte.
 
----
+### `OS.STATUS_OS` (NUMBER — sem aspas)
 
-## 4. Pergunta sem escopo = CONSOLIDADO DO GRUPO
+| Valor | Significado |
+| --- | --- |
+| `0` | Ativa |
+| `1` | Encerrada |
+| `2` | Cancelada |
+| `3` | Orçamento cancelado por tempo |
+| `4` | Aprovado |
+| `5` | Agrupadora |
+| `6` | Agrupadora cancelada |
+| `8` | Orçamento — cliente não aprovou |
 
-"Como estamos", "quantas passagens de oficina", "quantos veículos novos",
-"faturamento do mês" — sem citar marca nem unidade → **consolidar os dois DMS**.
-
-### Regras da consolidação
-
-1. **Consultar os dois** com a definição equivalente (seção 5).
-2. **SEMPRE mostrar a quebra**, nunca só o total:
-
-```
-Veículos novos — agosto/2026
-  DealerNet (30 conc.)   NNN un   R$ NN,N M
-  NBS (ISAR/BMW)           4 un   R$ 0,6 M
-  ─────────────────────────────────────────
-  GRUPO                  NNN un   R$ NN,N M
-```
-
-3. **Quebrar por marca** quando fizer sentido — é como a gestão pensa
-   (Toyota, Jeep, Fiat, Ford, Hyundai, Leapmotor, BMW).
-4. **Se um dos lados falhar**, dizer qual e entregar o outro. Nunca apresentar
-   total parcial como se fosse do grupo.
-5. **Não somar o que não é comparável** — margem no NBS é líquida de tributos
-   (validado); no DealerNet ainda não. Enquanto não validar, mostrar separado.
+**A mesma tabela `OS` guarda ordem de serviço e orçamento.** Status `3` e `8` são
+orçamento; `5`/`6` são OS agrupadora (a "OS única" que consolida outras — contar
+duas vezes se somar agrupadora + agrupadas). Para oficina realizada: `0` e `1`.
 
 ---
 
-## 5. Definições equivalentes (o que somar com o quê)
+## 3. Valores da nota (`VENDAS`) — documentados no banco
 
-| Indicador | NBS | DealerNet |
-| --- | --- | --- |
-| **Veículos novos** | `VENDAS` + `NATUREZA_APLICACAO='F'` + `STATUS='0'` | `NotaFiscal` + `NaturezaOperacao=11` + `Status='EMI'` + `Movimento='S'` |
-| **Seminovos / usados** | `NATUREZA_APLICACAO='K'` (+ op 129) | `NaturezaOperacao=19` |
-| **Peças balcão** | itens de nota `COD_OPERACAO=1` sem `REQUISICAO` | `NaturezaOperacao` 10 / 56 |
-| **Peças oficina** | itens de nota op 2,3 com `REQUISICAO>0` | via `OficinaProduto` |
-| **Serviço oficina** | `OS_SERVICOS` (OS distintas) | `OficinaServico` |
-| **Passagens de oficina** | `OS` + `OS_TIPOS.PRODUTIVA='S'` + `STATUS_OS IN (0,1)` | `OS` + `TipoOS_Classificacao='CLI'` |
-| **Faturamento total** | `SUM(TOTAL_NOTA)` `STATUS='0'` | `SUM(NotaFiscal_ValorTotal)` `Status='EMI'` + `Movimento='S'` |
+| Coluna | Conteúdo |
+| --- | --- |
+| `TOTAL_NOTA` | **valor final da nota fiscal** |
+| `TOTAL_PRODUTOS` | valor dos produtos (peças/veículos) |
+| `TOTAL_SERVICOS` | valor dos serviços |
+| `DESCONTO_PRODUTOS` | soma dos descontos aplicados nos itens |
+| `FRETE`, `SEGURO` | acessórios da nota |
+| `EMISSAO` | data da nota |
 
-Detalhe de cada um: `carregar_kb('nbs')` / `carregar_kb('dealernet')`.
-
----
-
-## 6. Regras que valem para os DOIS
-
-- **Todo número tem que vir de consulta desta conversa.** Não consultou, não afirma.
-- **Sempre filtrar o escopo** (`COD_EMPRESA` / `Empresa_Codigo`).
-- **Sempre filtrar status válido** (`'0'` no NBS, `'EMI'` no DealerNet).
-- No DealerNet, **sempre `Movimento='S'`** para venda — a tabela tem entrada e saída.
-- Consulta vazia → dizer que voltou vazia, não estimar.
-- Se não encontrar tabela/coluna → dizer que não encontrou e parar.
-
-### PROIBIDO INVENTAR CAPACIDADE
-Você só consulta (read-only) e gera artefatos (excel, pdf, gráfico).
-Não cria proposta, pedido, OS ou cadastro; não grava nada nos DMS.
-Exceção legítima: a tool `knowledge_append` gera `PROP-XXXX` para curadoria da
-base de conhecimento, aprovada com `/aprovar PROP-XXXX`.
-
-### O que NÃO existe em nenhum dos dois
-Winthor, tabelas `PC*`, views `GD_FATO_*`/`GD_DIM_*`, RCA, carteira de pedido,
-inadimplência de distribuidor. Isso é do EBD.ia (distribuição), outro produto.
-`PC_DEF_ESTATISTICAS_*` existe no NBS mas tem dado morto de 2014-2020 — não usar.
+Faturamento = `SUM(TOTAL_NOTA)` com `STATUS='0'`. Para separar peças de serviço,
+usar `TOTAL_PRODUTOS` e `TOTAL_SERVICOS`. As dezenas de colunas `BASE_*`,
+`ALIQ_*`, `VALOR_*_RETIDO` são fiscais — não usar para gestão.
 
 ---
 
-## 7. Ainda não está no sistema
+## 4. `NATUREZA.NATUREZA_APLICACAO` — o classificador de receita
 
-**Regional por gerente** (ex.: Ana Paula cuida das Way do interior de SP —
-Avaré, Assis, Itapetininga) **não existe em nenhum DMS**. Será uma tabela
-própria do Conc.ia, ainda a criar. Se perguntarem por regional ou por gerente,
-diga que ainda não está mapeado e ofereça listar por marca ou por unidade.
+Documentado no banco. É o que separa os departamentos da concessionária:
+
+| Código | Aplicação |
+| --- | --- |
+| `F` | Venda de veículos **novos** |
+| `K` | Venda de veículos **usados/consignados** |
+| `M` | O.S. — prestação de serviço |
+| `N` | O.S. — débito interno |
+| `O` | O.S. — garantia |
+| `C` | Cortesia |
+| `5` / `3` / `7` | Peças — balcão e serviços (tributadas / isentas / fonte) |
+| `1` / `2` | Compra e frete / devolução de compra |
+| `6` | Devolução de vendas |
+| `8` / `G` | Transferência (entrada / saída) |
+| `P` / `Q` | Estorno de peças / de veículos |
+
+`VENDAS.COD_NATUREZA → NATUREZA.COD_NATUREZA`. **Novo vs usado, garantia vs
+cliente, peça vs serviço — tudo sai daqui**, não de flag na venda.
+
+---
+
+## 5. Tipos de OS
+
+`OS.TIPO → OS_TIPOS.TIPO`, com dois flags documentados:
+
+- `OS_TIPOS.GARANTIA` — OS de garantia (serviço anterior ou veículo em garantia)
+- `OS_TIPOS.INTERNO` — manutenção na frota da própria empresa
+
+`OS_TIPOS_EMPRESAS` parametriza o tipo **por empresa** (PK inclui `COD_EMPRESA`) —
+o mesmo tipo pode se comportar diferente em cada concessionária.
+
+---
+
+## 6. Cicatrizes
+
+**#01 — `VENDAS.STATUS` é texto, `OS.STATUS_OS` é número.** Comparar com aspas em
+um e sem no outro. Erro silencioso garantido se trocar.
+
+**#02 — OS agrupadora.** Status `5`/`6` consolidam outras OS
+(`OS.TEM_PRE_FECHAMENTO = 'S'`, `OS_SERVICOS.NUMERO_OS_ORIGINAL`). Somar sem
+excluir agrupadora conta duas vezes.
+
+**#03 — Orçamento mora na tabela OS.** `OS.ORCAMENTO` e os status `3`/`8`.
+"Quantas OS abrimos" sem filtro de status inclui orçamento não aprovado.
+
+**#04 — Usuário e vendedor ligados por NOME, não código.** `OS.QUEM_ABRIU`,
+`QUEM_APROVOU`, `QUEM_ENCERROU`, `QUEM_LIBEROU*`, `VENDAS.VENDEDOR`,
+`VENDAS.USUARIO_LOGADO` → `EMPRESAS_USUARIOS.NOME` (VARCHAR2). Acento, caixa ou
+espaço divergente quebra o join sem erro. Conferir se o total por vendedor bate
+com o geral.
+
+**#05 — `EMPRESAS.NUMR_CNPJ` e `VENDAS.CNPJ_INTERMED` estão DEPRECATED** (dito no
+próprio comentário). Usar `EMPRESAS.CNPJ` / `CGC`.
+
+**#06 — `ALL_TABLES.NUM_ROWS` é estimativa** e só 1.853 das 8.160 tabelas têm
+estatística. Contar com `COUNT(*)`.
+
+**#07 — NLS.** O servidor entrega sessão `AMERICAN`; o MCP força
+`BRAZILIAN PORTUGUESE / BRAZIL`, `DD/MM/RRRR`, `,.`, `WEST_EUROPEAN` no
+`session_callback`. Ainda assim, **usar máscara explícita** em `TO_DATE`/`TO_NUMBER`.
+
+**#08 — `PARM_SYS`, `PARM_SYS2`, `PARM_SYS3`** são as tabelas de parâmetro do
+sistema (606 colunas comentadas só na 3ª). Muito comportamento do NBS depende
+delas — quando um número não fizer sentido, o parâmetro costuma ser a explicação.
+
+---
+
+## 7. O que ignorar
+
+`FAB_*` (2.256 tabelas) e as tabelas por marca (`BMW_`, `FCA_`, `NISS`, `RENA`,
+`FORD`, `TOYO`, `HYUN`, `PORS`, `VW_E`, `GM_I`) são integração com fábrica — as
+maiores do banco (`BMW_KSD_AW03_04`, 17,4M linhas), mas fila e log, não gestão.
+
+Idem `AUDITORIA_LOG`, `LOG_*`, `TMP_*`, `SPED_*` e os registros fiscais (`C100`,
+`C170`, `C190`, `R0200`, `H010`): obrigação acessória.
+
+---
+
+## 8. Ainda aberto
+
+- `VEICULOS.NOVO_USADO` — existe, valores não confirmados (a classificação de
+  receita vem da `NATUREZA`, mas o estoque precisa desse campo).
+- `OS.COD_ANDAMENTO → ANDAMENTO` — etapa dentro da oficina, valores não lidos.
+- Relação `OS_SERVICOS` / `OS_REQUISICOES` para separar mão de obra de peça
+  dentro da OS.
+- `AUTOWARE_INDICADOR_EMP` está **vazia** — a parametrização de indicador de BI
+  não foi usada nesta instalação.
