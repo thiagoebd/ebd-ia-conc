@@ -158,3 +158,19 @@ empresa 1; `FUNCIONARIOS` está vazia, COUNT(*) = 0).
 Cuidado com produtividade: jul/26 apontou só 152,4h em 147 OS (4 técnicos:
 VILTON 59,46h · ROBERT 46,74h · PEDRO IZIDIO 43,63h · DANIEL 2,57h) contra
 978,86h vendidas — apontamento subutilizado, não reflete produtividade real.
+
+
+<!-- AUTO-APPEND PROP-641CF7C1 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## #D11 — Escopo de empresa na NotaFiscal é `NotaFiscal_EmpresaCod`
+
+Na tabela `NotaFiscal` (DealerNet), a coluna de escopo **não** é `Empresa_Codigo`
+— é `NotaFiscal_EmpresaCod` (verificado no dicionário em 25/08/2026; o
+CLAUDE.md diz que `Empresa_Codigo` aparece em 107 tabelas, mas NotaFiscal é uma
+das exceções).
+
+- `JOIN Empresa e ON e.Empresa_Codigo = nf.NotaFiscal_EmpresaCod` (correto)
+- `nf.Empresa_Codigo` → erro `Invalid column name 'Empresa_Codigo'` (207)
+
+Fantasia da empresa é `Empresa_NomeFantasia` (não `Empresa_Fantasia`).
+Há também `NotaFiscal_EmpresaCodOrigem` (empresa de origem, para transferências).
