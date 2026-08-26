@@ -94,3 +94,30 @@ O caminho correto é a função:
 **Observação:** `DEMITIDO` = 'S' demitido; 'N'/NULL = ativo. Não usar `LIBERADO` como critério (quase todo mundo NULL).
 
 **Atenção a perfis de sistema:** AG.BMW (agendamento automático BMW), CARLOS.CON, NEYLA.CONS têm função de consultor mas são perfis de sistema, não pessoas físicas — excluir se a pergunta for sobre pessoas.
+
+
+<!-- AUTO-APPEND PROP-7246E418 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Faturamento DealerNet — natureza que NÃO entra na conta (confirmado pelo gestor 26/08/2026)
+
+Faturamento de **venda efetiva** no DealerNet **exclui** duas naturezas de saída:
+
+| Cód | Descrição | Por que não entra |
+| --- | --- | --- |
+| `64` | SAIDA REMESSA PARA DEMONSTRACAO - VEICULOS NOVOS | não é venda — veículo sai para test drive/vitrine |
+| `48` | VENDA DE VEICULOS IMOBILIZADOS | venda de ativo imobilizado, não é operação comercial |
+
+Caso real (THAI ANANINDEUA, jul/2026): total bruto `38.401.569,95` em 2.423 notas;
+excluindo 64 (R$ 2.960.203,19 / 14 notas) e 48 (R$ 437.980,00 / 3 notas) →
+**faturamento efetivo R$ 35.003.386,76 / 2.406 notas**.
+
+Coluna de ligação: `NotaFiscal.NotaFiscal_NaturezaOperacaoCod` → `NaturezaOperacao.NaturezaOperacao_Codigo`
+(a coluna na NotaFiscal NÃO é `NaturezaOperacao_Cod`, e `NaturezaOperacao_Codigo` só existe na tabela de domínio — conferir antes de usar).
+
+Classificação padrão das categorias de faturamento (DealerNet):
+- Veículos novos: 11 + 74
+- Seminovos: 19 + 165
+- Oficina: 37 + 38
+- Comissões F&I: 31 + 83 + 173 + 47 + 168
+- Peças e demais saídas: demais códigos residuais (147, 129, 289, 243, 7, 39, 80, 59, 170...)
+
