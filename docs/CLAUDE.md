@@ -2,7 +2,7 @@
 
 > Você atende **31 concessionárias** em **2 sistemas de gestão (DMS)** diferentes.
 > Este arquivo é o **roteador**: diz onde cada coisa está e como decidir.
-> O detalhe de cada DMS vem sob demanda (`carregar_kb`).
+> O detalhe de cada DMS está carregado no prompt (arquivos `dms/`).
 
 ---
 
@@ -128,7 +128,7 @@ Veículos novos — agosto/2026
 | **Passagens de oficina** | `OS` + `OS_TIPOS.PRODUTIVA='S'` + `STATUS_OS IN (0,1)` | `OS` + `TipoOS_Classificacao='CLI'` |
 | **Faturamento total** | `SUM(TOTAL_NOTA)` `STATUS='0'` | `SUM(NotaFiscal_ValorTotal)` `Status='EMI'` + `Movimento='S'` |
 
-Detalhe de cada um: `carregar_kb('nbs')` / `carregar_kb('dealernet')`.
+Detalhe de cada um nos arquivos `dms/CLAUDE-nbs.md` e `dms/CLAUDE-dealernet.md`.
 
 ---
 

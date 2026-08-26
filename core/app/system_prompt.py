@@ -9,7 +9,8 @@ KB_FILES = [
     "dms/CLAUDE-nbs.md",       # NBS / Oracle / ISAR-BMW
     "dms/CLAUDE-dealernet.md", # DealerNet / SQL Server / 30 concessionarias
     "knowledge.md",            # vocabulario e regras de negocio
-    "sql-corrections.md",      # cicatrizes / armadilhas
+    "sql-corrections-nbs.md",       # cicatrizes NBS / Oracle
+    "dms/sql-corrections-dealernet.md",  # cicatrizes DealerNet / SQL Server
     "query_templates.md",      # templates SQL validados
 ]
 
