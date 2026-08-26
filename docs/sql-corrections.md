@@ -174,3 +174,18 @@ das exceções).
 
 Fantasia da empresa é `Empresa_NomeFantasia` (não `Empresa_Fantasia`).
 Há também `NotaFiscal_EmpresaCodOrigem` (empresa de origem, para transferências).
+
+
+<!-- AUTO-APPEND PROP-A3742420 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## #D12 — OS↔TipoOS é via tabela ponte OSTipoOS (DealerNet)
+
+A tabela `OS` **não tem coluna de tipo de OS** (busca por `%TipoOS%` em INFORMATION_SCHEMA.COLUMNS da OS retorna vazio — o CLAUDE-dealernet.md chegou a citar `OS_TipoOSCod`, que **não existe**). A classificação `TipoOS_Classificacao` chega à OS por:
+
+```
+OS.OS_Codigo → OSTipoOS.OS_Codigo → OSTipoOS.OSTipoOS_TipoOSCod → TipoOS.TipoOS_Codigo
+```
+
+- Uma OS pode ter **várias** linhas em `OSTipoOS` (um tipo por serviço/contexto). Para "passagens de oficina" (contar a OS uma vez), usar `EXISTS` ou `COUNT(DISTINCT OS_Codigo)` — nunca join direto.
+- `OSTipoOS` também traz denormalizado `OSTipoOS_TipoOSClas` / `OSTipoOS_TipoOSDes` / `OSTipoOS_TipoOSSgl` (classificação/descrição/sigla no nível do vínculo OS×Tipo).
+- Passagens de oficina cliente pagante (validado 26/08/2026): `OS_Status IN ('PEN','ENC')` + `TipoOS_Classificacao = 'CLI'` via EXISTS sobre a ponte → 5.932 OS em ago/2026 (25 das 30 empresas com movimento; Way Mundurucus, Way Diogo, Viale Paragominas, Depósito C Nery e Antares Barão com zero).
