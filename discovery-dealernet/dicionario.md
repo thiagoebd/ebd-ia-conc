@@ -1,0 +1,2111 @@
+# Dicionario DealerNet — GrupoEBD_DealernetWF
+
+Gerado do INFORMATION_SCHEMA / sys catalog. Fonte para conferir nome de
+coluna e FK antes de escrever query — a convencao `Tabela_Campo` tem
+excecoes (ver #D11, #D22).
+
+## Colunas das tabelas nucleo
+
+### CFO
+
+- `CFO_Codigo` smallint
+- `CFO_Descricao` varchar
+- `CFO_DataVigencia` datetime (null)
+- `CFO_DataValidade` datetime (null)
+- `CFO_Movimento` char
+- `CFO_Imobilizado` bit
+- `CFO_Transacao` char
+- `CFO_Frete` bit
+- `CFO_Contribuinte` char
+- `CFO_Cat17SP` bit
+- `CFO_Grupo` char
+- `CFO_Exportacao` char
+- `CFO_Sefaz` bit
+- `CFO_Ativo` bit
+- `CFO_UsuCodCriacao` int
+- `CFO_DataCriacao` datetime
+- `CFO_UsuCodAlteracao` int (null)
+- `CFO_DataAlteracao` datetime (null)
+- `CFO_CombustivelLubrificante` bit
+- `cfo_contacontabil` varchar (null)
+- `CFO_CompoeBaseCalculoSaidaCIAP` bit (null)
+
+### ContaGerencial
+
+- `ContaGerencial_Codigo` int
+- `ContaGerencial_Descricao` varchar
+- `ContaGerencial_Identificador` varchar
+- `ContaGerencial_Tipo` char
+- `ContaGerencial_EmpresaCod` smallint (null)
+- `ContaGerencial_ContaCorrenteCod` smallint (null)
+- `ContaGerencial_Nivel` char
+- `ContaGerencial_BloqueiaMovRetroativo` bit
+- `ContaGerencial_PermiteMovDiasUteis` smallint
+- `ContaGerencial_ControlaSaldoNroDoc` bit
+- `ContaGerencial_DataInicioControleSaldo` datetime
+- `ContaGerencial_LancaDoc` char
+- `ContaGerencial_RecebeBeneficiario` bit
+- `ContaGerencial_IncidePisCofins` bit
+- `ContaGerencial_ApropriaValorAvos` bit
+- `ContaGerencial_FluxoCaixa` bit
+- `ContaGerencial_DiasFluxoCaixa` smallint
+- `ContaGerencial_PermiteSaldoNegativo` bit
+- `ContaGerencial_Ativo` bit
+- `ContaGerencial_UsuCodCriacao` int
+- `ContaGerencial_DataCriacao` datetime
+- `ContaGerencial_UsuCodAlteracao` int (null)
+- `ContaGerencial_DataAlteracao` datetime (null)
+- `ContaGerencial_ControlaChequeDevolvido` bit
+- `ContaGerencial_DiasVerificaConciliacao` smallint
+- `ContaGerencial_FechamentoDiario` bit
+- `ContaGerencial_ValorMinimoCaixa` decimal
+- `ContaGerencial_CobrancaContaGerencialCod` int (null)
+- `ContaGerencial_ContaContabil` varchar (null)
+- `ContaGerencial_ClassServicoPrestadoREINFCod` varchar (null)
+- `ContaGerencial_GerarFluxoLancTransferencia` bit (null)
+- `ContaGerencial_RecebeVeiculo` bit (null)
+- `ContaGerencial_GerarFluxoDesconciliar` bit (null)
+- `ContaGerencial_ModeloCheque` smallint (null)
+- `ContaGerencial_SCP` bit (null)
+
+### Departamento
+
+- `Departamento_Codigo` smallint
+- `Departamento_Descricao` varchar
+- `TipoDepartamento_Codigo` smallint
+- `Departamento_Contabil` char (null)
+- `Departamento_Sigla` char
+- `Departamento_QtdVias` smallint
+- `Departamento_ExibirInfoFatura` bit
+- `Departamento_Ativo` bit
+- `Departamento_UsuCodCriacao` int
+- `Departamento_DataCriacao` datetime
+- `Departamento_UsuCodAlteracao` int (null)
+- `Departamento_DataAlteracao` datetime (null)
+- `Departamento_DepartamentoCodPai` smallint (null)
+
+### Empresa
+
+- `Empresa_Codigo` smallint
+- `Empresa_Nome` varchar
+- `Empresa_NomeFantasia` varchar
+- `Empresa_MoedaCod` smallint (null)
+- `GrupoEmpresa_Codigo` smallint (null)
+- `Empresa_ImagemVistoriaCod` smallint (null)
+- `Empresa_Ativo` bit
+- `Empresa_UsuCodCriacao` int
+- `Empresa_DataCriacao` datetime
+- `Empresa_UsuCodAlteracao` int (null)
+- `Empresa_DataAlteracao` datetime (null)
+- `Empresa_MarcaCod` smallint (null)
+- `Empresa_URLImagem` varchar (null)
+- `Pais_Codigo` smallint (null)
+- `Empresa_SiteCod` smallint (null)
+- `Empresa_EmpresaCodMatriz` smallint (null)
+- `Empresa_DealerNet` bit
+- `Empresa_PessoaCod` int (null)
+- `Identificador_Codigo` smallint (null)
+- `Empresa_RegimeTributaria` char
+- `Empresa_CNAECodPrincipal` int (null)
+- `Empresa_CentroDistribuicao` bit
+- `Empresa_Segmento` char (null)
+- `Empresa_UsaCertDigitalDiferenteServico` bit (null)
+- `Empresa_CertificadoDigitalServico` varchar (null)
+- `Empresa_EnvioSincronoNFe` bit (null)
+- `Empresa_VersaoNFe` char (null)
+- `Empresa_CertificadoDigitalCoaf` varchar (null)
+- `Empresa_ContratoMonitorNFeNFSe` bit (null)
+- `Empresa_ContratoMonitorNFeNFSeDataVerificacao` datetime (null)
+- `Empresa_Locacao` bit (null)
+
+### Estoque
+
+- `Estoque_Codigo` smallint
+- `Estoque_Descricao` varchar
+- `Estoque_Tipo` char
+- `Estoque_Proprietario` char
+- `Estoque_PermiteMovAvulsa` bit
+- `Estoque_Controlado` bit
+- `Estoque_TipoFloorPlan` char
+- `Estoque_DepartamentoCod` smallint
+- `Estoque_ClausulaPadraoCod_Proposta` smallint (null)
+- `Estoque_ClausulaPadraoCod_Pedido` smallint (null)
+- `Estoque_Ativo` bit
+- `Estoque_UsuCodCriacao` int
+- `Estoque_DataCriacao` datetime
+- `Estoque_UsuCodAlteracao` int (null)
+- `Estoque_DataAlteracao` datetime (null)
+- `Estoque_MostraVeiculoFuturo` bit
+- `Estoque_Sigla` char
+- `Estoque_BloquearVendaNTIPendente` bit
+- `Estoque_ContaAnalitica` varchar (null)
+- `Estoque_PermissaoVeiculo` char
+- `Estoque_PermiteTransfSaldo` bit
+- `Estoque_PermiteOferecerFeI` bit
+- `Estoque_FinalidadeCompraCod` smallint (null)
+- `Estoque_RestricaoVeiculo` bit (null)
+- `Estoque_InfoValor` bit (null)
+- `Estoque_BloqueiaCheckoutSemPD` bit
+- `Estoque_PermiteTransfEntreEstoque` bit
+- `Estoque_Demonstracao` bit
+- `Estoque_BloqueiaAberturaOS` bit (null)
+- `Estoque_FornecedorCod` int (null)
+
+### Marca
+
+- `Marca_Codigo` smallint
+- `Marca_Descricao` varchar
+- `Marca_PessoaCodMontadora` int (null)
+- `Marca_DeParaCod` smallint (null)
+- `Marca_ToleranciaKMRevisao` int
+- `Marca_Ativo` bit
+- `Marca_UsuCodCriacao` int
+- `Marca_DataCriacao` datetime
+- `Marca_UsuCodAlteracao` int (null)
+- `Marca_DataAlteracao` datetime (null)
+- `Marca_Sigla` char
+- `Marca_ExigirTipoFaturamentoNFCompra` bit
+- `Marca_QtdeDigitosChassi` smallint
+- `Marca_ProdutoExibirCodigoReferencia` char
+- `Marca_CodigoMontadora` varchar (null)
+- `Marca_RefConcatenadaDescProduto` bit
+- `Marca_Logo` varbinary (null)
+- `Marca_TMOExibirCodigoReferencia` char
+- `Marca_ExibeAnoModeloNf` bit
+- `Marca_ExpressaoRegularReferencia` varchar (null)
+- `Marca_Logo_GXI` varchar (null)
+
+### ModeloVeiculo
+
+- `ModeloVeiculo_Codigo` int
+- `ModeloVeiculo_Descricao` varchar (null)
+- `ModeloVeiculo_MarcaCod` smallint
+- `ModeloVeiculo_ModeloMarca` varchar
+- `ModeloVeiculo_GrupoModeloCod` int
+- `ModeloVeiculo_CombustivelCod` smallint (null)
+- `ModeloVeiculo_FamiliaVeiculoCod_Novos` int
+- `ModeloVeiculo_FamiliaVeiculoCod_Usados` int
+- `ModeloVeiculo_NroPortas` smallint
+- `ModeloVeiculo_QtdePassageiros` smallint
+- `ModeloVeiculo_MesesGarantia` smallint
+- `ModeloVeiculo_KmGarantia` int (null)
+- `ModeloVeiculo_NCMCod` int (null)
+- `ModeloVeiculo_DiasPgtoAposVenda` smallint (null)
+- `ModeloVeiculo_TempoMaxBloqueio` smallint
+- `ModeloVeiculo_TempoMaxReserva` smallint
+- `ModeloVeiculo_MotorizacaoCod` smallint (null)
+- `ModeloVeiculo_TransmissaoCod` smallint (null)
+- `ModeloVeiculo_Potencia` smallmoney (null)
+- `ModeloVeiculo_Cilindrada` varchar (null)
+- `ModeloVeiculo_TMOCod_Revisao` int (null)
+- `ModeloVeiculo_ImagemVistoriaCod` smallint (null)
+- `ModeloVeiculo_Ativo` bit
+- `ModeloVeiculo_UsuCodCriacao` int
+- `ModeloVeiculo_DataCriacao` datetime
+- `ModeloVeiculo_UsuCodAlteracao` int (null)
+- `ModeloVeiculo_DataAlteracao` datetime (null)
+- `ModeloVeiculo_TempoMaxTipo` char (null)
+- `ModeloVeiculo_DistanciaEixos` smallint (null)
+- `ModeloVeiculo_CapacidadeTracao` money (null)
+- `ModeloVeiculo_TipoBancoPedido` char
+- `ModeloVeiculo_PesoLiquido` money
+- `ModeloVeiculo_PesoBruto` money
+- `ModeloVeiculo_Especie` char (null)
+- `ModeloVeiculo_Tipo` char (null)
+- `ModeloVeiculo_ProcedenciaCod` char (null)
+- `ModeloVeiculo_LinkDemonstracao` varchar
+- `ModeloVeiculo_TabelaMolicar` varchar (null)
+- `ModeloVeiculo_CapacidadeCarga` int (null)
+- `ModeloVeiculo_Comprimento` int (null)
+- `ModeloVeiculo_Largura` int (null)
+- `ModeloVeiculo_Altura` int (null)
+- `ModeloVeiculo_IdNCMCargaTributaria` smallint
+- `ModeloVeiculo_AnoFim` smallint (null)
+- `ModeloVeiculo_AnoInicio` smallint (null)
+- `ModeloVeiculo_GrupoModeloCod_Usados` int (null)
+- `ModeloVeiculo_CodigoFINAME` varchar (null)
+- `ModeloVeiculo_Timestamp` timestamp
+- `ModeloVeiculo_RevisaoSerie` char (null)
+- `Codigo_Migra` int (null)
+- `ModeloVeiculo_CapacidadeTanque` int (null)
+- `ModeloVeiculo_ImagemPrincipal_GXI` varchar (null)
+- `ModeloVeiculo_ImagemPrincipal` image (null)
+
+### NaturezaOperacao
+
+- `NaturezaOperacao_Codigo` smallint
+- `NaturezaOperacao_Descricao` varchar
+- `NaturezaOperacao_CFOCodDentroUF` smallint
+- `NaturezaOperacao_TabelaPrecoTipo` char (null)
+- `NaturezaOperacao_ConsiderarDemandaABC` bit
+- `NaturezaOperacao_GrupoMovimento` char
+- `NaturezaOperacao_EntregaFutura` bit
+- `NaturezaOperacao_MovimentaEstoque` bit
+- `NaturezaOperacao_GeraTitulo` bit
+- `NaturezaOperacao_ValorizacaoMovimento` char
+- `NaturezaOperacao_ContaGerencialCod` int (null)
+- `NaturezaOperacao_Classificacao` char
+- `NaturezaOperacao_NatOpeCodAssociativa` smallint (null)
+- `NaturezaOperacao_Contabiliza` bit
+- `NaturezaOperacao_DestacaFreteNF` bit
+- `NaturezaOperacao_AceitaQtdeZero` bit
+- `NaturezaOperacao_TipoTituloCodPedidoCompra` smallint (null)
+- `NaturezaOperacao_Observacao` varchar
+- `NaturezaOperacao_Ativo` bit
+- `NaturezaOperacao_UsuCodCriacao` int
+- `NaturezaOperacao_DataCriacao` datetime
+- `NaturezaOperacao_UsuCodAlteracao` int (null)
+- `NaturezaOperacao_DataAlteracao` datetime (null)
+- `NaturezaOperacao_PercPrecoFaturamento` smallmoney
+- `NaturezaOperacao_ValorProdutoCustoMedio` bit
+- `NaturezaOperacao_EmitirNFEmpresa` smallint
+- `NaturezaOperacao_QtdeDiasValidadeOrcamento` smallint
+- `NaturezaOperacao_TpMovImobilizado` char (null)
+- `NaturezaOperacao_ContabilizaMovEstoque` bit (null)
+- `NaturezaOperacao_FinalidadeNFe` char (null)
+- `NaturezaOperacao_EstoqueCodNatOperAssociativa` smallint (null)
+- `NaturezaOperacao_IndicadorOperacaoNFe` char (null)
+- `NaturezaOperacao_CustoCod` varchar (null)
+- `NaturezaOperacao_EnviarGNRE` bit (null)
+- `NaturezaOperacao_TipoNotaCreditoDebito` varchar (null)
+- `NaturezaOperacao_PermiteNFDataRetroativa` bit (null)
+
+### NotaFiscal
+
+- `NotaFiscal_Codigo` int
+- `NotaFiscal_Movimento` char
+- `NotaFiscal_EmpresaCod` smallint
+- `NotaFiscal_PessoaCod` int
+- `NotaFiscal_NaturezaOperacaoCod` smallint
+- `NotaFiscal_ContaGerencialCod` int (null)
+- `NotaFiscal_DepartamentoCod` smallint (null)
+- `NotaFiscal_TipoDocumentoCod` smallint
+- `NotaFiscal_CondicaoPagamentoCod` smallint (null)
+- `NotaFiscal_FaturaCod` int (null)
+- `NotaFiscal_Status` char
+- `NotaFiscal_Numero` bigint
+- `NotaFiscal_Serie` char
+- `NotaFiscal_DataEmissao` datetime
+- `NotaFiscal_DataExpedicao` datetime (null)
+- `NotaFiscal_DataChegada` datetime (null)
+- `NotaFiscal_DataMovimento` datetime (null)
+- `NotaFiscal_Importada` bit
+- `NotaFiscal_Propria` bit
+- `NotaFiscal_Via` smallint
+- `NotaFiscal_PrazoMedio` smallmoney
+- `NotaFiscal_PesoLiquido` money
+- `NotaFiscal_PesoBruto` money
+- `NotaFiscal_ValorFrete` decimal
+- `NotaFiscal_ValorSeguro` decimal
+- `NotaFiscal_ValorOutros` decimal
+- `NotaFiscal_ValorJuros` decimal
+- `NotaFiscal_ValorTotal` decimal
+- `NotaFiscal_ValorDesconto` decimal
+- `NotaFiscal_ValorAcrescimo` decimal
+- `NotaFiscal_Observacao` varchar
+- `NotaFiscal_UsuCodVendedor` int (null)
+- `NotaFiscal_OSCod` int (null)
+- `NotaFiscal_OSTipoOSCod` smallint (null)
+- `NotaFiscal_PessoaTipoEnderecoCod` smallint
+- `NotaFiscal_RomaneioCod` int (null)
+- `NotaFiscal_TipoFrete` char (null)
+- `NotaFiscal_Origem` char
+- `NotaFiscal_MoedaCod` smallint (null)
+- `NotaFiscal_SegmentoMercadoCod` smallint (null)
+- `NotaFiscal_TabelaPrecoCod` smallint (null)
+- `NotaFiscal_Ambiente` char (null)
+- `NotaFiscal_TipoEmissao` char (null)
+- `NotaFiscal_CFOCod` smallint (null)
+- `NotaFiscal_ChaveNFE` varchar (null)
+- `NotaFiscal_OSCodDesvinculada` int (null)
+- `NotaFiscal_PessoaRegraFiscalCod` smallint (null)
+- `NotaFiscal_ChaveNFEReferenciada` varchar (null)
+- `Notafiscal_DocIdentConsumidor` varchar (null)
+- `NotaFiscal_LocalRealizacaoServico` char (null)
+- `NotaFiscal_PessoaEnderecoCod` int (null)
+- `NotaFiscal_IndicadorPresenca` char (null)
+- `NotaFiscal_MunicipioIBGEOrigem` varchar (null)
+- `NotaFiscal_MunicipioIBGEDestino` varchar (null)
+- `NotaFiscal_CodigoVerificacao` varchar (null)
+- `NotaFiscal_Timestamp` timestamp
+- `NotaFiscal_ProdutoPedidoCod` int (null)
+- `NotaFiscal_LoteIdentificador` varchar (null)
+- `NotaFiscal_xNEmp` varchar (null)
+- `NotaFiscal_xPed` varchar (null)
+- `NotaFiscal_xCont` varchar (null)
+- `NotaFiscal_TipoEnteGovernamental` smallint (null)
+- `NotaFiscal_TipoOpGoverno` smallint (null)
+- `NotaFiscal_DataPrevisaoEntrega` datetime (null)
+- `NotaFiscal_EmpresaCodOrigem` smallint (null)
+
+### NotaFiscalItem
+
+- `NotaFiscal_Codigo` int
+- `NotaFiscalItem_Codigo` smallint
+- `NotaFiscalItem_ProdutoCod` int (null)
+- `NotaFiscalItem_VeiculoCod` int (null)
+- `NotaFiscalItem_TMOCod` int (null)
+- `NotaFiscalItem_ItemAvulsoCod` int (null)
+- `NotaFiscalItem_UnidadeCod` smallint
+- `NotaFiscalItem_Qtde` decimal
+- `NotaFiscalItem_QtdeEstoque` money
+- `NotaFiscalItem_CFOCod` smallint
+- `NotaFiscalItem_EstoqueCod` smallint (null)
+- `NotaFiscalItem_ProcedenciaCod` char (null)
+- `NotaFiscalItem_ValorUnitario` decimal
+- `NotaFiscalItem_ValorDesconto` decimal
+- `NotaFiscalItem_ValorAcrescimo` decimal
+- `NotaFiscalItem_PercDesconto` smallmoney
+- `NotaFiscalItem_PercAcrescimo` smallmoney
+- `NotaFiscalItem_Observacao` varchar (null)
+- `PedidoCompraItem_Codigo` smallint (null)
+- `PedidoCompra_Codigo` int (null)
+- `NotaFiscalItem_ValorTotal` decimal
+- `NotaFiscalItem_ValorMargemContabil` decimal
+- `VeiculoTipoFaturamento_Codigo` smallint (null)
+- `NotaFiscalItem_EstoqueCodOrigemDestino` smallint (null)
+- `NotaFiscalItem_TipoSetorServico` char (null)
+- `NotaFiscalItem_TipoRateio` char
+- `NotaFiscalItem_TipoItem` char
+- `NotaFiscalItem_VeiculoAvaliacaoValorTOP` decimal (null)
+- `NotaFiscalItem_VeiculoAvaliacaoPrevisaoReparo` decimal (null)
+- `NotaFiscalItem_VeiculoDiasCarenciaFloorPlan` smallint (null)
+- `NotaFiscalItem_VeiculoDataInicialFloorPlan` datetime (null)
+- `NotaFiscalItem_VeiculoDataFinalFloorPlan` datetime (null)
+- `NotaFiscalItem_FamiliaCod` int (null)
+- `NotaFiscalItem_ValorMargemGerencial` decimal
+- `NotaFiscalItem_VeiculoCodNFE` int (null)
+- `NotaFiscalItem_ValorLucroBruto` decimal
+- `NotaFiscalItem_ValorFrete` decimal (null)
+- `NotaFiscalItem_PercentualNF` smallmoney (null)
+- `NotaFiscalItem_ValorJuros` decimal (null)
+- `NotaFiscalItem_ValorOutros` decimal (null)
+- `NotaFiscalItem_ValorSeguro` decimal (null)
+- `NotaFiscalItem_ValorPresenteNF` decimal (null)
+- `NotaFiscalItem_ValorCargaTributaria` decimal (null)
+- `NotaFiscalItem_ContaGerencialCod` int (null)
+- `NotaFiscalItem_DepartamentoCod` smallint (null)
+- `NotaFiscalItem_PercentualMargemGerencial` smallmoney (null)
+- `NotaFiscalItem_ValorCargaTributariaEstadual` decimal (null)
+- `NotaFiscalItem_ValorCargaTributariaMunicipal` decimal (null)
+- `NotaFiscalItem_NCMCod` int (null)
+- `NotaFiscalItem_ProdutoMarcaCod` smallint (null)
+- `NotaFiscalItem_ANPCod` smallint (null)
+- `NotaFiscalItem_VeiculoNFEntradaCodNFE` int (null)
+- `NotaFiscalItem_HoldBack` decimal (null)
+- `NotaFiscaIItem_FundoIncentivo` decimal (null)
+- `NotaFiscalItem_Timestamp` timestamp
+- `NotaFiscaIItem_FundoIncentivoImportados` decimal (null)
+- `NotaFiscalItem_OSCod` int (null)
+- `NotaFiscalItem_ValorBonusFabrica` decimal (null)
+- `NotaFiscalItem_TipoOSCod` smallint (null)
+- `NotaFiscalItem_UnidadeCodExportacao` smallint (null)
+- `NotaFiscalItem_ValorTotalBrutoSemDesconto` decimal (null)
+- `NotaFiscalItem_ValorTotalDesconto` decimal (null)
+- `NotaFiscalItem_NumeroSG` varchar (null)
+
+### OficinaProduto
+
+- `OficinaProduto_Codigo` int
+- `OficinaProduto_ProdutoCod` int
+- `OficinaProduto_EstoqueCod` smallint
+- `OficinaProduto_TipoOSCod` smallint (null)
+- `OficinaProduto_OficinaServicoCod` int
+- `OficinaProduto_PrecoPromocional` bit
+- `OficinaProduto_ValorUnitario` decimal
+- `OficinaProduto_ValorDesconto` decimal (null)
+- `OficinaProduto_PercDesconto` smallmoney (null)
+- `OficinaProduto_ValorCusto` decimal (null)
+- `OficinaProduto_QtdePedida` money
+- `OficinaProduto_KitCod` int (null)
+- `OficinaProduto_KitPrecoFechado` bit (null)
+- `OficinaProduto_CampanhaCod` smallint (null)
+- `OficinaProduto_StatusDesconto` char
+- `OficinaProduto_QtdeAtendida` money
+- `OficinaProduto_QtdeCompra` money
+- `OficinaProduto_StatusExecucao` char
+- `OficinaProduto_AgendamentoCod` int (null)
+- `OficinaProduto_OSCod` int (null)
+- `OficinaProduto_OficinaOrcamentoCod` int (null)
+- `OficinaProduto_IndicacaoCod` smallint (null)
+- `OficinaProduto_QtdeCliente` money (null)
+- `OficinaProduto_MarcaCod` int (null)
+- `OficinaProduto_NumeroPedidoMontadora` varchar (null)
+- `OficinaProduto_ItemPedidoMontadora` int (null)
+- `OficinaProduto_DadoCompl` varchar (null)
+- `OficinaProduto_DadoCompl2` varchar (null)
+- `OficinaProduto_partSequence` int (null)
+- `OficinaProduto_Reembolsavel` bit (null)
+- `OficinaProduto_UsuarioCodResponsavel` int (null)
+- `OficinaProduto_UtilizaEstoque` bit (null)
+
+### OficinaServico
+
+- `OficinaServico_Codigo` int
+- `OficinaServico_OSCod` int (null)
+- `OficinaServico_AgendamentoCod` int (null)
+- `OficinaServico_OficinaOrcamentoCod` int (null)
+- `OficinaServico_TipoOSCod` smallint (null)
+- `OficinaServico_TMOCod` int
+- `OficinaServico_Qtde` smallint
+- `OficinaServico_Horas` int
+- `OficinaServico_ValorUnitario` decimal
+- `OficinaServico_ValorDesconto` decimal (null)
+- `OficinaServico_PercDesconto` smallmoney (null)
+- `OficinaServico_CobrarCliente` bit
+- `OficinaServico_ExecutarOficina` bit
+- `OficinaServico_OficinaServicoCodDiagnostico` int (null)
+- `OficinaServico_OSCodOriginal` int (null)
+- `OficinaServico_DescricaoProblemaSolucao` varchar
+- `RetornoServico_Codigo` smallint (null)
+- `OficinaServico_CustoPrevisto` decimal
+- `OficinaServico_CustoReal` decimal
+- `OficinaServico_ServicoRapido` bit
+- `OficinaServico_BoxCod` smallint (null)
+- `OficinaServico_SolicitadoCliente` bit
+- `OficinaServico_KitCod` int (null)
+- `OficinaServico_KitPrecoFechado` bit (null)
+- `OficinaServico_UsuarioCodResponsavel` int (null)
+- `OficinaServico_EquipeCodResponsavel` smallint (null)
+- `OficinaServico_CampanhaCod` smallint (null)
+- `OficinaServico_StatusAndamento` char
+- `OficinaServico_StatusDesconto` char
+- `OficinaServico_StatusExecucao` char
+- `OficinaServico_DataPrevisao` datetime (null)
+- `OficinaServico_SPVNCodigo` decimal (null)
+- `OficinaServico_TipoCusto` char (null)
+- `ItemAvaliaUsado_Codigo` smallint (null)
+- `OficinaServico_IndicacaoCod` smallint (null)
+- `OficinaServico_ExigeTesteVeiculo` bit
+- `OficinaServico_HorarioChegada` datetime (null)
+- `OficinaServico_HorasEficiencia` int (null)
+- `OficinaServico_FlagHoraExtra` bit (null)
+- `OficinaServico_DataTerminoAnt` datetime (null)
+- `OficinaServico_SetorExecucao` char (null)
+- `OficinaServico_HoraPadrao` int (null)
+- `OficinaServico_Importado` bit (null)
+- `OficinaServico_InfoAdc` varchar (null)
+- `OficinaServico_Prioritario` bit (null)
+- `OficinaServico_HorasEficienciaAtual` int (null)
+- `OficinaServico_Cor` varchar (null)
+- `OficinaServico_SituacaoOcorrencia` varchar (null)
+- `OficinaServico_SituacaoLocal` varchar (null)
+- `OficinaServico_SituacaoFrequencia` varchar (null)
+- `OficinaServico_SituacaoTipoBarulho` varchar (null)
+- `OficinaServico_SituacaoTipoPiso` varchar (null)
+- `OficinaServico_DadoCompl` varchar (null)
+- `OficinaServico_DadoCompl2` varchar (null)
+- `OficinaServico_partSequence` int (null)
+- `OficinaServico_Distancia` int (null)
+- `OficinaServico_partSequence2` decimal (null)
+- `OficinaServico_partSequence3` varchar (null)
+- `OficinaServico_Deslocamento` bit (null)
+- `OficinaServico_Reembolsavel` bit (null)
+
+### OS
+
+- `OS_Codigo` int
+- `OS_EmpresaCod` smallint
+- `OS_Numero` int
+- `OS_PessoaCod` int
+- `OS_VeiculoCod` int
+- `OS_KM` int
+- `OS_PercCombustivel` smallmoney
+- `OS_UsoSeveroVeiculo` bit (null)
+- `OS_CombustivelIdoneo` bit
+- `OS_ObservacaoCombustivelIdoneo` varchar (null)
+- `CorPrisma_Codigo` smallint (null)
+- `OS_NroPrisma` char (null)
+- `OS_DataPrometida` datetime
+- `OS_Observacao` varchar (null)
+- `OS_ClienteAceitaEmail` bit
+- `OS_ClienteAceitaSMS` bit
+- `OS_InspecionadoElevador` bit
+- `OS_StatusChegadaVeiculo` char
+- `OS_ValorMercadoVeiculo` decimal (null)
+- `OS_Status` char
+- `OS_StatusVeiculoOficina` char
+- `OS_LocalRealizacaoServico` char
+- `OS_DataCriacao` datetime
+- `OS_Prioridade` bit (null)
+- `OS_AgendamentoCod` int (null)
+- `OS_AtendimentoCod` int (null)
+- `OS_QtdVezesImpresso` smallint (null)
+- `OS_ClienteAguardando` bit (null)
+- `OS_ExigeLavagem` bit (null)
+- `OS_EntregaDomicilio` char (null)
+- `OS_DataLiberacaoVeiculo` datetime (null)
+- `OS_PessoaTel` varchar (null)
+- `OS_VeiculoTipoImoblizado` bit (null)
+- `OS_ExibirLavagemQuadro` bit (null)
+- `OS_DataRecepcao` datetime (null)
+- `OS_Timestamp` timestamp
+- `OS_ProximaRevisao` datetime (null)
+- `OS_ProximaRevisaoEstimativa` datetime (null)
+- `OS_DataPrometidaOriginal` datetime (null)
+- `OS_Mobilidade` varchar (null)
+- `OS_ItensValor` varchar (null)
+- `OS_DataTecnicoInicio` datetime (null)
+- `OS_DataTecnicoFim` datetime (null)
+- `OS_ResponsavelAutorizacao` varchar (null)
+- `OS_TecnicoUsuarioCod` int (null)
+- `OS_ClienteRetorno` char (null)
+- `OS_PercBateria` smallmoney (null)
+- `OS_partSequence` decimal (null)
+- `OS_QuantidadeParcelas` smallint (null)
+- `OS_Horimetro` int (null)
+- `OS_Vinculo` int (null)
+- `OS_LocacaoVeiculoCod` int (null)
+- `OS_DadoCompl` varchar (null)
+
+### OSTipoOS
+
+- `OS_Codigo` int
+- `OSTipoOS_TipoOSCod` smallint
+- `OSTipoOS_Numero` int
+- `OSTipoOS_CondicaoPagamentoCod` smallint (null)
+- `OSTipoOS_UsuarioCodVendedorVeiculo` int (null)
+- `OSTipoOS_UsuarioCodRecepcao` int
+- `OSTipoOS_Status` char
+- `OSTipoOS_StatusNTI` char (null)
+- `OSTipoOS_StatusNF` char (null)
+- `OSTipoOS_Transferencia` bit
+- `OSTipoOS_CondicaoPagamentoCodSeguradora` smallint (null)
+- `OSTipoOS_AutorizacaoFinanceiro` char
+- `OSTipoOS_Refaturar` bit
+- `OSTipoOS_PessoaCod` int (null)
+- `OSTipoOS_PercentualRateioProduto` smallmoney (null)
+- `OSTipoOS_PercentualRateioServico` smallmoney (null)
+- `OSTipoOS_IndicadorPresenca` char (null)
+- `OSTipoOS_LimiteMaximo` decimal (null)
+- `OSTipoOS_AutorizacaoDigAnaFin` char (null)
+- `OSTipoOS_UsuarioAutEncStatus` char (null)
+- `OSTipoOS_UsuarioAutEncMotivo` varchar (null)
+- `OSTipoOS_UsuarioAutEncUsuarioCod` int (null)
+- `OSTipoOS_UsuarioAutEncData` datetime (null)
+- `OSTipoOS_DepartamentoCod` smallint (null)
+- `OSTipoOS_ComissaoIndicacao` smallmoney (null)
+- `OSTipoOS_PessoaCodIndicacao` int (null)
+- `OSTipoOS_DadoCompl` varchar (null)
+
+### Pessoa
+
+- `Pessoa_Codigo` int
+- `Pessoa_Nome` varchar
+- `Pessoa_MoedaCod_Juros` smallint (null)
+- `Pessoa_MoedaCod_Correcao` smallint (null)
+- `Pessoa_PercMoedaCorrecao` smallmoney (null)
+- `Pessoa_TipoPessoa` char
+- `Pessoa_DocIdentificador` varchar
+- `Pessoa_DataNascimentoFundacao` datetime
+- `Pessoa_TabelaPrecoCod` smallint (null)
+- `Pessoa_Sexo` char (null)
+- `EstadoCivil_Codigo` smallint (null)
+- `Escolaridade_Codigo` smallint (null)
+- `Profissao_Codigo` smallint (null)
+- `FaixaRenda_Codigo` smallint (null)
+- `RamoAtividade_Codigo` smallint (null)
+- `AreaGeografica_Codigo` smallint (null)
+- `Pessoa_Email` varchar
+- `Pessoa_EmailAlternativo` varchar (null)
+- `Pessoa_NomeFantasia` varchar (null)
+- `Pessoa_PessoaCodGrupo` int (null)
+- `Pessoa_ValorLimiteCredito` decimal (null)
+- `Pessoa_CodigoMontadora` varchar (null)
+- `Pessoa_CodigoFabrica` varchar (null)
+- `Pessoa_MarcaCod` smallint (null)
+- `Pessoa_BloqueiaVendaTituloAtraso` bit (null)
+- `Pessoa_BloqueiaEntradaOficina` bit (null)
+- `Pessoa_Negativado` bit (null)
+- `Pessoa_ProtestaArquivoRemessa` bit (null)
+- `Pessoa_GeraTarifaBancariaBoleto` bit (null)
+- `Pessoa_ValorMinimoPedido` decimal (null)
+- `Pessoa_AceitaSMS` bit (null)
+- `Pessoa_AceitaEmail` bit (null)
+- `DePara_Codigo` smallint (null)
+- `Pessoa_TipoEnderecoCodFaturamento` smallint
+- `Pessoa_TipoEnderecoCodComercial` smallint
+- `Pessoa_TipoEnderecoCodRelacionamento` smallint
+- `Pessoa_Ativo` bit
+- `Pessoa_Fone1` varchar (null)
+- `Pessoa_NFSegNomeSegurado` bit (null)
+- `Pessoa_TitSegNomeSegurado` bit (null)
+- `Pessoa_NFSeguradoraTipoSeparacao` char (null)
+- `Pessoa_NFSeparadaProdutoServ` bit (null)
+- `Pessoa_TitSeparaProdutoServico` bit (null)
+- `Pessoa_NFSerieUnicaIncondicional` bit (null)
+- `Pessoa_PaisOrigemCod` smallint (null)
+- `Pessoa_CodigoMontadoraDigito` char (null)
+- `Pessoa_Administrador` bit
+- `Pessoa_DataValidadeLimiteCredito` datetime (null)
+- `Pessoa_ValorGarantiaPagamento` decimal (null)
+- `Pessoa_PercComissaoIntermediario` smallmoney (null)
+- `Pessoa_RestricaoFincanceiro` bit (null)
+- `Pessoa_NFSeguradoraExigeInformacao` bit (null)
+- `Pessoa_TipoEnderecoCodCobranca` smallint (null)
+- `Pessoa_NaoGeraNFEGarantiaProduto` bit (null)
+- `Pessoa_Rating` smallint (null)
+- `Pessoa_Timestamp` timestamp
+- `Pessoa_NaoConsideraFornecedorQME` bit (null)
+- `Pessoa_CodigoMyHonda` varchar (null)
+- `Pessoa_DiaLimiteFaturamento` char (null)
+- `Pessoa_CodigoAtividade` int (null)
+- `Pessoa_FranquiaPrioriza` char (null)
+- `Pessoa_Anonimizar` bit (null)
+- `Pessoa_Telefone` varchar (null)
+- `Pessoa_TransportadoraAtivaNF` bit (null)
+
+### Produto
+
+- `Produto_Codigo` int
+- `Produto_Descricao` varchar
+- `Produto_DescricaoDetalhada` varchar
+- `Produto_UnidadeCod` smallint
+- `Produto_QtdeFracionada` bit
+- `Produto_NCMCod` int
+- `Produto_GTIN` varchar
+- `Produto_PesquisarPrecoParalelo` bit
+- `Produto_CalcularPrecoVenda` bit
+- `Produto_ExigirVerificacaoCombustivel` bit
+- `Produto_UsuCodCriacao` int
+- `Produto_DataCriacao` datetime
+- `Produto_UsuCodAlteracao` int (null)
+- `Produto_DataAlteracao` datetime (null)
+- `Produto_Imagem` varbinary (null)
+- `Produto_ImagemNome` varchar (null)
+- `Produto_ImagemTipo` varchar (null)
+- `Produto_ProcedenciaCod` char (null)
+- `Produto_PermiteArredondarTruncar` char
+- `Produto_ProducaoPropria` bit
+- `Produto_GTINTrib` varchar (null)
+- `Produto_CodigoANP` int (null)
+- `Produto_Criptografia` varbinary (null)
+- `Produto_IdNCMCargaTributaria` smallint
+- `Produto_Peso` money
+- `Produto_Ativo` bit (null)
+- `Produto_FCI` varchar (null)
+- `Produto_Estocavel` bit
+- `Produto_ANPCod` smallint (null)
+- `Produto_TipoSucata` char (null)
+- `Produto_PercNFESucata` smallmoney (null)
+- `TipoProduto_Codigo` smallint (null)
+- `GrupoProduto_Codigo` smallint (null)
+- `Produto_CodigoDemanda` int (null)
+- `Produto_Timestamp` timestamp
+- `Produto_UnidadeCodExportacao` smallint (null)
+- `Produto_Cest` char (null)
+- `Produto_ExigirNumeroSerieNF` bit (null)
+
+### Proposta
+
+- `Proposta_Codigo` int
+- `Proposta_EmpresaCod` smallint
+- `Proposta_NotaFiscalCod` int (null)
+- `Proposta_VeiculoCod` int (null)
+- `Proposta_BancoPedidoCod` int (null)
+- `Proposta_Pedido` int (null)
+- `Proposta_Versao` smallint (null)
+- `Proposta_Valor` decimal
+- `Proposta_Status` char
+- `Proposta_DataValidade` datetime
+- `Proposta_PercCustoOperacional` smallmoney (null)
+- `Proposta_PercComissao` smallmoney
+- `Proposta_PercComissaoVDVI` smallmoney
+- `Proposta_EnviaEmail` bit
+- `Proposta_SMS` bit
+- `Proposta_EntregaPesquisaEmail` bit
+- `Proposta_Observacao` varchar (null)
+- `Proposta_PercMargemMin` smallmoney (null)
+- `Proposta_PercDescontoMax` smallmoney (null)
+- `Proposta_AprovacaoCobranca` bit
+- `Proposta_AprovacaoGerente` bit
+- `Proposta_DataPrevisaoEntrega` datetime (null)
+- `MotVendaPerdida_Codigo` smallint (null)
+- `Proposta_DataPreparacaoVeiculo` datetime (null)
+- `Atendimento_Codigo` int
+- `Proposta_StatusEntrega` char
+- `Proposta_MotVendaPerdidaCodCashConvertion` smallint (null)
+- `Proposta_LiberacaoExtra` bit
+- `Proposta_FamiliaVeiculoCod` int (null)
+- `Proposta_EstoqueCod` smallint (null)
+- `Proposta_ValorCustoOperacional` decimal (null)
+- `Proposta_VeiculoModeloCod` int (null)
+- `Proposta_DataCriacao` datetime
+- `Proposta_DataConfirmacao` datetime
+- `Proposta_AprovacaoEntrega` bit
+- `Proposta_AvaliacaoUsadoCod` int (null)
+- `Proposta_OficinaOrcamentoCod` int (null)
+- `Proposta_PrecoPublico` decimal
+- `Proposta_DataValidadePedido` datetime (null)
+- `Proposta_NroLote` int (null)
+- `Proposta_VeiculoValor` money (null)
+- `Proposta_IndicadorPresenca` char
+- `Proposta_FinanceiraDes` varchar (null)
+- `Proposta_ModeloVeiculoDes` varchar (null)
+- `Proposta_QtdUsadosComoPagto` char (null)
+- `Proposta_StatusFinanceira` char (null)
+- `Proposta_ImprimiuCRV` bit (null)
+- `Proposta_BoxCod` smallint (null)
+- `Proposta_MotivoCodReagendamento` int (null)
+- `Proposta_InformacoesComplementares` varchar (null)
+- `Proposta_PessoaCodIndicacao` int (null)
+- `Proposta_LocacaoCobrarKmExcedente` bit (null)
+- `Proposta_LocacaoKmControlado` bit (null)
+- `Proposta_LocacaoValorKmExcedente` decimal (null)
+- `Proposta_ServConectado` bit (null)
+- `Proposta_StatusFinanceiro` char (null)
+- `Proposta_UsuarioCodVendedorFeI` int (null)
+
+### TipoOS
+
+- `TipoOS_Codigo` smallint
+- `TipoOS_Descricao` varchar
+- `TipoOS_Sigla` char
+- `TipoOS_Classificacao` char
+- `TipoOS_Observacao` varchar (null)
+- `TipoOS_SetorServicoCod` smallint
+- `TipoOS_Revisao` bit
+- `TipoOS_ServicoRapido` bit
+- `TipoOS_FichaSeguimento` bit
+- `TipoOS_Ativo` bit
+- `TipoOS_UsuCodCriacao` int
+- `TipoOS_DataCriacao` datetime
+- `TipoOS_UsuCodAlteracao` int (null)
+- `TipoOS_DataAlteracao` datetime (null)
+- `TipoOS_FontePagadora` char (null)
+- `TipoOS_Controle` char
+
+### Titulo
+
+- `Titulo_Codigo` int
+- `Titulo_MovimentoFinanceiro` char
+- `Titulo_EmpresaCod` smallint
+- `Titulo_PessoaCod` int
+- `Titulo_Numero` bigint
+- `Titulo_Parcela` smallint
+- `Titulo_TipoTituloCod` smallint
+- `Titulo_Status` char
+- `Titulo_DataEmissao` datetime
+- `Titulo_DataEntrada` datetime (null)
+- `Titulo_DataVencimento` datetime
+- `Titulo_DataPrevisaoPagamento` datetime
+- `Titulo_AgenteCobradorCod` smallint (null)
+- `Titulo_VeiculoCod` int (null)
+- `Titulo_NaturezaOperacaoCod` smallint
+- `Titulo_ContaGerencialCod` int
+- `Titulo_DepartamentoCod` smallint
+- `Titulo_TipoCobrancaCod` smallint (null)
+- `Titulo_NossoNumero` varchar (null)
+- `Titulo_UsuarioCodVendedor` int (null)
+- `Titulo_Valor` decimal
+- `Titulo_Observacao` varchar
+- `Titulo_PessoaCod_Endosso` int (null)
+- `Titulo_NotaFiscalCod` int (null)
+- `Titulo_NotaFiscalCod_Vinculada` int (null)
+- `Titulo_TituloVinculadoCod` int (null)
+- `Titulo_FaturaCod` int (null)
+- `Titulo_BancoCodCheque` smallint (null)
+- `Titulo_AgenciaCheque` char (null)
+- `Titulo_ContaCheque` char (null)
+- `Titulo_NumeroCheque` char (null)
+- `Titulo_DataPagamento` datetime (null)
+- `Titulo_NotaFiscalCodMudCredor` int (null)
+- `Titulo_TesourariaCod` int (null)
+- `Titulo_Saldo` decimal (null)
+- `Titulo_LoteMovimentoCod` int (null)
+- `Titulo_Timestamp` timestamp
+- `Titulo_DadosTituloBoletoAvulsoCod` smallint (null)
+
+### Veiculo
+
+- `Veiculo_Codigo` int
+- `Veiculo_Descricao` varchar
+- `Veiculo_Chassi` varchar
+- `Veiculo_ExportaInternet` bit
+- `Veiculo_PromocaoInternet` bit
+- `VeiculoAno_Codigo` smallint
+- `Veiculo_ModeloVeiculoCod` int
+- `Veiculo_CorCodInterna` smallint
+- `Veiculo_CorCodExterna` smallint
+- `Veiculo_UsuarioCodVendedor` int (null)
+- `Veiculo_PessoaCodCliente` int (null)
+- `Veiculo_PessoaCodConcessionaria` int (null)
+- `Veiculo_Placa` char (null)
+- `Veiculo_EstadoCod_Placa` char (null)
+- `Veiculo_MunicipioCod_Placa` smallint (null)
+- `Veiculo_Km` int
+- `Veiculo_PIC` char (null)
+- `Veiculo_NroRenavam` varchar (null)
+- `Veiculo_UsoSevero` bit
+- `Veiculo_DataVendaOriginal` datetime
+- `Veiculo_AdaptacaoVeiculoCod` smallint
+- `Veiculo_DataBaixaChassi` datetime (null)
+- `Veiculo_CertificadoGarantia` char (null)
+- `Veiculo_PendenteRevisaoEntrega` bit
+- `Veiculo_Ativo` bit
+- `Veiculo_UsuCodCriacao` int
+- `Veiculo_DataCriacao` datetime
+- `Veiculo_UsuCodAlteracao` int (null)
+- `Veiculo_DataAlteracao` datetime (null)
+- `Veiculo_CombustivelIdoneo` bit
+- `Veiculo_ChassiCondicao` char
+- `Veiculo_Status` char
+- `Veiculo_KmMedio` int (null)
+- `Veiculo_ChassiSerie` char (null)
+- `Veiculo_DataEmplacamento` date (null)
+- `GrupoMercadoria_Codigo` smallint (null)
+- `Veiculo_VendidoTerceiro` bit
+- `Veiculo_DataEntrega` datetime (null)
+- `Veiculo_Timestamp` timestamp
+- `Veiculo_DescricaoMontadora` varchar (null)
+- `Veiculo_FiatProfessional` bit (null)
+- `Veiculo_Cest` char (null)
+- `Veiculo_CodigoAplicacao` int (null)
+- `Veiculo_CodigoAtividade` int (null)
+- `Veiculo_PesoLiquido` money (null)
+- `Veiculo_PesoBruto` money (null)
+- `Veiculo_BloqueadoOS` bit (null)
+- `Veiculo_HyundaiGarantiaEstendida` bit (null)
+
+### VeiculoTipoFaturamento
+
+- `VeiculoTipoFaturamento_Codigo` smallint
+- `VeiculoTipoFaturamento_Descricao` varchar
+- `VeiculoTipoFaturamento_DiasVencimento` smallint (null)
+- `VeiculoTipoFaturamento_CarenciaFloorPlan` smallint (null)
+- `VeiculoTipoFaturamento_MarcaCod` smallint
+- `VeiculoTipoFaturamento_Ativo` bit
+- `VeiculoTipoFaturamento_UsuCodCriacao` int
+- `VeiculoTipoFaturamento_DataCriacao` datetime
+- `VeiculoTipoFaturamento_UsuCodAlteracao` int (null)
+- `VeiculoTipoFaturamento_DataAlteracao` datetime (null)
+- `VeiculoTipoFaturamento_Prioridade` smallint
+- `VeiculoTipoFaturamento_Identificador` varchar (null)
+- `VeiculoTipoFaturamento_MoedaCod` smallint (null)
+- `VeiculoTipoFaturamento_DiasVencimentoAposVenda` smallint (null)
+- `VeiculoTipoFaturamento_CarenciaFloorPlanTipo` char (null)
+- `VeiculoTipoFaturamento_DiasVencimentoAposVendaTipo` char (null)
+- `VeiculoTipoFaturamento_DiasVencimentoTipo` char (null)
+- `VeiculoTipoFaturamento_AmortizaJurosMensalmente` bit (null)
+- `VeiculoTipoFaturamento_DiaPagamentoFloorPlan` smallint (null)
+- `VeiculoTipoFaturamento_FloorPlanResidual` char (null)
+
+## FKs envolvendo as tabelas nucleo
+
+- `AcordoFornecimento.AcordoFornecimento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `AcordoFornecimento.AcordoFornecimento_ProdutoCod` -> `Produto.Produto_Codigo`
+- `AcordoFornecimentoEmpresa.AcordoFornecimentoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Agencia.Agencia_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Agendamento.Agendamento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Agendamento.Agendamento_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Agendamento.Agendamento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Agendamento.Agendamento_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `AgenteCobrador.AgenteCobrador_ConGerCodCobranca` -> `ContaGerencial.ContaGerencial_Codigo`
+- `AgenteCobradorBancario.AgenteCobradorBan_ConGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `AgenteCobradorBancario.AgenteCobradorBan_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `AgenteCobradorBancario.AgenteCobradorBan_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `AgenteCobradorEmpresa.AgenteCobradorEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Agrupamento.Agrupamento_MarcaCod` -> `Marca.Marca_Codigo`
+- `AgrupamentoEmpresa.AgrupamentoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `AgrupamentoEstoque.AgrupamentoEst_EstoqueEmpCod` -> `Empresa.Empresa_Codigo`
+- `AgrupamentoEstoque.AgrupamentoEst_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `AjusteApuracao.AjusteApuracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Anomalia.Anomalia_MarcaCod` -> `Marca.Marca_Codigo`
+- `AnomaliaProduto.AnomaliaProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Apuracao.Apuracao_FavorecidoPessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ApuracaoCalculo.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ApuracaoCalculoTitulo.ApuracaoCalculoTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `Atendimento.Atendimento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Atendimento.Atendimento_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Atendimento.Atendimento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Atendimento.Atendimento_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `AtendimentoContato.AtendimentoContato_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `AtendimentoModeloAtual.Atendimento_ModeloVeiculoCodAtual` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `AtendimentoPerdido.AtendimentoPerdido_MarcaCod` -> `Marca.Marca_Codigo`
+- `AtendimentoPessoa.AtendimentoPessoa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `AtendimentoVeiculoAtual.AtendimentoVeiculoAtual_MarcaCod` -> `Marca.Marca_Codigo`
+- `AtendimentoVeiculoAtual.AtendimentoVeiculoAtual_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Autorizacao.Autorizacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `AutorizacaoItem.AutorizacaoItem_ProdutoMarcaCod` -> `Marca.Marca_Codigo`
+- `AutorizacaoItem.AutorizacaoItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Autoware.Autoware_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `AvaliacaoUsado.AvaliacaoUsado_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `AvaliacaoUsado.AvaliacaoUsado_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `AvaliacaoUsado.AvaliacaoUSado_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `AvaliacaoUsado.AvaliacaoUsado_PessoaCodProprietario` -> `Pessoa.Pessoa_Codigo`
+- `BancoEmpresa.BancoEmpresa_EmpCod` -> `Empresa.Empresa_Codigo`
+- `BancoEmpresaIntegracao.BancoEmpresaIntegracao_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `BancoEmpresaIntegracao.BancoEmpresaIntegracao_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `BancoPedido.BancoPedido_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `BancoPedido.BancoPedido_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `BancoPedido.BancoPedido_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `BancoPedido.BancoPedido_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `BancoPedidoInformacao.BancoPedidoInformacao_PessoaCodEntrega` -> `Pessoa.Pessoa_Codigo`
+- `Bem.Bem_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Bem.Bem_NotaFiscalCompraCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Bem.Bem_NotaFiscalCompraCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Bem.Bem_NotaFiscalCompraCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `Bem.Bem_NotaFiscalItemCompraCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `Bem.Bem_NotaFiscalItemVendaCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `Bem.Bem_NotaFiscalVendaCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `BemMigracao.BemMigracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `BonusEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `BoxEmpresa.BoxEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `BoxHistoricoProdutivo.BoxHistoricoProdutivo_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CalculoABCProduto.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `CalculoAJ.CalculoAJ_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `CalculoAJProduto.CalculoAJ_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Campanha.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `Campanha.TipoOS_Codigo` -> `TipoOS.TipoOS_Codigo`
+- `CampanhaChassi.CampanhaChassi_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `CampanhaCRM.CampanhaCRM_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CampanhaCRMExecucao.CampanhaCRMExecucao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CampanhaCRMExecucaoPublico.CampanhaCRMExecucaoPublico_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `CampanhaCRMExecucaoPublico.CampanhaCRMExecucaoPublico_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `CampanhaModeloVeiculo.CampanhaModeloVeiculo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `CampanhaMotivoCancelamento.CampanhaMotivoCancelamento_MarcaCod` -> `Marca.Marca_Codigo`
+- `CampanhaNaoRealizada.CampanhaNaoRealizada_OSCod` -> `OS.OS_Codigo`
+- `CampanhaNaoRealizada.CampanhaNaoRealizada_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `CampanhaTMOProduto.CampanhaTMOProduto_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `CampanhaTMOProduto.CampanhaTMOProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `CampanhaVeiculo.CampanhaVeiculo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `CampanhaVeiculo.CampanhaVeiculo_OSCod` -> `OS.OS_Codigo`
+- `CareFiat.CareFiat_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CarenciaFloorPlan.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `CartaoCreditoEmpresa.CartaoCreditoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CartaoPOS.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `CartaoRetorno.CartaoRetorno_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CarteiraPedido.CarteiraPedido_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CentroResultadoEmpresa.CentroResultadoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CertificadoDigital.CertificadoDigital_EmpresaCodigo` -> `Empresa.Empresa_Codigo`
+- `CFOAssociada.CFO_Associada_CFOCod` -> `CFO.CFO_Codigo`
+- `CFOAssociada.CFO_Codigo` -> `CFO.CFO_Codigo`
+- `CFOAssociadoNCM.CFO_Codigo` -> `CFO.CFO_Codigo`
+- `CFOAssociadoNCM.CFOAssociadoNCM_CFOCod` -> `CFO.CFO_Codigo`
+- `CFOEnquadramentoAssociada.CFOEnquadramentoAssociada_CFOCod` -> `CFO.CFO_Codigo`
+- `CFORegra.CFORegra_CFOCod` -> `CFO.CFO_Codigo`
+- `CFORegra.CFORegra_CFOCodDestino` -> `CFO.CFO_Codigo`
+- `CFORegraEmpresa.CFORegraEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CheckListEntregaOcorrencia.CheckListEntregaOcorrencia_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `ClasABCAjuste.ClasABCAjuste_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ClasAJClasseEmpresa.ClasAJClasse_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ClasAJClasseEmpresa.ClasAJClasseEmpresa_MarcaCod` -> `Marca.Marca_Codigo`
+- `ClasAJFornecedor.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `ClasAJFornecedorLTEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ClasAJICC.ClasAJICC_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ClasMontadora.ClasMontadora_MarcaCod` -> `Marca.Marca_Codigo`
+- `ClienteExportacao.ClienteExportacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ClienteExportacaoItem.ClienteExportacaoItem_ClienteCod` -> `Pessoa.Pessoa_Codigo`
+- `CobrancaContato.CobrancaContato_TituloCod` -> `Titulo.Titulo_Codigo`
+- `ComissaoEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ComissaoEstoque.Estoque_Codigo` -> `Estoque.Estoque_Codigo`
+- `ComissaoModeloVeiculo.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ComissaoNatureza.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ComprovanteEntrega.ComprovanteEntrega_MarcaCodAnterior` -> `Marca.Marca_Codigo`
+- `ComprovanteEntrega.ComprovanteEntrega_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ComprovanteEntrega.ComprovanteEntrega_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `ConciliacaoBancaria.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ConciliacaoBancaria.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ConciliacaoBancaria.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `ConcorrenteEmpresa.Concorrente_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CondicaoPagamentoEmpresa.CondicaoPagamentoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ConfigNFe.ConfigNFe_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ConfigNotaFiscal.ConfigNotaFiscal_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ConfigNotaFiscal.ConfigNotaFiscal_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `ConfigNotaFiscal.ConfigNotaFiscal_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ConfigNotaFiscal.ConfigNotaFiscal_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ConfigNotaFiscal.ConfigNotaFiscal_VeiculoTipoFaturamentoCod` -> `VeiculoTipoFaturamento.VeiculoTipoFaturamento_Codigo`
+- `ConfigNotaFiscalCFO.ConfigNotaFiscalCFO_CFOCod` -> `CFO.CFO_Codigo`
+- `ConfiguraEnvioEmpresa.ConfiguraEnvioEmpresa_EmpCod` -> `Empresa.Empresa_Codigo`
+- `Contabilizacao.Contabilizacao_Empresacod` -> `Empresa.Empresa_Codigo`
+- `ContaCaixa.ContaCaixa_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaCaixa.ContaCaixa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ContaGerencial.ContaGerencial_ContaCorrenteCod` -> `ContaCorrente.ContaCorrente_Codigo`
+- `ContaGerencial.ContaGerencial_CobrancaContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencial.ContaGerencial_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ContaGerencialEmpresa.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencialEmpresa.ContaGerencialEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `ContaGerencialPISCOFINS.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencialPISCOFINS.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencialPISCOFINS.Departamento_Codigo` -> `Departamento.Departamento_Codigo`
+- `ContaGerencialPISCOFINS.Departamento_Codigo` -> `Departamento.Departamento_Codigo`
+- `ContaGerencialRegraUso.ContaGerencialRegraUso_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencialREINFNaturezaRendimento.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ContaGerencialREINFNaturezaRendimento.ContaGerencialREINFNaturezaRendimento_DepCod` -> `Departamento.Departamento_Codigo`
+- `Contrato.Contrato_FaturamentoEmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Contrato.Contrato_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ContratoObjeto.ContratoObjeto_EmpresaFaturamentoCod` -> `Empresa.Empresa_Codigo`
+- `ContratoParcela.ContratoParcela_TituloCod` -> `Titulo.Titulo_Codigo`
+- `ContratoParceria.ContratoParceria_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ContratoPessoaFaturamento.ContratoPessoaFaturamento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ContratoResponsavelFaturamento.ContratoResponsavelFaturamento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ContratoSenha.ContratoSenha_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `CupomFiscalEletronico.CupomFiscalEletronico_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `CustodiaRetorno.CustodiaRetorno_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `CustodiaRetorno.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `DadosGeracaoContrato.DadosGeracaoContrato_EmpresaFaturamentoCod` -> `Empresa.Empresa_Codigo`
+- `DadosTituloBoletoAvulso.DadosTituloBoletoAvulso_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `Dano.Dano_MarcaCod` -> `Marca.Marca_Codigo`
+- `DAV.DAV_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `DAV.OS_Codigo` -> `OS.OS_Codigo`
+- `DAV.OS_Codigo` -> `OSTipoOS.OS_Codigo`
+- `DAV.OSTipoOS_TipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `DAV.OSTipoOS_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `DAVItem.DAVItem_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `DAVItem.DAVItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `DealerQualification.DealerQualification_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `DeclaracaoImportacao.DeclaracaoImportacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `DeclaracaoImportacao.DeclaracaoImportacao_NFNacionalizacaoCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `DeclaracaoImportacao.DeclaracaoImportacao_NFRemessaCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `DeclaracaoImportacao.DeclaracaoImportacao_PessoaCodExportador` -> `Pessoa.Pessoa_Codigo`
+- `DeclaracaoImportacao.DeclaracaoImportacao_PessoaCodFabricante` -> `Pessoa.Pessoa_Codigo`
+- `Departamento.Departamento_DepartamentoCodPai` -> `Departamento.Departamento_Codigo`
+- `Departamento.TipoDepartamento_Codigo` -> `TipoDepartamento.TipoDepartamento_Codigo`
+- `DepartamentoEmpresa.Departamento_Codigo` -> `Departamento.Departamento_Codigo`
+- `DepartamentoEmpresa.DepartamentoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `DescontosIncondicionais.DescontosIncondicionais_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Digitalizacao.Digitalizacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Documentacao.Documentacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Documentacao.Documentacao_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Documentacao.Documentacao_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `DocumentoDinamicoEmp.DocumentoDinamicoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ECF.ECF_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ECF.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ECFContaGerencial.ECFContaGerencial_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ECFTipoPag.ECFTipoPag_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Empresa.Empresa_EmpresaCodMatriz` -> `Empresa.Empresa_Codigo`
+- `Empresa.GrupoEmpresa_Codigo` -> `GrupoEmpresa.GrupoEmpresa_Codigo`
+- `Empresa.Empresa_SiteCod` -> `GrupoEmpresaSite.Site_Codigo`
+- `Empresa.GrupoEmpresa_Codigo` -> `GrupoEmpresaSite.GrupoEmpresa_Codigo`
+- `Empresa.Identificador_Codigo` -> `Identificador.Identificador_Codigo`
+- `Empresa.Empresa_ImagemVistoriaCod` -> `ImagemVistoria.ImagemVistoria_Codigo`
+- `Empresa.Empresa_MarcaCod` -> `Marca.Marca_Codigo`
+- `Empresa.Empresa_MoedaCod` -> `Moeda.Moeda_Codigo`
+- `Empresa.Pais_Codigo` -> `Pais.Pais_Codigo`
+- `Empresa.Empresa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Empresa.Empresa_SiteCod` -> `Site.Site_Codigo`
+- `EmpresaClasABC.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaContrato.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaDepartamento.EmpresaDepartamento_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `EmpresaDepartamento.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaEstoque.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaEstoque.EmpresaEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `EmpresaGrupoFCA.EmpresaGrupoFCA_MarcaCod` -> `Marca.Marca_Codigo`
+- `EmpresaMarca.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaMarca.EmpresaMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `EmpresaMarca.EmpresaMarca_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `EmpresaMoeda.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EmpresaTabelaPreco.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `EncontroConta.EncontroConta_EmpresaCd` -> `Empresa.Empresa_Codigo`
+- `EnvioSMS.EnvioSMS_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `EquipeEmpresa.EquipeEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Estoque.Estoque_ClausulaPadraoCod_Pedido` -> `ClausulaPadrao.ClausulaPadrao_Codigo`
+- `Estoque.Estoque_ClausulaPadraoCod_Proposta` -> `ClausulaPadrao.ClausulaPadrao_Codigo`
+- `Estoque.Estoque_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `Estoque.Estoque_FinalidadeCompraCod` -> `FinalidadeCompra.FinalidadeCompra_Codigo`
+- `EstoqueEmpAutorizacao.EstoqueEmpAutorizacao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `EstoqueEmpresa.EstoqueEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `EstoqueEmpresa.EstoqueEmp_EmpCodOSFeI` -> `Empresa.Empresa_Codigo`
+- `EstoqueEmpresa.Estoque_Codigo` -> `Estoque.Estoque_Codigo`
+- `EstoqueNatOperacao.Estoque_Codigo` -> `Estoque.Estoque_Codigo`
+- `EstoqueNatOperacao.EstoqueNOp_NatOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `EstruturaEmpresa.EstruturaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ExpPeugeotOFIC4900.ExpPeugeotOFIC4900_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ExtratoConta.ExtratoConta_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ExtratoHistoricoConfig.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ExtratoHistoricoConfig.Departamento_Codigo` -> `Departamento.Departamento_Codigo`
+- `ExtratoHistoricoConfig.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `ExtratoHistoricoConfigEmp.ExtratoHistoricoConfigEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ExtratoHistoricoConfigExc.ExtratoHistoricoConfigExc_ContaGerencialClasCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ExtratoHistoricoConfigExc.ExtratoHistoricoConfigExc_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ExtratoHistoricoConfigExc.ExtratoHistoricoConfigExc_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `FaixaComissao.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `FaixaComissao.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `FamiliaVeiculoEmpresa.FamiliaVeiculoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `FamiliaVeiculoEmpresaEstoqueTipo.FamiliaVeiculoEmpEstTipo_NatOpeCodSimulacao` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `FamiliaVeiculoTipoFaturamentoMoeda.VeiculoTipoFaturamento_Codigo` -> `VeiculoTipoFaturamento.VeiculoTipoFaturamento_Codigo`
+- `FaseAtendimentoEmpresa.FaseAtendimento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Fatura.Fatura_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Fatura.Fatura_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FaturaImposto.FaturaImposto_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FaturaImposto.FaturaImposto_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FaturaImposto.FaturaImposto_TituloCod` -> `Titulo.Titulo_Codigo`
+- `FaturaImpostoMovimento.FaturaimpostoMovimento_TituloCod` -> `Titulo.Titulo_Codigo`
+- `FaturaImpostoNotaFiscal.FaturaImpostoNotaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `FaturaTitulo.FaturaTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `FechamentoContabilEmpresa.FechamentoContabilEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FechamentoContabilGeral.FechamentoContabilGeral_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FeriadoEmpresa.FeriadoEmpresa_EmpCod` -> `Empresa.Empresa_Codigo`
+- `FichaCadastral.FichaCadastral_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FichaCadastralConjuge.FichaCadastralConjuge_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FichaCadastralSocio.FichaCadastralSocio_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FichaRazao.FichaRazao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FichaRazao.FichaRazao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FichaRazaoMov.FichaRazaoMov_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `FinalidadeCompraEmpresa.FinalidadeCompraEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FinalidadeCompraEstoque.FinalidadeCompraEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `Financeira.Financeira_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `FinanceiraEmp.FinanceiraEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FinanceiraPlanoEmp.FinanceiraPlanoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FinanceiraPlanoParcelaEmpresa.FinanceiraPlanoParcelaEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `FlashVeiculo.FlashVeiculo_MarcaCod` -> `Marca.Marca_Codigo`
+- `FluxoRegraDepartamento.FluxoRegra_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `FordFacil.FordFacil_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GarantiaStatus.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `GarantiaTerceiro.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `Gerente.Gerente_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GNREOnlineItem.GNREOnlineItem_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `GrupoAgendamentoEmpresa.GrupoAgendamento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GrupoFeIEmpresa.GrupoFeIEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GrupoFinanceiroEmpresa.GrupoFinanceiroEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GrupoKitEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `GrupoLucratividade.GrupoLucratividade_MarcaCod` -> `Marca.Marca_Codigo`
+- `GrupoLucratividadeEmpresa.GrupoLucratividadeEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GuiaFiscal.GuiaFiscal_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `GuiaFiscal.GuiaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `GuiaFiscal.GuiaFiscal_TituloCod` -> `Titulo.Titulo_Codigo`
+- `HistoricoPadraoEmpresa.HistoricoPadraoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `HistUtilizacaoProduto.HistUtilizacaoProduto_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `HistUtilizacaoProduto.HistUtilizacaoProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ImagemEmpresa.Imagem_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ImagemVistoria.ImagemVistoria_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ImportacaoSG.ImportacaoSG_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Impressao.Impressao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Impressao.Impressao_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `Inconveniente.Inconveniente_MarcaCod` -> `Marca.Marca_Codigo`
+- `IndicadorPresencaEmpresa.IndicadorPresencaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `IntegracaoAgendamentoEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `IntegracaoContabilEmpresa.IntegracaoContabilEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `IntegracaoEmpresa.IntegracaoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `IntegracaoEmpresaParametro.IntegracaoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `IntegracaoXmlNF.IntegracaoXmlNF_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `IntegracaoXmlNF.Integracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `IntegracaoXmlNF.IntegracaoXmlNF_MarcaCod` -> `Marca.Marca_Codigo`
+- `IntegracaoXmlNFItemAvulso.IntegracaoXmlNFItemAvulso_CFOCod` -> `CFO.CFO_Codigo`
+- `IntegracaoXmlNFProduto.Integracao_CFOCod` -> `CFO.CFO_Codigo`
+- `IntegracaoXmlNFProduto.Integracao_ProdutoCod` -> `Produto.Produto_Codigo`
+- `IntegracaoXmlNFVeiculo.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `IntegracaoXmlNFVeiculo.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `IntelligentSupplyEmpresa.IntelligentSupplyEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `InteresseVeiculo.InteresseVeiculo_MarcaCod` -> `Marca.Marca_Codigo`
+- `InteresseVeiculo.InteresseVeiculo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `InteresseVeiculo.InteresseVeiculo_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Inventario.Inventario_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Inventario.Estoque_Codigo` -> `Estoque.Estoque_Codigo`
+- `InventarioNotaFiscal.InventarioNotaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `InventarioProduto.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ItemAvaliaUsadoEmpresa.ItemAvaliaUsado_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ItemAvaliaUsadoGrupoMarca.ItemAvaliaUsadoGrupo_MarcaCod` -> `Marca.Marca_Codigo`
+- `ItemAvulso.ItemAvulso_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ItemAvulso.ItemAvulso_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `ItemAvulso.ItemAvulso_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ItemAvulso.ItemAvulso_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ItemAvulsoEmpresa.ItemAvulsoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `ItemAvulsoFornecedor.ItemAvulsoFornecedor_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ItemAvulsoRateio.ItemAvulsoRateio_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ItemAvulsoRateio.ItemAvulsoRateio_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `ItemValorizadoVeiculoMarca.ItemValorizadoVeiculo_MarcaCod` -> `Marca.Marca_Codigo`
+- `Kit.Kit_MarcaCod` -> `Marca.Marca_Codigo`
+- `KitEmpresa.KitEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `KitEmpresaTMOProduto.KitEmpresaTMOProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `KitModelo.KitModelo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `KitTMO.KitTMO_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `KitTMOProduto.KitTMOProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `KitTMOProduto.KitTMOProduto_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `KitTMOProdutoModelo.KitTMOProduto_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `KPI.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `KPIModeloVeiculo.KPIModeloVeiculo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Lancamento.Lancamento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `LancamentoSped.LancamentoSped_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Layout.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `ListaSeparacao.ListaSeparacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ListaSeparacao.Estoque_Codigo` -> `Estoque.Estoque_Codigo`
+- `ListaSeparacao.ListaSeparacao_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ListaSeparacao.ListaSeparacao_OSCod` -> `OS.OS_Codigo`
+- `ListaSeparacaoItem.ListaSeparacaoItem_NotaFiscalCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `ListaSeparacaoItem.ListaSeparacaoItem_NotaFiscalItemCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `ListaSeparacaoItem.ListaSeparacaoItem_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `ListaSeparacaoItem.ListaSeparacaoItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Locacao.Locacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Locacao.Locacao_PessoaCodLocalDevolucao` -> `Pessoa.Pessoa_Codigo`
+- `Locacao.Locacao_PessoaCodLocalRetirada` -> `Pessoa.Pessoa_Codigo`
+- `Locacao.Locacao_PessoaCodResFat` -> `Pessoa.Pessoa_Codigo`
+- `LocacaoGrupoModelo.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `LocacaoGrupoPrecoEmpresa.LocacaoGrupoPrecoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `LocacaoParcela.LocacaoParcela_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `LocacaoPessoa.LocacaoPessoa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `LocacaoVeiculo.LocacaoVeiculo_VeiculoModeloCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `LocacaoVeiculo.LocacaoVeiculo_PessoaCodLocalDevolucao` -> `Pessoa.Pessoa_Codigo`
+- `LocacaoVeiculo.LocacaoVeiculo_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `LocalVeiculo.LocalVeiculo_MarcaCod` -> `Marca.Marca_Codigo`
+- `LocalVeiculo.LocalVeiculo_PessoaConcessionariaCod` -> `Pessoa.Pessoa_Codigo`
+- `LocalVeiculoMovimento.LocalVeiculoMovimento_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `LogisticaVeiculo.LogisticaVeiculo_EmpresaCodDestino` -> `Empresa.Empresa_Codigo`
+- `LogisticaVeiculo.LogisticaVeiculo_EmpresaCodOrigem` -> `Empresa.Empresa_Codigo`
+- `LogisticaVeiculo.LogisticaVeiculo_PessoaCodTransportadora` -> `Pessoa.Pessoa_Codigo`
+- `LoteContabil.LoteContabil_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `LoteMovimentoEmpresa.LoteMovimento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `LoteMovimentoTitulo.LoteMovimentoTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `LoteMovimentoTituloMov.LoteMovimentoTituloMov_TituloCod` -> `Titulo.Titulo_Codigo`
+- `ManifestacaoDestinatario.ManifestacaoDestinatario_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Marca.Marca_DeParaCod` -> `DePara.DePara_Codigo`
+- `Marca.Marca_PessoaCodMontadora` -> `Pessoa.Pessoa_Codigo`
+- `MarcaQuestionario.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `Markup.Markup_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MarkupHistoricoProduto.MarkupHistoricoProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `MarkupVeiculoModelo.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `MarkupVeiculoOpcional.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `MDFe.MDFe_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MDFeNotaFiscal.MDFeNotaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `MDFePessoa.MDFePessoa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `MDFeVeiculo.MDFeVeiculo_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `MDFeVeiculo.MDFeVeiculo_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `MeioContatoEmpresa.MeioContato_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Mensageria.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `Mensageria.Mensageria_PessoaCodigo` -> `Pessoa.Pessoa_Codigo`
+- `MenuEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `MenuMarcaNome.MenuMarcaNome_MarcaCod` -> `Marca.Marca_Codigo`
+- `Meta.Meta_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MidiaEmpresa.Midia_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MKLS.MKLS_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_CombustivelCod` -> `Combustivel.Combustivel_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_FamiliaVeiculoCod_Novos` -> `FamiliaVeiculo.FamiliaVeiculo_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_FamiliaVeiculoCod_Usados` -> `FamiliaVeiculo.FamiliaVeiculo_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_GrupoModeloCod` -> `GrupoModelo.GrupoModelo_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_GrupoModeloCod_Usados` -> `GrupoModelo.GrupoModelo_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_ImagemVistoriaCod` -> `ImagemVistoria.ImagemVistoria_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_MarcaCod` -> `Marca.Marca_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_MotorizacaoCod` -> `Motorizacao.Motorizacao_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_NCMCod` -> `NCM.NCM_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_ProcedenciaCod` -> `Procedencia.Procedencia_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_TMOCod_Revisao` -> `TMO.TMO_Codigo`
+- `ModeloVeiculo.ModeloVeiculo_TransmissaoCod` -> `Transmissao.Transmissao_Codigo`
+- `ModeloVeiculoAno.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoAnoPreco.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoBonus.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoCor.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoDesconto.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoDescontoAno.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoEmpresa.ModeloVeiculoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `ModeloVeiculoEmpresa.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoEmpresaTestDrive.ModeloVeiculoEmpTestDrive_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `ModeloVeiculoEspecTecnica.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoFonte.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoImagem.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoMoeda.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoNumeracao.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoOpcional.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPercentual.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPIC.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPoliticaDesconto.ModeloVeiculoPoliticaDesconto_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPreco.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPrecoEmpresa.ModeloVeiculoPrecoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ModeloVeiculoPrecoEmpresa.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ModeloVeiculoPrecoLocacao.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `MoedaEmpresa.MoedaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Monitor.Monitor_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MonitorIntegracaoBancaria.MonitorIntegracaoBancaria_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `MonitorIntegracaoBancaria.MonitorIntegracaoBancaria_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MoparVeiculoProtecaoItem.MoparVeiculoProtecaoItem_NFCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `MoparVeiculoProtecaoItem.MoparVeiculoProtecaoItem_NFItemCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `MotAvaliacao.MotAvaliacao_EstoqueCodVU` -> `Estoque.Estoque_Codigo`
+- `MotivoRetornoEmpresa.MotivoRetornoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MotorizacaoMarca.Motorizacao_MarcaCod` -> `Marca.Marca_Codigo`
+- `MovimentoEstoque.MovimentoEstoque_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `MovimentoEstoque.MovimentoEstoque_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `MovimentoEstoque.MovimentoEstoque_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `MovimentoEstoqueItem.MovimentoEstoqueItem_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `MovimentoEstoqueItem.MovimentoEstoqueItem_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `MovimentoEstoqueItem.MovimentoEstoqueItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Municipio.Municipio_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `NaturezaAtendimentoEmpresa.NaturezaAtendimentoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NaturezaAtendimentoResultado.NatAteRes_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NaturezaAtendimentoResultadoPerfil.NatAteResPer_EmpCod` -> `Empresa.Empresa_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_CFOCodDentroUF` -> `CFO.CFO_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_CustoCod` -> `Custo.Custo_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_EstoqueCodNatOperAssociativa` -> `Estoque.Estoque_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_NatOpeCodAssociativa` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacao.NaturezaOperacao_TipoTituloCodPedidoCompra` -> `TipoTitulo.TipoTitulo_Codigo`
+- `NaturezaOperacaoCondPagamento.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoEmpresa.NaturezaOperacaoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `NaturezaOperacaoEmpresa.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoEmpresa.NaturezaOperacaoEmp_NatOperCodEntColigadaConsumo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoEmpresa.NaturezaOperacaoEmp_NatOperCodEntColigadaEstoque` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoObs.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoRegraUso.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoTipoDocumento.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoTipoItem.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoTributo.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NaturezaOperacaoValidacaoCFOP.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NCMEmpresa.NCMEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Negociacao.Negociacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Negociacao.Negociacao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `NegociacaoParcela.NegociacaoParcela_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NegociacaoParcelaTitulo.NegociacaoParcelaTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `NegociacaoProposta.NegociacaoProposta_PropostaCodigo` -> `Proposta.Proposta_Codigo`
+- `NegociacaoTitulo.NegociacaoTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `NegociacaoTitulo.NegociacaoTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `NotaFiscal.NotaFiscal_CondicaoPagamentoCod` -> `CondicaoPagamento.CondicaoPagamento_Codigo`
+- `NotaFiscal.NotaFiscal_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `NotaFiscal.NotaFiscal_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NotaFiscal.NotaFiscal_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NotaFiscal.NotaFiscal_EmpresaCodOrigem` -> `Empresa.Empresa_Codigo`
+- `NotaFiscal.NotaFiscal_FaturaCod` -> `Fatura.Fatura_Codigo`
+- `NotaFiscal.NotaFiscal_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NotaFiscal.NotaFiscal_OSCod` -> `OS.OS_Codigo`
+- `NotaFiscal.NotaFiscal_OSCod` -> `OSTipoOS.OS_Codigo`
+- `NotaFiscal.NotaFiscal_OSTipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `NotaFiscal.NotaFiscal_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `NotaFiscal.NotaFiscal_PessoaRegraFiscalCod` -> `PessoaRegraFiscal.PessoaRegraFiscal_Codigo`
+- `NotaFiscal.NotaFiscal_ProdutoPedidoCod` -> `ProdutoPedido.ProdutoPedido_Codigo`
+- `NotaFiscal.NotaFiscal_RomaneioCod` -> `Romaneio.Romaneio_Codigo`
+- `NotaFiscal.NotaFiscal_SegmentoMercadoCod` -> `SegmentoMercado.SegmentoMercado_Codigo`
+- `NotaFiscal.NotaFiscal_TipoDocumentoCod` -> `TipoDocumento.TipoDocumento_Codigo`
+- `NotaFiscal.NotaFiscal_PessoaTipoEnderecoCod` -> `TipoEndereco.TipoEndereco_Codigo`
+- `NotaFiscal.NotaFiscal_UsuCodVendedor` -> `Usuario.Usuario_Codigo`
+- `NotaFiscalAdiantamento.NotaFiscalAdiantamento_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalAdiantamento.NotaFiscalAdiantamento_NFAdiantamentoCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalComunicacao.NotaFiscalComunicacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NotaFiscalConferencia.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalConferencia.NotaFiscalConferencia_ProdutoCod` -> `Produto.Produto_Codigo`
+- `NotaFiscalCupom.NotaFiscalCupom_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalEletronica.NotaFiscalEletronica_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalEletServico.NotaFiscalEletServico_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalGerente.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalHistorico.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ANPCod` -> `ANP.ANP_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_CFOCod` -> `CFO.CFO_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_EstoqueCodOrigemDestino` -> `Estoque.Estoque_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_FamiliaCod` -> `FamiliaVeiculo.FamiliaVeiculo_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ItemAvulsoCod` -> `ItemAvulso.ItemAvulso_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ProdutoMarcaCod` -> `Marca.Marca_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_NCMCod` -> `NCM.NCM_Codigo`
+- `NotaFiscalItem.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalItem.PedidoCompra_Codigo` -> `PedidoCompra.PedidoCompra_Codigo`
+- `NotaFiscalItem.PedidoCompra_Codigo` -> `PedidoCompraItem.PedidoCompra_Codigo`
+- `NotaFiscalItem.PedidoCompraItem_Codigo` -> `PedidoCompraItem.PedidoCompraItem_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ProcedenciaCod` -> `Procedencia.Procedencia_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_TMOCod` -> `TMO.TMO_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_UnidadeCod` -> `Unidade.Unidade_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_UnidadeCodExportacao` -> `Unidade.Unidade_Codigo`
+- `NotaFiscalItem.NotaFiscalItem_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `NotaFiscalItem.VeiculoTipoFaturamento_Codigo` -> `VeiculoTipoFaturamento.VeiculoTipoFaturamento_Codigo`
+- `NotaFiscalItemAux.NotaFiscalItemAux_NotaFiscalCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemAux.NotaFiscalItemAux_NotaFiscalItemCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemCusto.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemCusto.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemNFReferenciada.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemNFReferenciada.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemNFReferenciada.NotaFiscalItemNFReferenciada_NFCodigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemNFReferenciada.NotaFiscalItemNFReferenciada_NFItemCodigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemNTI.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemNTI.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemOficinaProduto.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemOficinaProduto.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemOficinaProduto.NotaFiscalItem_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `NotaFiscalItemOficinaServico.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemOficinaServico.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemOficinaServico.NotaFiscalItem_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `NotaFiscalItemRateioDep.NotaFiscalItemRateioDep_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `NotaFiscalItemRateioDep.NotaFiscalItemRateioDep_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NotaFiscalItemRateioDep.NotaFiscalItemRateioDep_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NotaFiscalItemRateioDep.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemRateioDep.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemRateioNFDestino.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemRateioNFDestino.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemRateioNFDestino.NotaFiscalItemRateioNFDestino_NFCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemRateioNFDestino.NotaFiscalItemRateioNFDestino_NFItemCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotafiscalItemREINF.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotafiscalItemREINF.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemTributo.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemTributo.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemTributoAux.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalItemTributoAux.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemTributoAux.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalItemTributoComplementar.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `NotaFiscalItemTributoComplementar.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `NotaFiscalMigracao.NotaFiscalMigracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NotaFiscalMigracao.NotaFiscalMigracao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `NotaFiscalMigracaoItem.NotafiscalMigracaoItem_CFOCod` -> `CFO.CFO_Codigo`
+- `NotaFiscalMigracaoItem.NotaFiscalMigracaoItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `NotaFiscalNFReferencia.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalObsDocumento.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalRateioDep.NotaFiscalRateioDep_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `NotaFiscalRateioDep.NotaFiscalRateioDep_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NotaFiscalRateioDep.NotaFiscalRateioDep_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NotaFiscalRateioDep.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalRetorno.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalTitulo.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalTitulo.NotaFiscalTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `NotaFiscalTributo.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalTributo.NotaFiscalTributo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `NotaFiscalVolume.NotaFiscal_Codigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `NotaFiscalVolumeProdutoProduto.NotaFiscalVolumeProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `NTI.NTI_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `NTI.NTI_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `NTI.NTI_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `NTI.NTI_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `NTIItem.NTIItem_OSCodigo` -> `OS.OS_Codigo`
+- `Objetivo.Objetivo_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ObservacaoFiscalEmpresa.ObservacaoFiscalEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Ocorrencia.Ocorrencia_PessoaCodCliente` -> `Pessoa.Pessoa_Codigo`
+- `OficinaEntrega.OficinaEntrega_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaEntrega.OS_Codigo` -> `OS.OS_Codigo`
+- `OficinaFicha.OficinaFicha_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaFicha.OficinaFicha_OSCod` -> `OS.OS_Codigo`
+- `OficinaGarantia.OficinaGarantia_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaGarantia.OficinaGarantia_OSCod` -> `OS.OS_Codigo`
+- `OficinaGarantia.OficinaGarantia_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OficinaGarantiaEspelho.OficinaGarantiaEspelho_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaGarantiaEspelhoItem.OficinaGarantiaEspelhoItem_MarcaCod` -> `Marca.Marca_Codigo`
+- `OficinaGarantiaEspelhoNotaFiscal.OficinaGarantiaEspelho_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_ProdutoMarcaCod` -> `Marca.Marca_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_NotaFiscalSaidaCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_NotaFiscalCod` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_NotaFiscalItemCod` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `OficinaGarantiaProduto.OficinaProduto_Codigo` -> `OficinaProduto.OficinaProduto_Codigo`
+- `OficinaGarantiaProduto.OficinaGarantiaProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `OficinaGarantiaREVP.OficinaGarantiaREVP_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaGarantiaServico.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaGarantiaTerceiro.OficinaGarantiaTerceiro_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `OficinaMarcacao.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaOrcamento.OficinaOrcamento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OficinaOrcamento.OficinaOrcamento_PessoaCodCliente` -> `Pessoa.Pessoa_Codigo`
+- `OficinaOrcamento.OficinaOrcamento_PessoaCodSeguradora` -> `Pessoa.Pessoa_Codigo`
+- `OficinaOrcamento.OficinaOrcamento_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OficinaOrcamento.OficinaOrcamento_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `OficinaProduto.OficinaProduto_CampanhaCod` -> `Campanha.Campanha_Codigo`
+- `OficinaProduto.OficinaProduto_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `OficinaProduto.OficinaProduto_KitCod` -> `Kit.Kit_Codigo`
+- `OficinaProduto.OficinaProduto_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaProduto.OficinaProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `OficinaProduto.OficinaProduto_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OficinaProduto.OficinaProduto_UsuarioCodResponsavel` -> `Usuario.Usuario_Codigo`
+- `OficinaProdutoHistorico.OficinaProduto_Codigo` -> `OficinaProduto.OficinaProduto_Codigo`
+- `OficinaProdutoHistorico.OficinaProduto_Codigo` -> `OficinaProduto.OficinaProduto_Codigo`
+- `OficinaRequisicao.OficinaRequisicao_OSCod` -> `OS.OS_Codigo`
+- `OficinaRequisicaoItem.OficinaRequisicaoItem_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `OficinaRequisicaoItem.OficinaRequisicaoItem_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `OficinaRequisicaoItem.OficinaRequisicaoItem_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaRequisicaoItem.OficinaRequisicaoItem_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OficinaServico.OficinaServico_AgendamentoCod` -> `Agendamento.Agendamento_Codigo`
+- `OficinaServico.OficinaServico_BoxCod` -> `Box.Box_Codigo`
+- `OficinaServico.OficinaServico_CampanhaCod` -> `Campanha.Campanha_Codigo`
+- `OficinaServico.OficinaServico_EquipeCodResponsavel` -> `Equipe.Equipe_Codigo`
+- `OficinaServico.ItemAvaliaUsado_Codigo` -> `ItemAvaliacaoUsado.ItemAvaliaUsado_Codigo`
+- `OficinaServico.OficinaServico_KitCod` -> `Kit.Kit_Codigo`
+- `OficinaServico.OficinaServico_OficinaOrcamentoCod` -> `OficinaOrcamento.OficinaOrcamento_Codigo`
+- `OficinaServico.OficinaServico_OficinaServicoCodDiagnostico` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServico.OficinaServico_OSCod` -> `OS.OS_Codigo`
+- `OficinaServico.OficinaServico_OSCodOriginal` -> `OS.OS_Codigo`
+- `OficinaServico.RetornoServico_Codigo` -> `RetornoServico.RetornoServico_Codigo`
+- `OficinaServico.OficinaServico_SPVNCodigo` -> `SPVN.SPVN_Codigo`
+- `OficinaServico.OficinaServico_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OficinaServico.OficinaServico_TMOCod` -> `TMO.TMO_Codigo`
+- `OficinaServico.OficinaServico_UsuarioCodResponsavel` -> `Usuario.Usuario_Codigo`
+- `OficinaServicoB2B.OficinaServicoB2B_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoBolsao.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoFatura.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoGarantia.OficinaServicoGarantia_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoHistorico.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoMarcacao.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoRateio.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoTempoAdicional.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaServicoTexto.OficinaServico_Codigo` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaTransferencia.OficinaTranferencia_OSCod` -> `OS.OS_Codigo`
+- `OficinaTransferenciaProduto.OficinaTransferenciaProduto_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `OficinaTransferenciaProduto.OficinaTransferenciaProduto_TipoOSCodOrigem` -> `TipoOS.TipoOS_Codigo`
+- `OficinaTransferenciaServico.OficinaTransferenciaServico_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `OficinaTransferenciaServico.OficinaTransferenciaServico_TipoOSCodOrigem` -> `TipoOS.TipoOS_Codigo`
+- `OrcamentoMatricial.OrcamentoMatricial_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `OrcamentoMatricial.OrcamentoMatricial_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `OrcamentoMatricial.OrcamentoMatricial_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OrcamentoModelo.OrcamentoModelo_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OrcamentoModeloItem.OrcamentoModeloItem_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `OS.OS_AgendamentoCod` -> `Agendamento.Agendamento_Codigo`
+- `OS.OS_AtendimentoCod` -> `Atendimento.Atendimento_Codigo`
+- `OS.CorPrisma_Codigo` -> `CorPrisma.CorPrisma_Codigo`
+- `OS.OS_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `OS.OS_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `OS.OS_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `OSAssinatura.OS_Codigo` -> `OS.OS_Codigo`
+- `OSAutorizacao.OS_Codigo` -> `OS.OS_Codigo`
+- `OSControleQualidade.OS_Codigo` -> `OS.OS_Codigo`
+- `OSFlag.OSFlag_OSCod` -> `OS.OS_Codigo`
+- `OSHistorico.OS_Codigo` -> `OS.OS_Codigo`
+- `OSLavagem.OS_Codigo` -> `OS.OS_Codigo`
+- `OSLocalRealizacao.OSLocalRealizacao_OSCod` -> `OS.OS_Codigo`
+- `OSMensagemGarantia.OSMensagemGarantia_OSCod` -> `OS.OS_Codigo`
+- `OSMotivoRetorno.OSMotivoRetorno_OSCod` -> `OS.OS_Codigo`
+- `OSPertence.OS_Codigo` -> `OS.OS_Codigo`
+- `OSSeguradora.OSSeguradora_OSCod` -> `OS.OS_Codigo`
+- `OSSeguradora.OSSeguradora_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `OSTeste.OS_Codigo` -> `OS.OS_Codigo`
+- `OSTipoOS.OSTipoOS_CondicaoPagamentoCod` -> `CondicaoPagamento.CondicaoPagamento_Codigo`
+- `OSTipoOS.OSTipoOS_CondicaoPagamentoCodSeguradora` -> `CondicaoPagamento.CondicaoPagamento_Codigo`
+- `OSTipoOS.OSTipoOS_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `OSTipoOS.OS_Codigo` -> `OS.OS_Codigo`
+- `OSTipoOS.OSTipoOS_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `OSTipoOS.OSTipoOS_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `OSTipoOS.OSTipoOS_UsuarioCodRecepcao` -> `Usuario.Usuario_Codigo`
+- `OSTipoOS.OSTipoOS_UsuarioCodVendedorVeiculo` -> `Usuario.Usuario_Codigo`
+- `OSTipoOSHistorico.OS_Codigo` -> `OSTipoOS.OS_Codigo`
+- `OSTipoOSHistorico.OSTipoOS_TipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `OSTipoOSNotaFiscal.OSTipoOSNotaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `OSTipoOSNotaFiscal.OS_Codigo` -> `OSTipoOS.OS_Codigo`
+- `OSTipoOSNotaFiscal.OSTipoOS_TipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `PagamentoDebitoCredor.PagamentoDebitoCredor_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PagamentoDia.PagamentoDia_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PagamentoDia.PagamentoDia_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PagamentoDia.PagamentoDia_TituloCod` -> `Titulo.Titulo_Codigo`
+- `PagamentoDiaRateio.PagamentoDiaRateio_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `PagamentoDiaRateio.PagamentoDiaRateio_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `PagamentoDiaRateio.PagamentoDiaRateio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PagamentoIPVA.PagamentoIPVA_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `PagamentoIPVA.PagamentoIPVA_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `PagamentoIPVACredor.PagamentoIPVACredor_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PagTransf.PagTransf_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `PagTransf.PagTransf_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PagTransf.PagTransf_EmpresaDestinoCod` -> `Empresa.Empresa_Codigo`
+- `PagTransf.PagTransf_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PagTransfRateio.PagTransfRateio_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `PagTransfRateio.PagTransfRateio_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `PagTransfRateio.PagTransfRateio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ParametroBackOfficePlus.ParametroBackOfficePlus_PagMultiplosNatOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ParametroEmpresa.ParametroEmpresa_PessoaCodigoContador` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresa.ParametroEmpresa_PessoaCodigoResponsavel` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresa.ParametroEmpresa_PessoaCodigoSoftHouse` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresaCentroTipoOS.ParametroEmpresaCentro_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `ParametroEmpresaContabilMatriz.ParametroEmpresaContabilMatriz_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ParametroEmpresaFastRental.ParametroEmpresaFastRental_EstVeicAlugCod` -> `Estoque.Estoque_Codigo`
+- `ParametroEmpresaFastRental.ParametroEmpresaFastRental_EstVeicDispLocCod` -> `Estoque.Estoque_Codigo`
+- `ParametroEmpresaFinCaixa.ParametroEmpresaFinCaixa_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroEmpresaFinContaGerencial.ContaGerencial_Codigo` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroEmpresaGeralSocio.EmpresaSocio_PessoaCodigo` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresaNF.ParametroEmpresaNF_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `ParametroEmpresaNF.ParametroEmpresaNF_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ParametroEmpresaNF.ParametroEmpresaNF_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ParametroEmpresaNF.ParametroEmpresaNF_PessoaCodConsumidor` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresaNFPessoa.ParametroEmpresaNFPessoa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ParametroEmpresaOfcTipoOS.ParametroEmpresaOfcTipoOS_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `ParametroEmpresaPRIM.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ParametroEscrituracao.ParametroEscrituracao_CFOCod` -> `CFO.CFO_Codigo`
+- `ParametroEscrituracao.ParametroEscrituracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ParametroFechamentoCaixa.ParametroFechamentoCaixa_ContaGerencialCodDestino` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroFechamentoCaixa.ParametroFechamentoCaixa_DepartamentoCodDestino` -> `Departamento.Departamento_Codigo`
+- `ParametroFechamentoCaixa.ParametroFechamentoCaixa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ParametroFechamentoCaixaDestino.ParametroFechamentoCaixaDestino_EmpresaCodDestino` -> `Empresa.Empresa_Codigo`
+- `ParametroFechamentoCaixaDestino.ParametroFechamentoCaixaDestino_EmpresaCodOrigem` -> `Empresa.Empresa_Codigo`
+- `ParametroTEFConfig.ParametroTEFConfig_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroTEFConfig.ParametroTEFConfig_ContaGerencialCodAdiant` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroTEFConfig.ParametroTEFConfig_ContaGerencialCodClasAdiant` -> `ContaGerencial.ContaGerencial_Codigo`
+- `ParametroTEFConfig.ParametroTEFConfig_ContaGerencialCodClassificacao` -> `ContaGerencial.ContaGerencial_Codigo`
+- `Patio.Patio_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PatioEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `PedidoCompra.PedidoCompra_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `PedidoCompra.PedidoCompra_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PedidoCompra.PedidoCompra_MarcaCod` -> `Marca.Marca_Codigo`
+- `PedidoCompra.PedidoCompra_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `PedidoCompra.PedidoCompra_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PedidoCompra.PedidoCompra_PessoaCodTransportadora` -> `Pessoa.Pessoa_Codigo`
+- `PedidoCompraItem.PedidoCompraItem_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `PedidoCompraItem.PedidoCompraItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `PedidoCompraItem.PedidoCompraItem_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `PedidoCompraVencimento.PedidoCompraVencimento_TituloCod` -> `Titulo.Titulo_Codigo`
+- `PedidoFeI.PedidoFeI_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PedidoFeI.PedidoFeI_OSCod` -> `OS.OS_Codigo`
+- `PedidoFeI.PedidoFeI_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PedidoFeI.PedidoFeI_PropostaCod` -> `Proposta.Proposta_Codigo`
+- `PedidoFeI.PedidoFeI_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `PedidoFeIItem.PedidoFeIItem_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `PedidoFeIItem.PedidoFeIItem_NotaFiscalCodComissao` -> `NotaFiscal.NotaFiscal_Codigo`
+- `PedidoFeIItem.PedidoFeIItem_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PedidoFeIItemServico.PedidoFeIItemServico_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `PedidoFeIItemServico.PedidoFeIItemServico_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `PedidoFeIItemServico.PedidoFeIItemServico_ProdutoCod` -> `Produto.Produto_Codigo`
+- `PedidoFeIItemTitulo.PedidoFeIItemTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `PerfilAcessoEmpresa.PerfilAcessoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PerfilAcessoTipoOS.PerfilAcessoTipoOS_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `Pesquisa.Pesquisa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Pesquisa.Pesquisa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Pessoa.AreaGeografica_Codigo` -> `AreaGeografica.AreaGeografica_Codigo`
+- `Pessoa.DePara_Codigo` -> `DePara.DePara_Codigo`
+- `Pessoa.Escolaridade_Codigo` -> `Escolaridade.Escolaridade_Codigo`
+- `Pessoa.EstadoCivil_Codigo` -> `EstadoCivil.EstadoCivil_Codigo`
+- `Pessoa.FaixaRenda_Codigo` -> `FaixaRenda.FaixaRenda_Codigo`
+- `Pessoa.Pessoa_MarcaCod` -> `Marca.Marca_Codigo`
+- `Pessoa.Pessoa_MoedaCod_Correcao` -> `Moeda.Moeda_Codigo`
+- `Pessoa.Pessoa_MoedaCod_Juros` -> `Moeda.Moeda_Codigo`
+- `Pessoa.Pessoa_PaisOrigemCod` -> `Pais.Pais_Codigo`
+- `Pessoa.Pessoa_PessoaCodGrupo` -> `Pessoa.Pessoa_Codigo`
+- `Pessoa.Profissao_Codigo` -> `Profissao.Profissao_Codigo`
+- `Pessoa.RamoAtividade_Codigo` -> `RamoAtividade.RamoAtividade_Codigo`
+- `Pessoa.Pessoa_TabelaPrecoCod` -> `TabelaPreco.TabelaPreco_Codigo`
+- `Pessoa.Pessoa_TipoEnderecoCodCobranca` -> `TipoEndereco.TipoEndereco_Codigo`
+- `Pessoa.Pessoa_TipoEnderecoCodComercial` -> `TipoEndereco.TipoEndereco_Codigo`
+- `Pessoa.Pessoa_TipoEnderecoCodFaturamento` -> `TipoEndereco.TipoEndereco_Codigo`
+- `Pessoa.Pessoa_TipoEnderecoCodRelacionamento` -> `TipoEndereco.TipoEndereco_Codigo`
+- `PessoaAnaliseCredito.PessoaAnaliseCredito_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PessoaAnaliseCredito.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaAnaliseCreditoItem.PessoaAnaliseCreditoItem_OSCod` -> `OS.OS_Codigo`
+- `PessoaAnaliseCreditoItem.PessoaAnaliseCreditoItem_OSCod` -> `OSTipoOS.OS_Codigo`
+- `PessoaAnaliseCreditoItem.PessoaAnaliseCreditoItem_OSTipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `PessoaAnaliseCreditoItem.PessoaAnaliseCreditoItem_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PessoaBanco.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaChavePix.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaClasABC.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaConsorcio.ModeloVeiculo_Codigo` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `PessoaConsorcio.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaContato.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaCreditoDiario.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaCreditoProtecao.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaDoc.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaEmail.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaEmpresa.PessoaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PessoaEmpresa.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaEndereco.PessoaEndereco_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `PessoaEndereco.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaEnquadramento.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaFaturamentoGrupoTributo.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaFaturamentoInscricao.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaFinanceiroCartaoToken.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaFrota.PessoaFrota_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PessoaFrotaVec.PessoaFrotaVec_MarcaCod` -> `Marca.Marca_Codigo`
+- `PessoaFrotaVec.PessoaFrotaVec_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `PessoaHistorico.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaHobby.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaMeioContato.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaPotencialCompra.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaRegraFiscal.PessoaRegraFiscal_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `PessoaRegraFiscal.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaRegraUso.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaScore.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaSegMercado.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PessoaSegMercadoMarca.PessoaSegMercadoMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `PessoaTelefone.Pessoa_Codigo` -> `Pessoa.Pessoa_Codigo`
+- `PlacaExperiencia.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `PlanoContaAssociacaoEmp.PlanoContaAssociacaoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PlanoContaEmpresa.PlanoContaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PoliticaDescontoPessoa.PoliticaDescontoPessoa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PoliticaDescontoPorDiasEmEstoque.PoliticaDescontoPorDiasEmEstoque_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PoliticaDescontoPorDiasEmEstoque.PoliticaDescontoPorDiasEmEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `PoliticaDescontoRegra.PoliticaDescontoRegra_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Portaria.Portaria_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Posicao.Posicao_MarcaCod` -> `Marca.Marca_Codigo`
+- `PosicaoFinanceiraLayout.PosicaoFinanceiraLayout_MarcaCod` -> `Marca.Marca_Codigo`
+- `PrecoServicoCliente.PrecoServicoCliente_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ProcessoDigitalizacaoEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ProcessoJudicialEmpresa.ProcessoJudicialEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Produto.Produto_ANPCod` -> `ANP.ANP_Codigo`
+- `Produto.GrupoProduto_Codigo` -> `GrupoProduto.GrupoProduto_Codigo`
+- `Produto.Produto_NCMCod` -> `NCM.NCM_Codigo`
+- `Produto.Produto_ProcedenciaCod` -> `Procedencia.Procedencia_Codigo`
+- `Produto.TipoProduto_Codigo` -> `TipoProduto.TipoProduto_Codigo`
+- `Produto.Produto_UnidadeCod` -> `Unidade.Unidade_Codigo`
+- `Produto.Produto_UnidadeCodExportacao` -> `Unidade.Unidade_Codigo`
+- `ProdutoBloqueio.ProdutoBloqueio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoBloqueio.ProdutoBloqueio_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ProdutoBloqueio.ProdutoBloqueio_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoEmpresa.ProdutoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoEmpresa.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoEquivalente.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoEstoque.ProdutoEstoque_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoEstoque.ProdutoEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ProdutoEstoque.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoEstoqueEntrada.ProdutoEstoqueEntrada_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ProdutoEstoqueEntrada.ProdutoEstoqueEntrada_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoEstoqueResumo.ProdutoEstoque_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoEstoqueResumo.ProdutoEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ProdutoEstoqueResumo.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoEstoqueSaida.ProdutoEstoqueSaida_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ProdutoEstoqueSaida.ProdutoEstoqueSaida_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoExportacao.ProdutoExportacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoExportacaoItem.ProdutoExportacaoItem_MarcaCod` -> `Marca.Marca_Codigo`
+- `ProdutoExportacaoItem.ProdutoExportacaoItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoGM.ProdutoGM_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoInfoBYD.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoIntercambiavel.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoIntercambiavel.ProdutoIntercambiavel_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoItemKit.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoItemKit.ProdutoItemKit_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoMarca.ProdutoMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `ProdutoMarca.ProdutoMarca_PessoaCodFabricante` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoMarca.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoMarca.ProdutoMarca_ProdutoCodAtual` -> `Produto.Produto_Codigo`
+- `ProdutoMarcaDePara.ProdutoMarcaDePara_PessoaCodFornecedor` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoModelo.ProdutoModelo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ProdutoModelo.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoPedido.ProdutoPedido_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ProdutoPedido.ProdutoPedido_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `ProdutoPedido.ProdutoPedido_NFCodPorContaOrdem` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ProdutoPedido.ProdutoPedido_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ProdutoPedido.ProdutoPedido_PessoaCodCliente` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoPedido.ProdutoPedido_PessoaCodClienteFinal` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoPedidoFrete.ProdutoPedidoFrete_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoPedidoItem.ProdutoPedidoItem_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ProdutoPedidoItem.ProdutoPedidoItem_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ProdutoPedidoItem.ProdutoPedidoItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProdutoPedidoSeguradora.ProdutoPedidoSeguradora_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ProdutoPreco.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoPrecoMarca.ProdutoPrecoMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `ProdutoPrecoMarca.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoPromocaoFabrica.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ProdutoReferencia.ProdutoReferencia_MarcaCod` -> `Marca.Marca_Codigo`
+- `ProdutoReferencia.ProdutoReferencia_ProdutoCod` -> `Produto.Produto_Codigo`
+- `ProgramaDadoPadrao.ProgramaDadoPadrao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PromocaoObsolecencia.PromocaoObsolecencia_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PromocaoProduto.PromocaoProduto_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `PromocaoProduto.PromocaoProduto_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `PromocaoProduto.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `Proposta.Atendimento_Codigo` -> `Atendimento.Atendimento_Codigo`
+- `Proposta.Proposta_BancoPedidoCod` -> `BancoPedido.BancoPedido_Codigo`
+- `Proposta.Proposta_BoxCod` -> `Box.Box_Codigo`
+- `Proposta.Proposta_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Proposta.Proposta_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `Proposta.Proposta_FamiliaVeiculoCod` -> `FamiliaVeiculo.FamiliaVeiculo_Codigo`
+- `Proposta.Proposta_VeiculoModeloCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Proposta.MotVendaPerdida_Codigo` -> `MotVendaPerdida.MotVendaPerdida_Codigo`
+- `Proposta.Proposta_MotVendaPerdidaCodCashConvertion` -> `MotVendaPerdida.MotVendaPerdida_Codigo`
+- `Proposta.Proposta_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Proposta.Proposta_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `PropostaAcessorio.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaAcessorioProduto.PropostaAcessorioProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `PropostaAutorizacao.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaCredline.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaData.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaHistorico.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaHistoricoStatus.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaInformacao.PropostaInformacao_PropostaCod` -> `Proposta.Proposta_Codigo`
+- `PropostaParcela.PropostaParcela_PessoaCodEndosso` -> `Pessoa.Pessoa_Codigo`
+- `PropostaParcela.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaParcela.PropostaParcela_TituloCod` -> `Titulo.Titulo_Codigo`
+- `PropostaServAdicional.PropostaServAdicional_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `PropostaServAdicional.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaServAdicionalTitulo.PropostaServAdicional_TituloCod` -> `Titulo.Titulo_Codigo`
+- `PropostaTitulo_2014041116.07.59.127.Proposta_Codigo` -> `Proposta.Proposta_Codigo`
+- `PropostaTitulo_2014041116.07.59.127.PropostaTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `Prospect.Prospect_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `QPC.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `QuadroOficinaConfiguracaoConsultor.QuadroOficina_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `RAC.RAC_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `RAC.RAC_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `RAC.RAC_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Recebimento.Recebimento_ProdutoCod` -> `Produto.Produto_Codigo`
+- `Recepcao.Recepcao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Recibo.Recibo_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Recibo.Recibo_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ReciboTitulo.ReciboTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `ReclamacaoCliente.ReclamacaoCliente_MarcaCod` -> `Marca.Marca_Codigo`
+- `ReclamacaoFaturamento.ReclamacaoFaturamento_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `ReclamacaoFaturamento.ReclamacaoFaturamento_ProdutoCod` -> `Produto.Produto_Codigo`
+- `REINFEletronico.REINFEletronico_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `REINFEletronico.REINFEletronico_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `REINFEletronicoEventoNotaFiscal.REINFEletronicoNotaFiscal_NFCodigo` -> `NotaFiscal.NotaFiscal_Codigo`
+- `RequisicaoCompra.RequisicaoCompra_OSCod` -> `OS.OS_Codigo`
+- `RequisicaoCompra.RequisicaoCompra_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_MarcaCod` -> `Marca.Marca_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_OficinaProdutoCod` -> `OficinaProduto.OficinaProduto_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_PessoaCodFornecedor` -> `Pessoa.Pessoa_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_ProdutoCod` -> `Produto.Produto_Codigo`
+- `RequisicaoCompraItem.RequisicaoCompraItem_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `RequisicaoCompraItemNotaFiscal.NotaFiscal_Codigo` -> `NotaFiscalItem.NotaFiscal_Codigo`
+- `RequisicaoCompraItemNotaFiscal.NotaFiscalItem_Codigo` -> `NotaFiscalItem.NotaFiscalItem_Codigo`
+- `RestricaoDesconto.Produto_Codigo` -> `Produto.Produto_Codigo`
+- `ResultadoContatoEmpresa.ResultadoContato_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `RevisaoKMMarca.RevisaoKMMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `RevisaoKMModelo.RevisaoKMModelo_ModeloCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `RGO.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `RMPV.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `RMS.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `Romaneio.Romaneio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Romaneio.Romaneio_PessoaCodMotorista` -> `Pessoa.Pessoa_Codigo`
+- `Romaneio.Romaneio_PessoaCodTransportadora` -> `Pessoa.Pessoa_Codigo`
+- `RomaneioVeiculo.RomaneioVeiculo_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `SaldoContabil.SaldoContabil_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SaldoCredorDevedor.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `SaldoCredorDevedor.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SalesForceParametro.SalesForceParametro_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `SegmentoMercadoNatOpe.SegmentoMercadoNatOpe_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `SeguroCotacao.SeguroCotacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SeguroCotacao.SeguroCotacao_PessoaCodCondutor` -> `Pessoa.Pessoa_Codigo`
+- `SeguroCotacao.SeguroCotacao_PessoaCodFiador` -> `Pessoa.Pessoa_Codigo`
+- `SeguroCotacao.SeguroCotacao_PropostaCod` -> `Proposta.Proposta_Codigo`
+- `SeguroCotacao.SeguroCotacao_VeiculoCodigo` -> `Veiculo.Veiculo_Codigo`
+- `ServerPrint.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `ServicoAdicionalCredor.ServicoAdicionalCredor_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ServicoAdicionalCredorEmpresa.ServicoAdicionalCredorEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ServicoAdicionalEmpresa.ServicoAdicionalEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ServicoAdicionalModelo.ServicoAdicionalModelo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ServicoAdicionalModeloPreco.ServicoAdicionalModeloPreco_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ServicoAdicionalPreco.ServicoAdicionalPreco_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ServicoAdicionalPreco.ServicoAdicionalPreco_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ServicoAdicionalPreco.ServicoAdicionalPreco_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ServicoAdicionalPrecoEmpresa.ServicoAdicionalPrecoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ServicoAdicionalPrecoModelo.ServicoAdicionalPrecoModelo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ServicoRegra.ServicoRegra_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ServidorWebServiceEmpresa.ServidorWebServiceEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Sessao.Sessao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Sessao.Sessao_ParmEmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SetorServico_Empresa.SetorServicoEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `SGPadrao.SGPadrao_MarcaCod` -> `Marca.Marca_Codigo`
+- `Sincronizacao.Sincronizacao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SincronizacaoConfiguracao.SincronizacaoConfiguracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SPVN.SPVN_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SPVN.SPVN_OSCod` -> `OS.OS_Codigo`
+- `SPVN.SPVN_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `StdExtratoContaMov.StdExtratoContaMov_MarcaCodigo` -> `Marca.Marca_Codigo`
+- `StdFuncsnapon.StdFuncsnapon_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `StdParametroEmpresa.StdParametroEmpresa_Empresa_Cod` -> `Empresa.Empresa_Codigo`
+- `StdParSnapon.StdParSnapon_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SubContaEmpresa.SubContaEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `SugestaoCompra.SugestaoCompra_MarcaCod` -> `Marca.Marca_Codigo`
+- `SugestaoCompra.NaturezaOperacao_Codigo` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `SugestaoCompra.SugestaoCompra_FornecedorCod` -> `Pessoa.Pessoa_Codigo`
+- `SugestaoCompraProduto.SugestaoCompraProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `TabelaCampoDefault.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `TabelaFrete.TabelaFrete_EmpresaCodDestino` -> `Empresa.Empresa_Codigo`
+- `TabelaFrete.TabelaFrete_EmpresaCodOrigem` -> `Empresa.Empresa_Codigo`
+- `TabelaFrete.TabelaFrete_PessoaCodTransportadora` -> `Pessoa.Pessoa_Codigo`
+- `TarefaPerfilAcessoEmpresa.PerfilAcessoTarefa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TaxaFinanceiroEmpresa.TaxaFinanceiroEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Tema.Marca_Codigo` -> `Marca.Marca_Codigo`
+- `Tesouraria.Tesouraria_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `Tesouraria.Tesouraria_ContaGerencialCodClassificacao` -> `ContaGerencial.ContaGerencial_Codigo`
+- `Tesouraria.Tesouraria_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `Tesouraria.Tesouraria_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Tesouraria.Tesouraria_EmpresaDestinoCod` -> `Empresa.Empresa_Codigo`
+- `Tesouraria.Tesouraria_PessoaCodBeneficiario` -> `Pessoa.Pessoa_Codigo`
+- `Tesouraria.Tesouraria_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `TesourariaIntegracao.TesourariaIntegracao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TesourariaLinkTEF.TesourariaLinkTEF_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TesourariaLinkTEF.TesourariaLinkTEF_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `TesourariaMobileTEFLog.TesourariaMobileTEFLog_ClienteCod` -> `Pessoa.Pessoa_Codigo`
+- `TesourariaNotaFiscal.TesourariaNotaFiscal_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `TesourariaOS.Tesouraria_OSCod` -> `OSTipoOS.OS_Codigo`
+- `TesourariaOS.Tesouraria_OSTipoOSCod` -> `OSTipoOS.OSTipoOS_TipoOSCod`
+- `TesourariaRateio.TesourariaRateio_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TesourariaRateio.TesourariaRateio_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `TesourariaRateio.TesourariaRateio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TestDrive.TestDrive_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `TestDrive.TestDrive_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `TipoCampanha.TipoCampanha_MarcaCod` -> `Marca.Marca_Codigo`
+- `TipoCreditoDebito.TipoCreditoDebito_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TipoCreditoDebito.TipoCreditoDebito_PessoaCodRetencao` -> `Pessoa.Pessoa_Codigo`
+- `TipoCreditoDebitoFichaRazao.TipoCreditoDebito_ContagerencialCodFichaRazao` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TipoDocumento.TipoDocumento_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TipoDocumentoEmpresa.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `TipoDocumentoEmpresa.TipoDocumentoEmpresa_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `TipoGarantia.TipoGarantia_MarcaCod` -> `Marca.Marca_Codigo`
+- `TipoGarantiaProduto.TipoGarantiaProduto_ProdutoCod` -> `Produto.Produto_Codigo`
+- `TipoLoteEmpresa.TipoLoteEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TipoOS.TipoOS_SetorServicoCod` -> `SetorServico.SetorServico_Codigo`
+- `TipoOSEmp.TipoOSEmp_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `TipoOSEmp.TipoOSEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `TipoOSEmp.TipoOSEmp_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `TipoOSEmp.TipoOSEmp_NatOpeCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TipoOSEmp.TipoOSEmp_PessoaCodFaturaProduto` -> `Pessoa.Pessoa_Codigo`
+- `TipoOSEmp.TipoOSEmp_PessoaCodFaturaServico` -> `Pessoa.Pessoa_Codigo`
+- `TipoOSEmp.TipoOS_Codigo` -> `TipoOS.TipoOS_Codigo`
+- `TipoOSMarca.TipoOSMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `TipoOSMarca.TipoOS_Codigo` -> `TipoOS.TipoOS_Codigo`
+- `TipoOSMarcaQuestionario.TipoOSMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `TipoOSMarcaQuestionario.TipoOS_Codigo` -> `TipoOS.TipoOS_Codigo`
+- `TipoPagPropostaEmpresa.TipoPagPropostaEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TipoPedidoMarca.TipoPedidoMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `TipoProdutoEmp.TipoProdutoEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TipoServicoEmpresa.TipoServico_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TipoTituloEmpresa.TipoTituloEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `TipoTituloEmpresa.TipoTituloEmp_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `TipoTituloPagar.TipoTituloPagar_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TipoTituloPagar.TipoTituloPagar_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `TipoTituloPagar.TipoTituloPagar_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TipoTituloReceber.TipoTituloReceber_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TipoTituloReceber.TipoTituloReceber_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `TipoTituloReceber.TipoTituloReceber_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TipoTituloReceberEmp.TipoTituloReceberEmp_EmpCod` -> `Empresa.Empresa_Codigo`
+- `Titulo.Titulo_AgenteCobradorCod` -> `AgenteCobrador.AgenteCobrador_Codigo`
+- `Titulo.Titulo_BancoCodCheque` -> `Banco.Banco_Codigo`
+- `Titulo.Titulo_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `Titulo.Titulo_DadosTituloBoletoAvulsoCod` -> `DadosTituloBoletoAvulso.DadosTituloBoletoAvulso_Codigo`
+- `Titulo.Titulo_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `Titulo.Titulo_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Titulo.Titulo_FaturaCod` -> `Fatura.Fatura_Codigo`
+- `Titulo.Titulo_LoteMovimentoCod` -> `LoteMovimento.LoteMovimento_Codigo`
+- `Titulo.Titulo_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `Titulo.Titulo_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Titulo.Titulo_NotaFiscalCod_Vinculada` -> `NotaFiscal.NotaFiscal_Codigo`
+- `Titulo.Titulo_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `Titulo.Titulo_PessoaCod_Endosso` -> `Pessoa.Pessoa_Codigo`
+- `Titulo.Titulo_TipoCobrancaCod` -> `TipoCobranca.TipoCobranca_Codigo`
+- `Titulo.Titulo_TipoTituloCod` -> `TipoTitulo.TipoTitulo_Codigo`
+- `Titulo.Titulo_TituloVinculadoCod` -> `Titulo.Titulo_Codigo`
+- `Titulo.Titulo_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `TituloCartao.TituloCartao_TituloCod` -> `Titulo.Titulo_Codigo`
+- `TituloCobrancaAutomatica.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloDDA.DDA_TituloCod` -> `Titulo.Titulo_Codigo`
+- `TituloHistorico.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloInstrucao.TituloInstrucao_TituloCod` -> `Titulo.Titulo_Codigo`
+- `TituloMov.TituloMov_ContaClassificacaoCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TituloMov.TituloMov_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TituloMov.TituloMov_EmpresaCod_Movimento` -> `Empresa.Empresa_Codigo`
+- `TituloMov.TituloMov_NotaFiscalCod_Saida` -> `NotaFiscal.NotaFiscal_Codigo`
+- `TituloMov.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloOcorrencia.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloPgtoElet.TituloPgtoElet_PessoaCodFavorecido` -> `Pessoa.Pessoa_Codigo`
+- `TituloPgtoElet.TituloPgtoElet_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloPIX.TituloPIX_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloProrrogacao.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloRastreabilidade.TituloRastreabilidade_DepartamentoCodAnterior` -> `Departamento.Departamento_Codigo`
+- `TituloRastreabilidade.TituloRastreabilidade_DepartamentoCodAtual` -> `Departamento.Departamento_Codigo`
+- `TituloRastreabilidade.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TituloRateio.TituloRateio_ContaGerencialCod` -> `ContaGerencial.ContaGerencial_Codigo`
+- `TituloRateio.TituloRateio_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `TituloRateio.TituloRateio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TituloRateio.Titulo_Codigo` -> `Titulo.Titulo_Codigo`
+- `TMO.TMO_MarcaCod` -> `Marca.Marca_Codigo`
+- `TMOEmpresa.TMOEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TMOEmpresa.TMOEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TMOEmpresaFornecedor.TMOEmpresaFornecedor_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `TmoMarca.TmoMarca_MarcaCod` -> `Marca.Marca_Codigo`
+- `TMOTempo.TMOTempo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `TransferenciaProduto.TransferenciaProduto_DeptoOrigemCod` -> `Departamento.Departamento_Codigo`
+- `TransferenciaProduto.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
+- `TransferenciaProduto.TransferenciaProduto_NatOpeEntradaCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TransferenciaProduto.TransferenciaProduto_NatOpeSaidaCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TransferenciaProdutoItem.TransferenciaProdutoItem_DestinoEstoqueCod` -> `Estoque.Estoque_Codigo`
+- `TransferenciaProdutoItem.TransferenciaProdutoItem_OrigemEstoqueCod` -> `Estoque.Estoque_Codigo`
+- `TransferenciaProdutoItem.TransferenciaProdutoItem_DestinoProdutoCod` -> `Produto.Produto_Codigo`
+- `TransferenciaProdutoItem.TransferenciaProdutoItem_OrigemProdutoCod` -> `Produto.Produto_Codigo`
+- `TransmissaoMarca.Transmissao_MarcaCod` -> `Marca.Marca_Codigo`
+- `TributacaoDIA.TributacaoDIA_NaturezaOperacaoCod` -> `NaturezaOperacao.NaturezaOperacao_Codigo`
+- `TributoCOFINSEmpresa.TributoCOFINSEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TributoICMSEmpresa.TributoICMSEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TributoIPIEmpresa.TributoIPIEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TributoISSEmpresa.TributoISSEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `TributoPISEmpresa.TributoPISEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Usuario.Usuario_EmpresaCodDefault` -> `Empresa.Empresa_Codigo`
+- `Usuario.usuario_pessoacod` -> `Pessoa.Pessoa_Codigo`
+- `UsuarioDepartamento.UsuarioDepartamento_DepartamentoCod` -> `Departamento.Departamento_Codigo`
+- `UsuarioEmpresa.UsuarioEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ValorAgregadoAutomacao.ValorAgregadoAutomacao_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `ValorAgregadoAutomacao.ValorAgregadoAutomacao_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `ValorAgregadoAutomacaoEmpresa.ValorAgregadoAutomacaoEmpresa_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `ValorAgregadoPossiveisCredores.ValorAgregadoPossiveisCredores_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `ValorAgregadoPossiveisCredoresEmpresa.ValorAgregadoPossiveisCredoresEmp_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Veiculo.Veiculo_AdaptacaoVeiculoCod` -> `AdaptacaoVeiculo.AdaptacaoVeiculo_Codigo`
+- `Veiculo.Veiculo_CorCodExterna` -> `Cor.Cor_Codigo`
+- `Veiculo.Veiculo_CorCodInterna` -> `Cor.Cor_Codigo`
+- `Veiculo.Veiculo_EstadoCod_Placa` -> `Estado.Estado_Codigo`
+- `Veiculo.GrupoMercadoria_Codigo` -> `GrupoMercadoria.GrupoMercadoria_Codigo`
+- `Veiculo.Veiculo_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `Veiculo.Veiculo_MunicipioCod_Placa` -> `Municipio.Municipio_Codigo`
+- `Veiculo.Veiculo_PessoaCodCliente` -> `Pessoa.Pessoa_Codigo`
+- `Veiculo.Veiculo_PessoaCodConcessionaria` -> `Pessoa.Pessoa_Codigo`
+- `Veiculo.Veiculo_UsuarioCodVendedor` -> `Usuario.Usuario_Codigo`
+- `Veiculo.VeiculoAno_Codigo` -> `VeiculoAno.VeiculoAno_Codigo`
+- `VeiculoAptidao.VeiculoAptidao_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoAviso.VeiculoAviso_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoBloqueio.VeiculoBloqueio_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoEstoque.VeiculoEstoque_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VeiculoEstoque.VeiculoEstoque_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `VeiculoEstoque.VeiculoEstoque_NotaFiscalCodCompra` -> `NotaFiscal.NotaFiscal_Codigo`
+- `VeiculoEstoque.VeiculoEstoque_NotaFiscalCodVenda` -> `NotaFiscal.NotaFiscal_Codigo`
+- `VeiculoEstoque.VeiculoEstoque_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoExtensaoGarantia.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoHistorico.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoImagem.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoInventarioItem.VeiculoInventarioItem_VeiculoEstoqueCod` -> `Estoque.Estoque_Codigo`
+- `VeiculoKM.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoLicenciamento.VeiculoLicenciamento_VeiculoCodigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoManutencao.VeiculoManutencao_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VeiculoManutencao.VeiculoManutencao_OSCod` -> `OS.OS_Codigo`
+- `VeiculoManutencao.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoMovimento.VeiculoMovimento_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VeiculoMovimento.VeiculoMovimento_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `VeiculoMovimento.VeiculoMovimento_NotaFiscalCod` -> `NotaFiscal.NotaFiscal_Codigo`
+- `VeiculoMovimento.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoNumeracao.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoOpcional.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoPesqMercado.VeiculoPesqMercado_ModeloVeiculoCod` -> `ModeloVeiculo.ModeloVeiculo_Codigo`
+- `VeiculoPrecoUsado.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoPromocao.VeiculoPromocao_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoProprietario.VeiculoProprietario_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoProprietario.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoProprio.VeiculoProprio_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VeiculoProprio.VeiculoProprio_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoProprioMovimento.VeiculoProprioMovimento_OficinaServicoCod` -> `OficinaServico.OficinaServico_Codigo`
+- `VeiculoProprioMovimento.VeiculoProprioMovimento_OSCod` -> `OS.OS_Codigo`
+- `VeiculoProprioMovimento.VeiculoProprioMovimento_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoProprioMovimento.VeiculoProprioMovimento_PessoaCodMotorista` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoProprioMovimento.VeiculoProprioMovimento_TipoOSCod` -> `TipoOS.TipoOS_Codigo`
+- `VeiculoReserva.VeiculoReserva_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoRevisao.VeiculoRevisao_OSCod` -> `OS.OS_Codigo`
+- `VeiculoRevisao.VeiculoRevisao_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoRevisao.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoRevisaoKM.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoSeguradora.VeiculoSeguradora_PessoaCodCorretora` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoSeguradora.VeiculoSeguradora_PessoaCodSeguradora` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoSeguradora.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoTipoFaturamento.VeiculoTipoFaturamento_MarcaCod` -> `Marca.Marca_Codigo`
+- `VeiculoTipoFaturamento.VeiculoTipoFaturamento_MoedaCod` -> `Moeda.Moeda_Codigo`
+- `VeiculoTransfLocal.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoTrocaOleo.VeiculoTrocaOleo_OSCod` -> `OS.OS_Codigo`
+- `VeiculoTrocaOleo.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoUso.VeiculoUso_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoUso.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoValorAgregado.VeiculoValorAgregado_PessoaCredorCod` -> `Pessoa.Pessoa_Codigo`
+- `VeiculoValorAgregado.VeiculoValorAgregado_PropostaCod` -> `Proposta.Proposta_Codigo`
+- `VeiculoValorAgregado.VeiculoValorAgregado_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VeiculoValorAgregadoTitulo.VeiculoValorAgregadoTitulo_TituloCod` -> `Titulo.Titulo_Codigo`
+- `VendaPerdida.VendaPerdida_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VendaPerdida.VendaPerdida_EstoqueCod` -> `Estoque.Estoque_Codigo`
+- `VendaPerdida.OficinaProduto_Codigo` -> `OficinaProduto.OficinaProduto_Codigo`
+- `VendaPerdida.VendaPerdida_PessoaCod` -> `Pessoa.Pessoa_Codigo`
+- `VendaPerdida.VendaPerdida_ProdutoCod` -> `Produto.Produto_Codigo`
+- `VendedorVez.VendedorVez_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `Vistoria.Vistoria_VeiculoCod` -> `Veiculo.Veiculo_Codigo`
+- `VistoriaEntrega.VistoriaEntrega_EmpresaCod` -> `Empresa.Empresa_Codigo`
+- `VistoriaEntrega.Veiculo_Codigo` -> `Veiculo.Veiculo_Codigo`
+- `Workspace.Empresa_Codigo` -> `Empresa.Empresa_Codigo`
