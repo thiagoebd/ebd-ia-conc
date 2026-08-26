@@ -387,8 +387,10 @@ DealerNet. Ver `sql-corrections-dealernet.md`.
 
 - `Pessoa` **não tem coluna de CPF/CNPJ** — deve estar em tabela satélite
   ligada por `Pessoa_TipoPessoa`. Não localizada.
-- Colunas de ligação `OS` ↔ `NotaFiscal` (existe `NotaFiscal_OSTipoOSCod`,
-  falta confirmar a chave completa)
+- `OS` **não tem** coluna de tipo de OS — a classificação chega pela ponte
+  `OSTipoOS` (ver #D12). Já a `NotaFiscal` **tem** `NotaFiscal_OSTipoOSCod`,
+  que aponta para `OSTipoOS.OSTipoOS_TipoOSCod`: é o caminho direto de nota de
+  oficina para o tipo de OS, ainda não explorado.
 - `TipoOS_FontePagadora` — valores `'0 '`, `'00'`, `'01'` sem significado claro
 - Base de cálculo do pós-venda no DealerUp (mede OS/item, não NF)
 - Regras validadas em **uma** empresa e **um** mês. Confirmar em agosto e numa
