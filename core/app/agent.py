@@ -333,6 +333,9 @@ async def run_turn(
 from app.loop_policy import (AVISO_CONCLUA, MOTIVO_MAX_ITERACOES,
                              MOTIVO_PARCIAL, MOTIVO_SEM_TEXTO,
                              decidir_parada, mensagem_silencio)
+import logging
+
+logger = logging.getLogger("uvicorn.error")
 
 
 async def run_turn_stream(
@@ -455,7 +458,8 @@ async def run_turn_stream(
 
         # Terminou? (sem tool_use) -> valida, entrega o texto e encerra
         if final_message.stop_reason != "tool_use":
-            _sql = [ok for (n, ok) in tool_outcomes if n == "oracle_query"]
+            from app.loop_policy import TOOLS_DE_BANCO
+            _sql = [ok for (n, ok) in tool_outcomes if n in TOOLS_DE_BANCO]
             if _sql and not any(_sql):
                 text_acc = FALHA_WINTHOR
 

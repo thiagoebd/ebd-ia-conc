@@ -10,6 +10,8 @@ tinha conseguido montar a consulta.
 """
 from __future__ import annotations
 
+TOOLS_DE_BANCO = ("oracle_query", "dealernet_query")
+
 
 AVISO_CONCLUA = (
     "PARE de consultar o banco agora. Voce JA TEM dados suficientes das "
@@ -31,7 +33,7 @@ def decidir_parada(tool_outcomes, max_fails: int = 3,
       'parar'    — encerra sem mensagem de falha (a conclusao ja foi pedida)
       'abortar'  — nada aproveitavel; mensagem de falha ao usuario
     """
-    oq = [ok for (nome, ok) in tool_outcomes if nome == "oracle_query"]
+    oq = [ok for (nome, ok) in tool_outcomes if nome in TOOLS_DE_BANCO]
     if not oq:
         return "seguir"
 
@@ -105,7 +107,7 @@ _MSG = {
 def teve_dado_apurado(tool_outcomes) -> bool:
     """True se alguma consulta ao banco deu certo neste turno."""
     return any(ok for (nome, ok) in (tool_outcomes or [])
-               if nome == "oracle_query")
+               if nome in TOOLS_DE_BANCO)
 
 
 def mensagem_silencio(motivo: str, tool_outcomes=None) -> str:
