@@ -189,3 +189,39 @@ OS.OS_Codigo → OSTipoOS.OS_Codigo → OSTipoOS.OSTipoOS_TipoOSCod → TipoOS.T
 - Uma OS pode ter **várias** linhas em `OSTipoOS` (um tipo por serviço/contexto). Para "passagens de oficina" (contar a OS uma vez), usar `EXISTS` ou `COUNT(DISTINCT OS_Codigo)` — nunca join direto.
 - `OSTipoOS` também traz denormalizado `OSTipoOS_TipoOSClas` / `OSTipoOS_TipoOSDes` / `OSTipoOS_TipoOSSgl` (classificação/descrição/sigla no nível do vínculo OS×Tipo).
 - Passagens de oficina cliente pagante (validado 26/08/2026): `OS_Status IN ('PEN','ENC')` + `TipoOS_Classificacao = 'CLI'` via EXISTS sobre a ponte → 5.932 OS em ago/2026 (25 das 30 empresas com movimento; Way Mundurucus, Way Diogo, Viale Paragominas, Depósito C Nery e Antares Barão com zero).
+
+
+<!-- AUTO-APPEND PROP-6743CA1C aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## #D13 — Modelo do veículo na venda (DealerNet)
+
+A tabela `NotaFiscal` **não tem coluna de modelo, chassi ou placa** (busca por %Modelo%/%Veiculo%/%Chassi% retorna vazio). Para identificar o veículo vendido, o caminho é:
+
+```
+NotaFiscal (NotaFiscal_Codigo)
+  → NotaFiscalItem (NotaFiscal_Codigo, NotaFiscalItem_VeiculoCod)
+  → Veiculo (Veiculo_Codigo, Veiculo_Chassi, Veiculo_Placa, Veiculo_ModeloVeiculoCod)
+  → ModeloVeiculo (ModeloVeiculo_Codigo → ModeloVeiculo_Descricao)
+```
+
+**Cicatrizes da descoberta (erro 207 / invalid column name):**
+- `dbo.Veiculo` **NÃO** tem `Veiculo_ModeloVeiculoDes`, `Veiculo_ModeloVeiculoMarcaDes`, `Veiculo_ModeloVeiculoMarcaSigla`, `Veiculo_ModeloVeiculoModeloMarca` — essas colunas existem em outra schema (o INFORMATION_SCHEMA sem filtro de schema mistura as duas e engana).
+- `dbo.ModeloVeiculo` **NÃO** tem `ModeloVeiculo_MarcaDes` nem `ModeloVeiculo_MarcaSigla` — só `ModeloVeiculo_Descricao` (ex.: 'MDA5 - MUSTANG DARKHORSE', 'I/RAM 3500 LONGHORN AT8 05PASSAGEIROS').
+- O nome da marca vem de `ModeloVeiculo` via `ModeloVeiculo_MarcaCod` → `Marca` (não testado) ou denormalizado em `Veiculo` de outra schema. Para o Conc.ia, `ModeloVeiculo_Descricao` + `Empresa_NomeFantasia` basta na maioria dos casos.
+
+Query validada (top veículos mais caros do mês, ago/2026 — Mustang Dark Horse R$ 607.000 na Antares Teresina):
+```sql
+SELECT TOP 10 nf.NotaFiscal_Numero, nf.NotaFiscal_DataEmissao,
+       nf.NotaFiscal_ValorTotal, nf.NotaFiscal_NaturezaOperacaoCod,
+       e.Empresa_NomeFantasia, mv.ModeloVeiculo_Descricao AS modelo,
+       v.Veiculo_Placa, v.Veiculo_Chassi
+FROM NotaFiscal nf
+JOIN NotaFiscalItem i ON i.NotaFiscal_Codigo = nf.NotaFiscal_Codigo
+LEFT JOIN Veiculo v ON v.Veiculo_Codigo = i.NotaFiscalItem_VeiculoCod
+LEFT JOIN ModeloVeiculo mv ON mv.ModeloVeiculo_Codigo = v.Veiculo_ModeloVeiculoCod
+LEFT JOIN Empresa e ON e.Empresa_Codigo = nf.NotaFiscal_EmpresaCod
+WHERE nf.NotaFiscal_Status = 'EMI' AND nf.NotaFiscal_Movimento = 'S'
+  AND nf.NotaFiscal_NaturezaOperacaoCod IN (11, 19, 165, 74)
+  AND nf.NotaFiscal_DataEmissao >= :inicio AND nf.NotaFiscal_DataEmissao < :fim
+ORDER BY nf.NotaFiscal_ValorTotal DESC
+```
