@@ -271,7 +271,7 @@ function App() {
     <>
       <UnauthenticatedTemplate>
         <div className="login-screen">
-          <img src="/logo-conc.png" alt="Conc" className="logo-login" />
+          <img src="/logo-conc.png" alt="Dealer.ia" className="logo-login" />
           <p className="subtitle">Agente das concessionárias · dados do NBS em tempo real</p>
           <button className="btn-primary" onClick={login}>Entrar com Microsoft</button>
         </div>
@@ -288,8 +288,8 @@ function App() {
               tabIndex={0}
               onKeyDown={(e) => { if (e.key === "Enter") window.location.reload(); }}
             >
-              <img src="/logo-conc.png" alt="Conc" />
-              <span className="name">Conc<em>.ia</em></span>
+              <img src="/logo-conc.png" alt="Dealer.ia" />
+              <span className="name">Dealer<em>.ia</em></span>
             </div>
 
             <button className="new-chat" onClick={newChat}>
@@ -422,7 +422,7 @@ function App() {
                           : <span className="avatar small">{firstName.charAt(0)}</span>}
                       </div>
                       <div className="content">
-                        <div className="who-line">{m.role === "assistant" ? "Conc.ia" : firstName}</div>
+                        <div className="who-line">{m.role === "assistant" ? "Dealer.ia" : firstName}</div>
                         {m.role === "assistant" && m.tools && m.tools.length > 0 && (
                           <div className="tools">{(() => {
                             const ts = m.tools || [];
@@ -466,7 +466,7 @@ function App() {
                   value={input}
                   onChange={(e) => { setInput(e.target.value); autosize(); }}
                   onKeyDown={onKey}
-                  placeholder="Pergunte ao Conc.ia…"
+                  placeholder="Pergunte ao Dealer.ia…"
                   rows={1}
                   disabled={busy}
                 />

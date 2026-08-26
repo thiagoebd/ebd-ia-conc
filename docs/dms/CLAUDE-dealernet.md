@@ -7,7 +7,8 @@
 > Base: `GrupoEBD_DealernetWF` · SQL Server 2022 · schema `dbo`
 > Servidor: `clussp06wfw.grupoebd.ebdbr.com.br:1433` (10.10.3.158)
 > 2.850 tabelas · 32.405 colunas · 3.979 FKs · 247 views
-> Discover em 25/08/2026. **Tudo aqui verificado no dicionário.**
+> Discover em 25/08/2026; revisado em 26/08/2026 contra o DealerUp.
+> **Tudo aqui verificado no dicionário ou medido na base.**
 
 ---
 
@@ -91,7 +92,200 @@ complementares, sem sobreposição de unidade.
 
 ---
 
-## 3. `TipoOS` — classificação pronta pelo fabricante
+## 3. Duas dimensões diferentes — não confundir
+
+O DealerNet classifica a nota por **duas** dimensões independentes. Usar a
+errada é a causa nº 1 de número que não bate com o BI.
+
+| | Dimensão | Tabela | Ligação | Para que serve |
+| --- | --- | --- | --- | --- |
+| **Fiscal** | `NaturezaOperacao` (301 códigos) | `NaturezaOperacao_Codigo` | `NotaFiscal_NaturezaOperacaoCod` | O que a nota **é** perante o fisco |
+| **Gestão** | `Departamento` (35) | `Departamento_Codigo` | `NotaFiscal_DepartamentoCod` | A que **área** o resultado pertence |
+
+**A regra:** o departamento diz *de quem é* o número; a natureza diz *se ele
+conta*. Faturamento correto exige **as duas** — departamento para agrupar,
+natureza para filtrar.
+
+> Versões anteriores deste arquivo diziam que a natureza separava o
+> departamento. **Está errado** e produziu o caso Thai Ananindeua jul/26
+> (novos inflados em R$ 7,1M por somar venda direta dentro de novos).
+
+### `NaturezaOperacao` — os códigos que importam
+
+| Cód | Descrição | Movimento |
+| --- | --- | --- |
+| 11 | Venda de veículos novos | S |
+| **13** | **Devolução de venda — veículos novos** | **E** |
+| 19 | Venda de veículos usados show room | S |
+| 165 | Venda de veículos usados repasse | S |
+| 48 | Venda de veículos imobilizados | S |
+| 74 | Venda de VN **direta** | S |
+| 37 | Venda oficina | S |
+| 38 | Venda garantia | S |
+| **77** | **Devolução de venda — peças oficina** | **E** |
+| 147 | Venda merc. adquiridos de terceiros | S |
+| 129 | Venda peças — outra revenda | S |
+| 289 | Venda peças — e-commerce | S |
+| **12** | **Devolução de venda — peças varejo** | **E** |
+| 31, 83, 173, 47, 168 | Comissões (financiamento, venda direta, seguros, outras) | S |
+| 39 | Venda interna (baixa consumo interno) | S |
+| 64 | Saída remessa para demonstração — VN | S |
+| 65 | Entrada retorno de demonstração — VN | E |
+| 7, 8 | Transferência de peças (saída / entrada) | S / E |
+| 80, 79 | Ajuste de estoque (saída / entrada) | S / E |
+| 1–4, 9, 71, 164 | Compras | E |
+
+### `Departamento` — as 35 siglas
+
+| Cód | Sigla | Descrição | Cód | Sigla | Descrição |
+| --- | --- | --- | --- | --- | --- |
+| 1 | AD | Administração | 19 | JO | Jeep Ourinhos |
+| 2 | FP | Funilaria e pintura | 20 | MC | Oficina mec |
+| 3 | PA | Peças e acessórios | 21 | NA | Ananindeua |
+| 4 | SP | Assistência técnica | 22 | OF | Oficina adm |
+| 5 | **VN** | **Veículos novos** | 23 | PF | Prod funilaria |
+| 6 | **VU** | **Veículos usados** | 24 | PR | Prod mecânica |
+| 7 | **VD** | **Venda direta** | 25 | VM | Veículos imobilizado |
+| 8 | VI | Venda internet | 26 | VP | Paragominas |
+| 9 | AU | Auto centro | 27 | GH | Outros |
+| 10 | DF | Depósito fechado | 28 | AT | Altamira |
+| 11 | DM | Diogo Moia | 29 | TS | T-Service |
+| 12 | GA | Garantia | 30 | F&I | F&I |
+| 13 | GU | Garantia usados | 31 | FA | Fiscont aud cont |
+| 14 | IF | Improd funilaria | 32 | FIN | Financeiro |
+| 15 | IM | Improd mecânica | 33 | TI | Tecnologia T.I |
+| 16 | JA | Jeep Assis | 34 | GG | Gente e gestão |
+| 17 | JB | Jeep Botucatu | 35 | FVM | Funilaria VM SP |
+| 18 | JI | Jeep Itapetininga | | | |
+
+`Departamento_Sigla` é `char` — vem com **padding à direita** (`'VN        '`).
+Comparar com `=` funciona em T-SQL (ignora espaço à direita), mas ao trazer
+para Python é preciso `.strip()`.
+
+---
+
+## 4. FATURAMENTO — a regra canônica
+
+Validada contra o DealerUp em Thai Ananindeua (empresa 3), julho/2026,
+com **zero de diferença** nos três blocos de veículos e na contagem de unidades.
+
+### Filtros obrigatórios
+
+```sql
+nf.NotaFiscal_EmpresaCod = :empresa      -- #D11: NÃO é Empresa_Codigo
+AND nf.NotaFiscal_Status = 'EMI'         -- exclui CAN, INU, DEN
+AND nf.NotaFiscal_DataEmissao >= :inicio
+AND nf.NotaFiscal_DataEmissao <  :fim    -- fim exclusivo, nunca BETWEEN
+```
+
+**Não filtrar `Movimento = 'S'` no WHERE.** As devoluções são `'E'` e
+precisam entrar com sinal negativo — ver a regra 1 abaixo.
+
+### As sete regras
+
+**R1 — Devolução ABATE faturamento e unidade.** Naturezas 13 (VN), 77 (peças
+oficina) e 12 (peças varejo), todas `Movimento='E'`. Entram com sinal
+negativo e reduzem também a contagem de notas. É a regra mais fácil de
+esquecer e a de maior impacto: sem ela o mês inteiro fica inflado.
+
+**R2 — Natureza 48 (venda de imobilizados) é USADO** e entra no faturamento.
+O próprio banco a classifica no departamento `VU`. É veículo que rodou
+(ex-demonstração, ex-frota) sendo vendido a cliente final.
+
+**R3 — Natureza 74 é VENDA DIRETA**, bloco próprio. Nunca somar dentro de
+novos — tem margem e comissionamento distintos e o BI reporta separado.
+
+**R4 — Natureza 39 (baixa consumo interno) SAI, não abate.** Peça retirada
+para uso próprio da loja. Nunca houve receita reconhecida, então não há o que
+estornar: retirar do numerador é o correto; subtrair criaria receita negativa
+fictícia. *Provado:* VU bruto 6.420.210,84 − 17.200,84 = 6.403.010,00 exato.
+
+**R5 — Natureza 64 (remessa demonstração) fica FORA.** Não é venda: é
+circulação de veículo entre lojas do grupo, com contrapartida na natureza 65
+(retorno). Em jul/26 foram 14 saídas (2.960.203,19) contra 16 retornos
+(3.434.951,03), todos de/para THAI Altamira e THAI Castanhal.
+
+**R6 — F&I identifica-se por NATUREZA, nunca por departamento.** O
+departamento `F&I` (código 30) existe no cadastro mas tem **zero notas**; as
+comissões vivem dentro de `VN` (31, 173, 47, 168) e `VD` (83). Agrupar por
+departamento faz o bloco vir vazio.
+
+**R7 — Fora do faturamento:** 7 (transf. peças), 80 (ajuste estoque), 102
+(simples remessa), 125 (retorno comodato), 148 (baterias inservíveis), 243
+(remessa peças garantia), 263 (bonificação/uso interno), 17 (devolução de
+compra). São remessas, transferências e ajustes — não há receita.
+
+### Divergência conhecida contra o DealerUp
+
+Duas, ambas por desenho:
+
+1. **F&I.** Por decisão do Grupo EBD, o Conc.ia **soma** as comissões F&I no
+   total faturado da loja e as **reporta como bloco à parte**. O DealerUp não
+   as conta. O Conc.ia ficará sistematicamente acima — jul/26: R$ 549.862,45.
+   O número comparável com o DealerUp é o **total ex-F&I**.
+2. **Pós-venda.** O DealerUp mede OS/item; nós medimos nota fiscal. Em jul/26
+   ele conta 2.456 itens contra ~2.200 notas, e a receita diverge em
+   R$ 46.980,04 (1,8%). **Não fecha por NF** e não vale perseguir.
+
+Veículos, que são ~92% do faturamento, fecham ao centavo.
+
+### Prova da reconciliação — Thai Ananindeua, jul/2026
+
+| Bloco | Conta | Valor | Notas |
+| --- | --- | --- | --- |
+| VN | nat 11 − nat 13 | 18.960.680,00 − 368.908,00 = **18.591.772,00** | 79 − 2 = **77** |
+| VU | nat 19 + 165 + 48 | 2.619.530,00 + 3.345.500,00 + 437.980,00 = **6.403.010,00** | 15 + 30 + 3 = **48** |
+| VD | nat 74 | **6.774.157,12** | **31** |
+| **Veículos** | | **31.768.939,12** | **156** |
+
+DealerUp: 31.768.939,12 · 156 unidades. Diferença: **zero**.
+
+---
+
+## 5. Template T-DN-FAT-01 — faturamento por bloco
+
+```sql
+WITH mov AS (
+    SELECT
+        d.Departamento_Sigla AS depto,
+        nf.NotaFiscal_NaturezaOperacaoCod AS nat,
+        CASE
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod = 11  THEN 'VEICULOS NOVOS'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod = 13  THEN 'VEICULOS NOVOS'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod IN (19, 165, 48) THEN 'SEMINOVOS'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod = 74  THEN 'VENDA DIRETA'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod IN (37, 38, 77) THEN 'OFICINA'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod IN (147, 129, 289, 70, 59, 170, 41, 12) THEN 'PECAS'
+            WHEN nf.NotaFiscal_NaturezaOperacaoCod IN (31, 83, 173, 47, 168) THEN 'F&I'
+        END AS bloco,
+        CASE WHEN nf.NotaFiscal_NaturezaOperacaoCod IN (13, 77, 12)
+             THEN -1 ELSE 1 END AS sinal,
+        nf.NotaFiscal_ValorTotal AS valor
+    FROM NotaFiscal nf WITH (NOLOCK)
+    LEFT JOIN Departamento d WITH (NOLOCK)
+           ON d.Departamento_Codigo = nf.NotaFiscal_DepartamentoCod
+    WHERE nf.NotaFiscal_EmpresaCod = :empresa
+      AND nf.NotaFiscal_Status = 'EMI'
+      AND nf.NotaFiscal_DataEmissao >= :inicio
+      AND nf.NotaFiscal_DataEmissao <  :fim
+      AND nf.NotaFiscal_NaturezaOperacaoCod IN
+          (11, 13, 19, 165, 48, 74, 37, 38, 77, 147, 129, 289, 70, 59, 170, 41, 12,
+           31, 83, 173, 47, 168)
+)
+SELECT bloco,
+       SUM(sinal)         AS notas,
+       SUM(sinal * valor) AS faturamento
+FROM mov
+GROUP BY bloco
+ORDER BY faturamento DESC;
+```
+
+Ao apresentar: mostrar **F&I como linha à parte** e dois totais — *total
+faturado* (com F&I) e *total ex-F&I* (comparável ao DealerUp).
+
+---
+
+## 6. `TipoOS` — classificação pronta pelo fabricante
 
 218 tipos, com **`TipoOS_Classificacao`** dizendo quem é o pagador:
 
@@ -103,8 +297,8 @@ complementares, sem sobreposição de unidade.
 | `OUT` | Comissão e outros (F&I, venda compartilhada) |
 | `REC` | Retorno / retrabalho |
 
-Também há `TipoOS_FontePagadora`, `TipoOS_Revisao` (bit), `TipoOS_ServicoRapido`,
-`TipoOS_SetorServicoCod` e `TipoOS_Ativo`.
+Também há `TipoOS_FontePagadora`, `TipoOS_Revisao` (bit),
+`TipoOS_ServicoRapido`, `TipoOS_SetorServicoCod` e `TipoOS_Ativo`.
 
 Exemplos: `CSR` cliente serviço reparo · `CFR` fast repair · `CSP` manutenção
 periódica · `GS` garantia serviços · `GSR` recall · `ISN` interno serviço novos.
@@ -112,41 +306,11 @@ periódica · `GS` garantia serviços · `GSR` recall · `ISN` interno serviço 
 > No NBS o equivalente (`OS_TIPOS.PRODUTIVA`) levou horas para ser descoberto.
 > Aqui a classificação é explícita — **usar `Classificacao`, não parsear a sigla**.
 
----
-
-## 4. `NaturezaOperacao` — o que a nota é (301 códigos)
-
-| Cód | Descrição |
-| --- | --- |
-| 11 | **Venda de veículos novos** |
-| 19 | **Venda de veículos usados show room** |
-| 37 | **Venda oficina** |
-| 38 | **Venda garantia** |
-| 10 | Venda peças varejo — revenda |
-| 56 | Venda peças — atacado |
-| 39 | Venda interna (baixa consumo interno) |
-| 48 | Venda de veículos imobilizados |
-| 12–17 | Devoluções (venda e compra) |
-| 1–4, 9 | Compras (peças, VN, VU, consumo, imobilizado) |
-| 5–8, 52, 53 | Transferências |
-| 31, 47 | Comissão (financiamento, outras vendas) |
-
-**É por aqui que se separa departamento**, não pela `TipoOS`.
+Isto classifica a **OS**, não a nota. Para faturamento, ver a seção 5.
 
 ---
 
-## 5. Departamento (35) — a dimensão de gestão
-
-`Departamento_Sigla`: `VN` novos · `VU` usados · `VD` venda direta ·
-`VI` internet · `PA` peças e acessórios · `SP` assistência técnica ·
-`FP` funilaria e pintura · `GA` garantia · `GU` garantia usados ·
-`F&I` · `AU` auto centro · `AD` administração · `FIN` financeiro.
-
-`NotaFiscal_DepartamentoCod` liga a nota ao departamento.
-
----
-
-## 6. Entidades núcleo (por centralidade de FK)
+## 7. Entidades núcleo (por centralidade de FK)
 
 | Tabela | FKs | Linhas | Papel |
 | --- | --- | --- | --- |
@@ -172,60 +336,29 @@ separa `CLIENTES` de `CLIENTE_DIVERSO`.
 
 ---
 
-## 7. Campos de valor e data
+## 8. Campos de valor e data
 
 **`NotaFiscal`**: `_ValorTotal`, `_ValorDesconto`, `_ValorFrete`, `_ValorSeguro`,
 `_ValorAcrescimo`, `_ValorJuros` · datas: `_DataEmissao`, `_DataMovimento`,
 `_DataExpedicao`, `_DataChegada`
 
+Em venda de veículo novo, `_ValorDesconto`, `_ValorFrete`, `_ValorSeguro`,
+`_ValorAcrescimo` e `_ValorJuros` vêm **todos zerados** — o valor é o
+`_ValorTotal` puro. Não existe base de valoração alternativa.
+
+**`NotaFiscalItem`**: `_ValorTotal`, `_ValorUnitario`, `_ValorLucroBruto`,
+`_ValorMargemContabil`, `_ValorMargemGerencial`, `_ValorCargaTributaria`,
+`_ValorBonusFabrica`, `_ValorTotalBrutoSemDesconto`. Em VN jul/26,
+`_ValorBonusFabrica` e `_ValorTotalBrutoSemDesconto` vêm zerados;
+`_ValorLucroBruto` é o campo vivo de margem.
+
 **`OS`**: `_DataCriacao` (abertura), `_DataPrometida`, `_DataRecepcao`,
 `_DataLiberacaoVeiculo`, `_DataTecnicoInicio/Fim`, `_AgendamentoData`
 
 **`OficinaServico` / `OficinaProduto`**: `_ValorUnitario`, `_ValorDesconto`,
-`_ValorCusto` (só em Produto) — **margem sai direto do custo gravado**
+`_ValorCusto` (só em Produto)
 
 **`Titulo`**: `_Valor`, `_DataEmissao`, `_DataVencimento`, `_DataPagamento`
-
----
-
-## 8. Cicatrizes
-
-**#D01 — Filtrar SEMPRE `Empresa_Codigo`.** São 30 empresas em 5 estados.
-Consulta sem escopo mistura Toyota do Pará com Jeep de São Paulo.
-
-**#D02 — `NotaFiscal` tem entrada E saída.** Sem `NotaFiscal_Movimento = 'S'`,
-compras entram no faturamento. E sem `NotaFiscal_Status = 'EMI'` entram
-canceladas, inutilizadas e denegadas.
-
-**#D03 — Os nomes de coluna de data NÃO seguem o padrão óbvio.**
-Não existe `NotaFiscal_Data` nem `OS_DataAbertura`. É `NotaFiscal_DataEmissao`
-e `OS_DataCriacao`. Conferir no `INFORMATION_SCHEMA` antes de escrever.
-
-**#D04 — `Lancamento` tem data futura.** Existem registros em 2029 e 2033
-(erro de digitação). Agregação por ano precisa de teto: `< GETDATE()`.
-
-**#D05 — Padrão `X` + `XHistorico`.** `Lancamento`/`LancamentoHistorico`,
-`NotaFiscal`/`NotaFiscalHistorico`, `Titulo`/`TituloHistorico`,
-`OficinaServico`/`OficinaServicoHistorico`. A tabela sem sufixo é a viva.
-
-**#D06 — Tabelas gigantes exigem cuidado.** `ProdutoPreco` tem **800 milhões**
-de linhas, `ProdutoEstoqueClasABC` 108M, `TMOTempo` 45M. Nunca consultar sem
-`WHERE` restritivo. Preferir `WITH (NOLOCK)` para não travar a operação.
-
-**#D07 — Ruído: 693 tabelas, 525M linhas.** `WF*` (workflow interno),
-`*Historico`, `Monitor*`, `Audit*`, `Log*`, `Std*`, `Calculo*`, `Tmp*`.
-Não são fonte de indicador de gestão.
-
-**#D08 — Classificação de OS vem de `TipoOS_Classificacao`**, não da sigla.
-`CLI` cliente · `GAR` garantia · `DEP` interna · `OUT` comissão · `REC` retorno.
-
-**#D09 — `Veiculo_Status` é `U`/`N`**, não descritivo. E há 367 mil usados
-contra 39 mil novos — a base guarda o histórico de veículos de clientes, não
-só o estoque. Para estoque, usar `Veiculo_EmEstoque`.
-
-**#D10 — Colunas duplicadas no dicionário.** Várias tabelas aparecem com a
-mesma coluna duas vezes no `INFORMATION_SCHEMA` (efeito de view/sinônimo).
-Não é erro de leitura — usar `DISTINCT` ao inventariar.
 
 ---
 
@@ -235,24 +368,28 @@ Não é erro de leitura — usar `DISTINCT` ao inventariar.
 | --- | --- | --- |
 | Concessionárias | 1 (Isar/BMW) | 30 (6 grupos, 7 marcas) |
 | Tabelas | 8.160 | 2.850 |
-| Escopo | `COD_EMPRESA` | `Empresa_Codigo` |
-| Nota | `VENDAS` | `NotaFiscal` (`Movimento='S'`) |
+| Escopo | `COD_EMPRESA` | `NotaFiscal_EmpresaCod` |
+| Nota | `VENDAS` | `NotaFiscal` |
 | Status nota | `'0'` ativa | `'EMI'` emitida |
 | OS | `OS` (`STATUS_OS` numérico) | `OS` (`OS_Status` char) |
 | Cliente | `CLIENTES` + `CLIENTE_DIVERSO` | `Pessoa` (unificado) |
 | Classificação de OS | `OS_TIPOS.PRODUTIVA` | `TipoOS_Classificacao` |
-| Nomenclatura | críptica (`COD_*`) | legível (`Tabela_Campo`) |
+| Departamento | `COD_OPERACAO` | `NotaFiscal_DepartamentoCod` |
+| Nomenclatura | críptica (`COD_*`) | legível (`Tabela_Campo`), com exceções |
 
-**O contrato de indicador é o mesmo** (ver `docs/adr/001-camada-de-indicadores.md`);
-muda só o adaptador SQL.
+**As cicatrizes do NBS não valem aqui.** `COD_OPERACAO`, `VENDA_ITENS`,
+`PRECO_LIQUIDO_FINAL`, `OS_TIPOS` e `NATUREZA_APLICACAO` não existem no
+DealerNet. Ver `sql-corrections-dealernet.md`.
 
 ---
 
 ## 10. Aberto
 
+- `Pessoa` **não tem coluna de CPF/CNPJ** — deve estar em tabela satélite
+  ligada por `Pessoa_TipoPessoa`. Não localizada.
 - Colunas de ligação `OS` ↔ `NotaFiscal` (existe `NotaFiscal_OSTipoOSCod`,
   falta confirmar a chave completa)
 - `TipoOS_FontePagadora` — valores `'0 '`, `'00'`, `'01'` sem significado claro
-- Como o BI atual calcula margem (o DealerUp usa margem líquida de tributos
-  no NBS; confirmar se aqui é `_ValorCusto` direto)
-- `Empresa_Segmento` = `'VEC'` em todas as 30 — provavelmente veículos vs. outro
+- Base de cálculo do pós-venda no DealerUp (mede OS/item, não NF)
+- Regras validadas em **uma** empresa e **um** mês. Confirmar em agosto e numa
+  segunda empresa (VM Manaus, Antares) antes de tratar como lei.
