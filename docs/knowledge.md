@@ -121,3 +121,30 @@ Classificação padrão das categorias de faturamento (DealerNet):
 - Comissões F&I: 31 + 83 + 173 + 47 + 168
 - Peças e demais saídas: demais códigos residuais (147, 129, 289, 243, 7, 39, 80, 59, 170...)
 
+
+
+<!-- AUTO-APPEND PROP-5973D66F aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Veículos elétricos e híbridos — identificação (verificado 27/08/2026)
+
+Quando o gestor perguntar "carros elétricos / eletrificados / híbridos", usar o **combustível do veículo**, não o modelo.
+
+### NBS (Oracle)
+- `VEICULOS.COD_COMBUSTIVEL` → `COMBUSTIVEL.COD_COMBUSTIVEL`
+- **Elétrico puro:** 12 (ELETRICO), 24 (ELÉTRICO)
+- **Híbrido:** 15 (GASOL/ELET), 21 (HIBRIDO), 23 (GASOLINA/E)
+- Caminho da venda: `VENDAS(COD_EMPRESA, COD_PRODUTO, COD_MODELO, CHASSI_RESUMIDO)` → `VEICULOS` (mesma chave composta) → `COMBUSTIVEL`
+- Caso real: jul/26 vendeu X5 e X7 híbridos (op 4) e 1 BMW elétrico usado (op 9).
+
+### DealerNet (SQL Server)
+- `ModeloVeiculo.ModeloVeiculo_CombustivelCod` → `Combustivel.Combustivel_Codigo`
+- **Elétrico puro:** 11 (ELETRICO), 19 (ELETRICO LEAP)
+- **Híbrido:** 10 (FLEX/ELETRICO), 15 (ALCOOL/GASOLINA/ELETRICO = híbrido flex, ex. Corolla Cross), 16 (GASOLINA/ELETRICO), 20 (ELETRICO/DIESEL)
+- Caminho da venda: `NotaFiscalItem.NotaFiscalItem_VeiculoCod` (NOT NULL = item é veículo) → `Veiculo.Veiculo_Codigo` → `Veiculo_ModeloVeiculoCod` → `ModeloVeiculo`
+- **Leapmotor C10 REEV está cadastrado como GASOLINA/ELETRICO (16)** — tem extensor de autonomia a gasolina, é híbrido de verdade, NÃO é erro de cadastro. B10/C10 BEV = ELETRICO (11).
+- Caso real ago/26: 47 eletrificados no grupo (9 puros + 38 híbridos), somas por empresa bateram com o consolidado.
+
+### Regras
+- Elétrico puro ≠ híbrido: reportar sempre separado.
+- Não usar `Veiculo_CombustivelIdoneo` (bit, outra semântica) nem `Produto_ExigirVerificacaoCombustivel`.
+- No NBS, `COMBUSTIVEL` tem PK simples; 12/24 são dois cadastros de elétrico (acento divergente).
