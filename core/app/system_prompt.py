@@ -8,6 +8,8 @@ KB_FILES = [
     "CLAUDE.md",               # roteador multi-DMS (camada 0)
     "dms/CLAUDE-nbs.md",       # NBS / Oracle / ISAR-BMW
     "dms/CLAUDE-dealernet.md", # DealerNet / SQL Server / 30 concessionarias
+    "formato-resposta.md",
+    "canal-voz.md",            # regras do canal de voz     # padrao de resposta executiva
     "knowledge.md",            # vocabulario e regras de negocio
     "sql-corrections-nbs.md",       # cicatrizes NBS / Oracle
     "dms/sql-corrections-dealernet.md",  # cicatrizes DealerNet / SQL Server
@@ -49,11 +51,11 @@ que nao veio de consulta desta sessao.
 def build_system_prompt() -> str:
     """Concatena todos os arquivos da KB num system prompt unico."""
     parts = []
-    parts.append("# Conc.ia — Agente das Concessionarias\n")
+    parts.append("# Dealer.ia — Agente das Concessionarias\n")
     # NOTA: a data NAO eh injetada aqui (seria congelada no boot do processo).
     # Ela eh calculada por turno via current_date_line() e vai no ctx_suffix.
     parts.append(f"Modelo: {settings.claude_model}.\n")
-    parts.append("Voce eh o agente conversacional Conc.ia. Voce tem acesso ao Oracle do NBS")
+    parts.append("Voce eh o agente conversacional Dealer.ia. Voce tem acesso ao Oracle do NBS")
     parts.append("via tool 'oracle_query' (read-only). Sua base de conhecimento esta abaixo.\n")
     parts.append(ESCOPO)
     parts.append(FORMATTING_RULES)

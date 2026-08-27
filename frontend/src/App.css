@@ -324,3 +324,17 @@ aside .sb-head img,
 /* mapa de roteiro precisa de largura — escapa do max-width estreito dos artefatos */
 .artifacts:has(.mapcard) { max-width: 720px; }
 .mapcard { width: 100%; }
+
+/* ── Botão de voz ──────────────────────────────────────────────────────── */
+.voz-btn {
+  position: absolute; right: 52px; bottom: 54px;
+  width: 34px; height: 34px; border: none; border-radius: 50%;
+  background: transparent; cursor: pointer; font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s ease, transform .1s ease;
+}
+.voz-btn:hover:not(:disabled) { background: rgba(0,0,0,.06); }
+.voz-btn:disabled { opacity: .45; cursor: default; }
+.voz-btn.gravando { background: rgba(220,38,38,.12); animation: voz-pulse 1.2s infinite; }
+.voz-btn.aguardando { animation: voz-pulse 2s infinite; }
+@keyframes voz-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }

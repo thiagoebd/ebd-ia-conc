@@ -1,7 +1,7 @@
 # ADR 002 — Arquitetura multi-DMS (NBS + DealerNet)
 
 > Decisão de 25/08/2026. Substitui a premissa de DMS único do ADR 001.
-> Contexto: o Conc.ia passa a atender **31 concessionárias** — 1 no NBS
+> Contexto: o Dealer.ia passa a atender **31 concessionárias** — 1 no NBS
 > (ISAR/BMW) e 30 no DealerNet (Toyota, Fiat, Jeep, Hyundai, Ford, Leapmotor).
 
 ---

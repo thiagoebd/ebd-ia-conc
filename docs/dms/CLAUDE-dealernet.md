@@ -219,9 +219,9 @@ compra). São remessas, transferências e ajustes — não há receita.
 
 Duas, ambas por desenho:
 
-1. **F&I.** Por decisão do Grupo EBD, o Conc.ia **soma** as comissões F&I no
+1. **F&I.** Por decisão do Grupo EBD, o Dealer.ia **soma** as comissões F&I no
    total faturado da loja e as **reporta como bloco à parte**. O DealerUp não
-   as conta. O Conc.ia ficará sistematicamente acima — jul/26: R$ 549.862,45.
+   as conta. O Dealer.ia ficará sistematicamente acima — jul/26: R$ 549.862,45.
    O número comparável com o DealerUp é o **total ex-F&I**.
 2. **Pós-venda.** O DealerUp mede OS/item; nós medimos nota fiscal. Em jul/26
    ele conta 2.456 itens contra ~2.200 notas, e a receita diverge em

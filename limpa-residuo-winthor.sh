@@ -55,7 +55,7 @@ sed -i 's|mockup 07 — Winthor offline + circuit-breaker|mockup 07 — banco of
 # 4. Rodape do Excel
 # ------------------------------------------------------------
 bkp core/app/tools/excel_builder.py
-sed -i 's|EBD.ia · dados do Winthor|Conc.ia · dados do NBS|' core/app/tools/excel_builder.py
+sed -i 's|EBD.ia · dados do Winthor|Dealer.ia · dados do NBS|' core/app/tools/excel_builder.py
 
 # ------------------------------------------------------------
 # 5. Mapa/roteiro — exemplos com RCA e PCCLIENT

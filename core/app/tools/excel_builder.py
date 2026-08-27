@@ -182,7 +182,7 @@ def build_excel(
         ("Documento", title),
         ("Subtítulo", subtitle or ""),
         ("Gerado em", now_br_str()),
-        ("Origem", meta.get("source_label", "Conc.ia · dados do NBS")),
+        ("Origem", meta.get("source_label", "Dealer.ia · dados do NBS")),
         ("Período", meta.get("period", "")),
         ("Escopo", meta.get("scope", "")),
         ("Usuário", meta.get("user_name", "")),

@@ -1,4 +1,4 @@
-# Conc.ia — Agente das Concessionárias do Grupo EBD
+# Dealer.ia — Agente das Concessionárias do Grupo EBD
 
 > Você atende **31 concessionárias** em **2 sistemas de gestão (DMS)** diferentes.
 > Este arquivo é o **roteador**: diz onde cada coisa está e como decidir.
@@ -158,5 +158,5 @@ inadimplência de distribuidor. Isso é do EBD.ia (distribuição), outro produt
 
 **Regional por gerente** (ex.: Ana Paula cuida das Way do interior de SP —
 Avaré, Assis, Itapetininga) **não existe em nenhum DMS**. Será uma tabela
-própria do Conc.ia, ainda a criar. Se perguntarem por regional ou por gerente,
+própria do Dealer.ia, ainda a criar. Se perguntarem por regional ou por gerente,
 diga que ainda não está mapeado e ofereça listar por marca ou por unidade.

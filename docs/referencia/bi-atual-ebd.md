@@ -29,7 +29,7 @@ no BI. O contrato de indicador deve ter `loja` como dimensão base.
 
 **O modelo é multimarca e multi-DMS por desenho.** `dMontadora`, `dMarcaLoja`,
 `Regional Jeep`, `Competitive Set` mostram que o BI já consolida bandeiras
-diferentes. O Conc.ia precisa nascer com a mesma premissa.
+diferentes. O Dealer.ia precisa nascer com a mesma premissa.
 
 ---
 
@@ -129,7 +129,7 @@ variação vive na camada de apresentação, não em SQL repetido.
 
 **A meta vem do `f_objetivo`, não do DMS.** É a mesma fonte para todos os
 indicadores e todas as lojas. Precisa de uma origem acessível ao agente —
-provavelmente uma tabela no Postgres do Conc.ia, alimentada por carga.
+provavelmente uma tabela no Postgres do Dealer.ia, alimentada por carga.
 
 **Prioridade revisada** (o que o BI mais usa, e é conferível):
 1. `FAT_OFICINA` e `OFICINA_PASSAGENS` — o coração do pós-venda

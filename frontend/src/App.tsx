@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import VozButton from "./VozButton";
 import {
   useMsal,
   AuthenticatedTemplate,
@@ -148,6 +149,36 @@ function App() {
   }
   function login() {
     instance.loginRedirect(loginRequest).catch((e) => setError(e.message));
+  }
+
+  // ---- canal de voz -------------------------------------------------
+  function vozAbreThread(pergunta: string) {
+    let tid = activeId;
+    if (tid === null) {
+      tid = `tmp-${Date.now()}`;
+      const title = pergunta.length > 42 ? pergunta.slice(0, 42) + "…" : pergunta;
+      setThreads((ts) => [{ id: tid!, title, msgs: [], loaded: true }, ...ts]);
+      setActiveId(tid);
+    }
+    streamTidRef.current = tid;
+    setThreads((ts) => ts.map((th) => th.id === tid
+      ? { ...th, msgs: [...th.msgs, { role: "user", text: pergunta },
+                        { role: "assistant", text: "", status: "Pensando", tools: [] }] }
+      : th));
+  }
+
+  function vozAtualizaAssistente(texto: string, status?: string, tools?: string[]) {
+    setThreads((ts) => ts.map((th) => {
+      if (th.id !== streamTidRef.current) return th;
+      const msgs = [...th.msgs];
+      for (let i = msgs.length - 1; i >= 0; i--) {
+        if (msgs[i].role === "assistant") {
+          msgs[i] = { ...msgs[i], text: texto, status, tools: tools ?? msgs[i].tools };
+          break;
+        }
+      }
+      return { ...th, msgs };
+    }));
   }
 
   async function send(presetQuestion?: string) {
@@ -468,6 +499,18 @@ function App() {
                   onKeyDown={onKey}
                   placeholder="Pergunte ao Dealer.ia…"
                   rows={1}
+                  disabled={busy}
+                />
+                <VozButton
+                  apiBase={API_BASE}
+                  getToken={token}
+                  conversationId={activeId}
+                  onPergunta={(txt) => { vozAbreThread(txt); setBusy(true); }}
+                  onAck={(txt) => vozAtualizaAssistente("", txt)}
+                  onResposta={(txt, erro) => {
+                    vozAtualizaAssistente(txt, undefined, erro ? [] : ["voz"]);
+                    setBusy(false);
+                  }}
                   disabled={busy}
                 />
                 <div className="composer-foot">
