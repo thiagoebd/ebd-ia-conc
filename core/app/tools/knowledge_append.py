@@ -21,9 +21,11 @@ from app.tools.proposals import (
 
 # Whitelist absoluta — apenas estes 3 arquivos podem ser appendados
 ARQUIVOS_PERMITIDOS = {
+    "cicatriz": "sql-corrections-nbs.md",            # compat: default NBS
+    "cicatriz_nbs": "sql-corrections-nbs.md",
+    "cicatriz_dealernet": "sql-corrections-dealernet.md",
+    "knowledge": "knowledge.md",
     "template": "query_templates.md",
-    "cicatriz": "sql-corrections.md",
-    "conhecimento": "knowledge.md",
 }
 
 BRANCH_PROPOSTAS = "agent-proposals"
@@ -96,7 +98,7 @@ def tool_knowledge_append(
             f"Role atual: '{user_role}'."
         )
     if tipo not in ARQUIVOS_PERMITIDOS:
-        return f"ERRO: tipo invalido '{tipo}'. Use: template, cicatriz, conhecimento."
+        return f"ERRO: tipo invalido '{tipo}'. Use: template, cicatriz_nbs, cicatriz_dealernet, knowledge."
     if not conteudo.strip() or len(conteudo) < 20:
         return "ERRO: conteudo muito curto. Append precisa ser substancial."
 

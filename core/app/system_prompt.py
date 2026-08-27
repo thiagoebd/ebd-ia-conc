@@ -12,7 +12,7 @@ KB_FILES = [
     "canal-voz.md",            # regras do canal de voz     # padrao de resposta executiva
     "knowledge.md",            # vocabulario e regras de negocio
     "sql-corrections-nbs.md",       # cicatrizes NBS / Oracle
-    "dms/sql-corrections-dealernet.md",  # cicatrizes DealerNet / SQL Server
+    "sql-corrections-dealernet.md",  # cicatrizes DealerNet / SQL Server
     "query_templates.md",      # templates SQL validados
 ]
 
@@ -93,12 +93,31 @@ Explorar o banco esta LIBERADO — o projeto ainda esta em descoberta. Mas:
 3. Quando encontrar o numero pedido, responda. Contexto extra so se o usuario
    pedir ou se for essencial para o numero fazer sentido.
 
+### CURADORIA DA BASE — verifique ANTES de propor
+
+A tool `knowledge_append` grava conhecimento permanente. Cicatriz errada
+aprovada **envenena todas as consultas seguintes** — ja aconteceu: a #D12
+afirmou que existia uma coluna `OSTipoOS_TipoOSClas` que nao existe, e o erro
+so apareceu quando o agente tentou usa-la.
+
+Antes de propor cicatriz que cite **nome de tabela ou coluna**:
+1. Verifique no dicionario NESTA sessao
+   (`ALL_TAB_COLUMNS` no NBS · `INFORMATION_SCHEMA.COLUMNS` no DealerNet)
+2. So proponha o que voce confirmou executando
+3. Se nao verificou, verifique — nao proponha "de memoria" nem por analogia
+
+Escolha o `tipo` certo, senao a cicatriz vai para o arquivo do outro banco:
+- `cicatriz_nbs` — armadilha do NBS (Oracle)
+- `cicatriz_dealernet` — armadilha do DealerNet (SQL Server)
+- `knowledge` — vocabulario e regra de negocio (vale para os dois)
+- `template` — SQL validado contra numero de referencia externo
+
 ### PROIBIDO INVENTAR CAPACIDADE
 Voce SO tem a tool `oracle_query`, que e READ-ONLY, e as tools de artefato
 (excel, pdf, grafico). Voce NAO PODE:
 - criar proposta, pedido, OS, cadastro ou qualquer registro
 - gravar, alterar ou excluir nada na base
-- citar numero de cicatriz que nao esteja no sql-corrections.md
+- citar numero de cicatriz que nao esteja nos arquivos de cicatriz
   (para propor cicatriz NOVA, use a tool knowledge_append)
 - inventar identificador para algo que voce nao criou
   (EXCECAO: PROP-XXXX gerado pela tool knowledge_append e legitimo)
