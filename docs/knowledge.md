@@ -148,3 +148,25 @@ Quando o gestor perguntar "carros elétricos / eletrificados / híbridos", usar 
 - Elétrico puro ≠ híbrido: reportar sempre separado.
 - Não usar `Veiculo_CombustivelIdoneo` (bit, outra semântica) nem `Produto_ExigirVerificacaoCombustivel`.
 - No NBS, `COMBUSTIVEL` tem PK simples; 12/24 são dois cadastros de elétrico (acento divergente).
+
+
+<!-- AUTO-APPEND PROP-3D71B3E9 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Oficina Diogo (18) e Mundurucus (15) — OS não registradas no DealerNet (verificado 31/08/2026)
+
+Ao medir **passagens de oficina** (OS + `OSTipoOS` → `TipoOS_Classificacao = 'CLI'`) nas lojas Jeep, **Diogo (18) e Mundurucus (15) retornam zero** — não é filtro errado, é falta de registro:
+
+- **Diogo (18):** 12.921 OS no total, porém a **última é de 26/02/2026** — a loja parou de registrar OS no DealerNet desde então (ou migrou para outro sistema).
+- **Mundurucus (15):** apenas **12 OS em toda a vida**, última em 17/01/2026 — praticamente nunca usou a tabela OS.
+
+Consequências:
+1. Passagens de oficina, produtividade, horas e qualquer indicador baseado em `OS` **não cobrem essas duas lojas** — reportar passagens só das 8 lojas restantes e declarar a lacuna.
+2. Elas também **não faturam oficina** via naturezas 37/38/77 no DealerNet (não aparecem na consulta de faturamento de oficina nem em ago/26 nem ago/25) — o faturamento delas é praticamente todo de veículos (Diogo: 29 novos + 26 VD + 23 usados em ago/26).
+
+## Estoque de veículos — tabelas vazias (verificado 31/08/2026)
+
+- `AI_VeiculoEstoque` → **0 linhas** (inteira, sem filtro)
+- `DashVeiculo` → **0 linhas** (inteira, sem filtro)
+- `Veiculo` não tem coluna de empresa (`Veiculo_EmpresaCod` não existe) — não há como filtrar estoque por concessionária por essa tabela.
+
+**Não usar nenhuma dessas três para estoque de veículos.** Estoque por unidade no DealerNet permanece sem fonte identificada.
