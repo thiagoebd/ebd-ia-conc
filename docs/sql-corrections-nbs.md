@@ -134,3 +134,30 @@ não fecha por essa via até o apontamento ser disciplinado na oficina.
 
 <!-- AUTO-APPEND PROP-8F4987B4 aprovado por thiago.parreira@ebdgrupo.com.br -->
 
+
+
+<!-- AUTO-APPEND PROP-36D46BCA aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Estoque de veículos DealerNet — FONTE ENCONTRADA (verificado 03/09/2026) ⚠️ CORRIGE a entrada de 31/08
+
+A entrada anterior ("Estoque de veículos — tabelas vazias", 31/08/2026) está **desatualizada**: ela testou apenas `AI_VeiculoEstoque` (0 linhas) e `DashVeiculo` (0 linhas) — ambas continuam vazias e NÃO usar — mas **não testou a tabela `VeiculoEstoque` nem as views do time EBD**.
+
+### Fonte 1 — tabela `VeiculoEstoque` (existe, com escopo por empresa)
+- Colunas-chave: `VeiculoEstoque_EmpresaCod` (smallint — **escopo por concessionária**), `VeiculoEstoque_VeiculoCod`, `VeiculoEstoque_VeiculoMovCodEntrada`, `VeiculoEstoque_VeiculoMovCodSaida`, `VeiculoEstoque_NotaFiscalCodCompra`, `VeiculoEstoque_NotaFiscalCodVenda`, `VeiculoEstoque_EstoqueCod`, `VeiculoEstoque_Fisicamente` (bit).
+- **A tabela é histórico/posição** (ex.: empresa 9 tem 30.627 linhas). "Em estoque agora" ≈ linha com `VeiculoEstoque_VeiculoMovCodSaida IS NULL` (empresa 9: 662).
+- Modelo/descrição NÃO está em `Veiculo` (a tabela real não tem `Veiculo_ModeloVeiculoDes` — veio de VIEW homônima; cicatriz #D10). Descrição vem de `ModeloVeiculo` via `Veiculo_ModeloVeiculoCod` → `ModeloVeiculo_Descricao`.
+
+### Fonte 2 (RECOMENDADA) — view `VW_EBDDEV_ESTOQUEVEICULOS_ATUAL`
+Criada pelo time de dados EBD. **Snapshot único por dia** (Data_Estoque = data corrente; em 03/09/2026: 1.926 linhas para as 30 empresas — conferir sempre que há 1 só Data_Estoque, senão duplica). Colunas:
+- `Empresa_Codigo`, `Empresa_Nome`, `estoque_Descricao` (VN - VEICULOS NOVOS, VN ... DEPOSITO, VU - USADOS SHOW ROOM, VR - USADOS PARCEIRO, VI - IMOBILIZADOS, etc.), `ModeloVeiculo_Descricao`, `Marca_Descricao`, `Cor_Descricao`, `FamiliaVeiculo_Descricao`
+- `veiculo_codigo`, `veiculo_chassi`, `Placa`, `Veiculo_Km`, `ANO`, `DiasEstoque`, `DiasTransito`, `TransitoEstoque`
+- **`Valor_Venda`** (preço de venda tabelado), **`Valor_Compra`** (custo), `Pago` (situação de pagamento), `Vl_Top`
+- `Status` (vazio = disponível; 'Em Negociação' = reservado em negociação), `TesteDrive`
+
+### Caso validado — VM Matriz Manaus (empresa 9), 03/09/2026
+263 veículos / R$ 30,2 mi valor de venda. Quebra: VN 155 (R$ 19,44M) + VN Depósito 61 (R$ 8,35M) + VU 19 (R$ 1,91M) + VR 8 (R$ 364k) + VI 20 (R$ 103k). Topo: Ducato Minibus 2.2 Diesel R$ 358.000 (203 dias de estoque!) · Titano Ranch R$ 250.500 · Toro Ranch R$ 205.800 (x3).
+
+### Regras
+- Para "top carros em estoque", ordenar por `Valor_Venda` DESC na view `_ATUAL`, filtrando `Empresa_Codigo`.
+- Usar `sys.columns`/`sys.tables` para schema real (INFORMATION_SCHEMA mistura com views homônimas — existe uma VIEW chamada `Veiculo` e `ModeloVeiculo`).
+- View tem mais versões: `VW_EBDDEV_ESTOQUEVEICULOS` (base), `_ATUAL` (snapshot do dia), `_GERAL`/`_GERAL_V2`, `VW_EBDDEV_ESTOQUEVEICULOSUSADOS`, `rel_EstoqueVeiculo`.
