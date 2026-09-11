@@ -161,3 +161,23 @@ Criada pelo time de dados EBD. **Snapshot único por dia** (Data_Estoque = data 
 - Para "top carros em estoque", ordenar por `Valor_Venda` DESC na view `_ATUAL`, filtrando `Empresa_Codigo`.
 - Usar `sys.columns`/`sys.tables` para schema real (INFORMATION_SCHEMA mistura com views homônimas — existe uma VIEW chamada `Veiculo` e `ModeloVeiculo`).
 - View tem mais versões: `VW_EBDDEV_ESTOQUEVEICULOS` (base), `_ATUAL` (snapshot do dia), `_GERAL`/`_GERAL_V2`, `VW_EBDDEV_ESTOQUEVEICULOSUSADOS`, `rel_EstoqueVeiculo`.
+
+
+<!-- AUTO-APPEND PROP-D5F243CA aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Operação 32 no NBS — venda de veículo que desaparece em JOIN por NATUREZA (verificado 11/09/2026)
+
+`NBS.VENDAS.COD_OPERACAO = 32` (empresa 1) é **venda de veículo** — mas a nota vem com `COD_NATUREZA`, `GRUPO`, `COD_NATUREZA_SERV` e `GRUPO_SERV` **todos nulos**. Consequência: ela não aparece em nenhum JOIN por `NATUREZA` (ver cicatriz #13/#14) e fica fora de qualquer contagem de veículos feita por `NATUREZA_APLICACAO='F'/'K'` ou por operação 4 e 9.
+
+**Evidência medida nesta base:**
+- ago/26: 1 nota · R$ 477.015,10 · `TOTAL_PRODUTOS` = 477.015,10 (serviços = 0) · `CHASSI_RESUMIDO` preenchido · `COD_PRODUTO = 20278` = `PRODUTOS.DESCRICAO_PRODUTO` "BMW AUTO X3" · `PRODUTOS.NOVO_USADO = 'N'` (novo) · `ID_SEG = 1` (BMW).
+- ago/25: 2 notas · R$ 1.321.805,08.
+- jan/2025 a ago/2026: 38 notas · R$ 14.481.940,73 (ticket médio ~R$ 381 mil — compatível com veículo, não com peça).
+- `VENDAS` não tem coluna `OBSERVACAO` (tentativa de leitura dá ORA-00904) e a tabela `NBS.MODELOS` não existe no schema acessível.
+
+**Como tratar ao medir veículos do NBS:**
+1. Incluir `COD_OPERACAO = 32` **junto** com 4 (novos), 9 e 129 (usados) no bloco de veículos.
+2. Classificar novo x usado pelo produto: `JOIN NBS.PRODUTOS p ON p.COD_PRODUTO = v.COD_PRODUTO` → `p.NOVO_USADO` ('N' novo / 'U' usado).
+3. Não tentar classificar por natureza — está nula; a nota precisa de classificação manual.
+
+**Impacto:** em ago/2026, ignorar a op 32 subestima os veículos do NBS em 1 unidade e R$ 477 mil (de 21 para 20 un / R$ 3,58 para 4,06 mi).
