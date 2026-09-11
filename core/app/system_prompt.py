@@ -54,7 +54,7 @@ def build_system_prompt() -> str:
     parts.append("# Dealer.ia — Agente das Concessionarias\n")
     # NOTA: a data NAO eh injetada aqui (seria congelada no boot do processo).
     # Ela eh calculada por turno via current_date_line() e vai no ctx_suffix.
-    parts.append(f"Modelo: {settings.claude_model}.\n")
+    parts.append(f"Modelo: {settings.deepseek_model}.\n")
     parts.append("Voce eh o agente conversacional Dealer.ia. Voce tem acesso ao Oracle do NBS")
     parts.append("via tool 'oracle_query' (read-only). Sua base de conhecimento esta abaixo.\n")
     parts.append(ESCOPO)

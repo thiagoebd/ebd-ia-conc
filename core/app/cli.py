@@ -42,7 +42,7 @@ def calc_cost_usd(u: dict) -> float:
 async def chat_loop():
     console.print(Panel.fit(
         f"[bold cyan]EBD.ia[/bold cyan] - agente comercial conversacional\n"
-        f"Modelo: {settings.claude_model} (prompt cache ATIVO)\n"
+        f"Modelo: {settings.deepseek_model} (prompt cache ATIVO)\n"
         f"User: {USER_ID} | Role: {USER_ROLE}\n"
         f"Comandos: [yellow]/reset /historico /aprovar PROP-X /descartar PROP-X /sair[/yellow]",
         border_style="cyan",

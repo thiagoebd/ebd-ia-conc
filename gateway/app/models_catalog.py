@@ -4,10 +4,13 @@ Fonte única: importado por /api/me (mostra opções pro front) e por /api/chat 
 """
 import os
 
-DEFAULT_MODEL = "deepseek-v4-flash"
+# deepseek-flash LE IMAGEM; o v4-flash e o v4-pro nao (medido em
+# 11/09/2026 contra o endpoint compativel). Como o agente agora
+# recebe foto de veiculo, o padrao tem que ser o que enxerga.
+DEFAULT_MODEL = "deepseek-flash"
 
 ALL_MODELS = [
-    {"id": "deepseek-v4-flash", "label": "DeepSeek Flash", "tier": "rápido e econômico"},
+    {"id": "deepseek-flash", "label": "DeepSeek Flash (le imagem)", "tier": "rápido e econômico"},
     {"id": "deepseek-v4-pro",   "label": "DeepSeek Pro",   "tier": "mais capaz"},
     # Claude fora do seletor por ora (21/07). Reabilitar = descomentar
     # (o agent ja roteia claude-* pro client Claude e o chat.py ja precifica):

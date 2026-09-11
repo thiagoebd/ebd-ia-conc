@@ -111,3 +111,33 @@ def test_claude_md_tem_a_regra_de_foto_de_veiculo():
     s = _fonte("docs/CLAUDE.md")
     assert "PLACA" in s and "NOVO_USADO" in s
     assert "nunca afirme" in s.lower() or "NUNCA afirme" in s
+
+
+def test_send_limpa_os_anexos_depois_de_capturar():
+    """A limpeza caiu no openThread na primeira versao: a miniatura ficava
+    presa no composer e dava a impressao de que nada foi enviado."""
+    s = _fonte("frontend/src/App.tsx")
+    i = s.index("async function send(")
+    bloco = s[i:i + 700]
+    assert "setAnexos([])" in bloco, "o send nao limpa os anexos"
+    assert bloco.index("const imgs = anexos") < bloco.index("setAnexos([])"), \
+        "tem que capturar em imgs ANTES de limpar o estado"
+
+
+def test_projeto_roda_so_no_deepseek():
+    """O fallback do _client_for era settings.claude_model: qualquer chamada
+    sem modelo explicito ia para o Claude e voltava 401 invalid x-api-key.
+    Nao ha chave Claude nesta conta."""
+    s = _fonte("core/app/agent.py")
+    i = s.index("def _client_for")
+    bloco = s[i:i + 900]
+    assert "settings.deepseek_model" in bloco
+    # so pode citar claude_model no comentario que explica o bug
+    for linha in bloco.splitlines():
+        if "settings.claude_model" in linha:
+            assert "O fallback era" in linha, f"uso ativo: {linha.strip()}"
+
+
+def test_prompt_nao_anuncia_claude():
+    s = _fonte("core/app/system_prompt.py")
+    assert "settings.claude_model" not in s

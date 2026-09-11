@@ -102,11 +102,19 @@ _deepseek_client = (
 
 
 def _client_for(model: str | None):
-    """Roteia o client pelo prefixo do modelo: deepseek-* -> DeepSeek; senao Claude.
-    Para deepseek, o nome real do modelo vem do .env (settings.deepseek_model)."""
-    m = model or settings.claude_model
-    if m.startswith("deepseek") and _deepseek_client is not None:
-        return _deepseek_client, m
+    """Este projeto roda 100% no DeepSeek — nao ha chave Claude valida aqui.
+
+    O fallback era `settings.claude_model`: qualquer chamada sem modelo
+    explicito ia para o Claude e voltava 401 invalid x-api-key. Agora o
+    padrao e o DeepSeek, e so vai para o Claude se o modelo pedir E o
+    client existir."""
+    m = model or settings.deepseek_model or "deepseek-flash"
+    if _deepseek_client is not None and (m.startswith("deepseek")
+                                         or _client is None):
+        return _deepseek_client, (m if m.startswith("deepseek")
+                                  else settings.deepseek_model)
+    if _client is None:
+        return _deepseek_client, settings.deepseek_model
     return _client, m
 _system_prompt = build_system_prompt()
 _tools = [ORACLE_QUERY_TOOL, DEALERNET_QUERY_TOOL, KNOWLEDGE_APPEND_TOOL, LIST_PROPOSALS_TOOL, CREATE_EXCEL_TOOL, CREATE_PDF_TOOL, CREATE_PPTX_TOOL, CREATE_CHART_TOOL, LIST_TEMPLATES_TOOL, GET_TEMPLATE_TOOL, CREATE_ROUTE_MAP_TOOL] + PLANILHA_TOOLS
@@ -701,7 +709,7 @@ async def run_turn_stream(
 
 if __name__ == "__main__":
     async def main():
-        print(f"Modelo: {settings.claude_model}")
+        print(f"Modelo: {settings.deepseek_model}")
         print(f"Tools: {[t['name'] for t in _tools]}")
         print()
         question = "Quais tools voce tem disponiveis e quando deve usar cada uma?"

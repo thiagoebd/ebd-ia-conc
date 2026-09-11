@@ -114,6 +114,51 @@ def _prepara_imagens(brutas):
     return blocos, None
 
 
+async def _titulo_da_imagem(blocos: list) -> str:
+    """Batiza a conversa a partir da PROPRIA imagem.
+
+    Foto sem legenda deixava o titulo vazio e a barra lateral enchia de
+    "Nova conversa" — ninguem achava a conversa depois.
+
+    O cliente e ASSINCRONO: `with` sincrono estoura e cai no except, com o
+    titulo sempre no fallback. E o max_tokens precisa de folga: o modelo
+    raciocina antes de responder e com teto baixo termina em
+    stop_reason=max_tokens SEM texto.
+    """
+    if not blocos:
+        return "Nova conversa"
+    try:
+        _core_no_path()
+        from app.agent import _client_for
+        cli, m = _client_for(None)
+        conteudo = list(blocos[:1]) + [{
+            "type": "text",
+            "text": ("De um titulo de ate 6 palavras para esta imagem, em "
+                     "portugues. Se for um veiculo, use marca e modelo. "
+                     "So o titulo, sem aspas e sem ponto final."),
+        }]
+        async with cli.messages.stream(model=m, max_tokens=4000,
+                                       messages=[{"role": "user",
+                                                  "content": conteudo}]) as st:
+            async for _ in st.text_stream:
+                pass
+            r = await st.get_final_message()
+        t = "".join(getattr(b, "text", "") for b in r.content
+                    if getattr(b, "type", "") == "text").strip()
+        t = t.strip(" \"'").replace("\n", " ")
+        if not t:
+            logger.warning("titulo da imagem veio VAZIO: stop=%s",
+                           getattr(r, "stop_reason", "?"))
+            return "Imagem enviada"
+        if ":" in t[:12]:
+            t = t.split(":", 1)[1].strip()
+        return (t[:42] + "…") if len(t) > 42 else t
+    except Exception as e:
+        logger.warning("titulo da imagem falhou: %s: %s",
+                       type(e).__name__, str(e)[:160])
+        return "Imagem enviada"
+
+
 def _titulo_da_planilha(pl, nome_arquivo: str) -> str:
     """Titulo pelo CONTEUDO — 'frota-2026.xlsx' vira 'Placa, Modelo (30 linhas)'."""
     cols = [c.nome.replace("_", " ").title() for c in pl.colunas
@@ -140,6 +185,40 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
         conv_id = body.conversation_id
         new_conv = False
         try:
+            _imgs, _erro_img = _prepara_imagens(body.imagens)
+            _pl_pendente = None
+            _erro_pl = None
+            if body.planilha_b64:
+                try:
+                    import base64 as _b64p
+                    _core_no_path()
+                    from app.planilhas import PlanilhaInvalida, le_planilha
+                    bruto = body.planilha_b64
+                    if bruto.startswith("data:"):
+                        bruto = bruto.partition(",")[2]
+                    _pl_pendente = le_planilha(
+                        _b64p.b64decode(bruto),
+                        body.planilha_nome or "planilha.xlsx")
+                    logger.info("chat: planilha %s com %d linhas",
+                                body.planilha_nome, _pl_pendente.total)
+                except PlanilhaInvalida as e:
+                    _erro_pl = str(e)
+                except Exception as e:
+                    logger.warning("planilha falhou: %s", type(e).__name__)
+                    _erro_pl = "Nao consegui ler essa planilha."
+            if _erro_img or _erro_pl:
+                yield _sse({"type": "token", "text": f"⚠️ {_erro_img or _erro_pl}"})
+                yield _sse({"type": "done", "stop_reason": "anexo_invalido"})
+                return
+            if body.message.strip():
+                _titulo = _title_from(body.message)
+            elif _pl_pendente is not None:
+                _titulo = _titulo_da_planilha(_pl_pendente,
+                                              body.planilha_nome or "")
+            elif _imgs:
+                _titulo = await _titulo_da_imagem(_imgs)
+            else:
+                _titulo = "Nova conversa"
             if conv_id and not _e_uuid(conv_id):
                 # frontend manda tmp-<timestamp> em conversa nova: nao e UUID,
                 # e passar isso ao Postgres derruba o stream inteiro
@@ -198,36 +277,7 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                 yield _sse({"type": "done", "stop_reason": "comando_kb"})
                 return
 
-            _imgs, _erro_img = _prepara_imagens(body.imagens)
-            _pl_pendente = None
-            _erro_pl = None
-            if body.planilha_b64:
-                try:
-                    import base64 as _b64p
-                    _core_no_path()
-                    from app.planilhas import PlanilhaInvalida, le_planilha
-                    bruto = body.planilha_b64
-                    if bruto.startswith("data:"):
-                        bruto = bruto.partition(",")[2]
-                    _pl_pendente = le_planilha(
-                        _b64p.b64decode(bruto),
-                        body.planilha_nome or "planilha.xlsx")
-                    logger.info("chat: planilha %s com %d linhas",
-                                body.planilha_nome, _pl_pendente.total)
-                except PlanilhaInvalida as e:
-                    _erro_pl = str(e)
-                except Exception as e:
-                    logger.warning("planilha falhou: %s", type(e).__name__)
-                    _erro_pl = "Nao consegui ler essa planilha."
-            if _erro_img or _erro_pl:
-                yield _sse({"type": "token", "text": f"⚠️ {_erro_img or _erro_pl}"})
-                yield _sse({"type": "done", "stop_reason": "anexo_invalido"})
-                return
 
-            _titulo = (_title_from(body.message) if body.message.strip()
-                       else (_titulo_da_planilha(_pl_pendente,
-                                                 body.planilha_nome or "")
-                             if _pl_pendente is not None else "Nova conversa"))
 
             _pl_ctx = _aviso_pl = None
             if conv_id:

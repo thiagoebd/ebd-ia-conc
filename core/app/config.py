@@ -14,6 +14,8 @@ class Settings(BaseSettings):
 
     # Anthropic
     anthropic_api_key: str = Field(..., alias="ANTHROPIC_API_KEY")
+    # este projeto roda 100% no DeepSeek; o campo fica por compat
+    # com o codigo herdado, mas NAO e usado como padrao
     claude_model: str = Field("claude-opus-4-7", alias="CLAUDE_MODEL")
 
     # DeepSeek (endpoint Anthropic-compativel; .env ja tem DEEPSEEK_API_KEY/MODEL)

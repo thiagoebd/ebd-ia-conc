@@ -241,6 +241,10 @@ function App() {
     if ((!question && anexos.length === 0 && !planilha) || busy) return;
     setError(null);
     setInput("");
+    // limpar AQUI, no send. A primeira versao caiu no openThread e a
+    // miniatura ficava presa no composer depois de enviar.
+    setAnexos([]);
+    setPlanilha(null);
     if (taRef.current) taRef.current.style.height = "auto";
     setBusy(true);
 
