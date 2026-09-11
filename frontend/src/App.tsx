@@ -16,7 +16,7 @@ import { AccessAdmin } from "./AccessAdmin";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
-type Msg = { role: "user" | "assistant"; text: string; status?: string; tools?: string[]; artifacts?: ArtifactRef[] };
+type Msg = { role: "user" | "assistant"; text: string; imagens?: string[]; anexo?: { nome: string; tipo: string }; status?: string; tools?: string[]; artifacts?: ArtifactRef[] };
 type Thread = { id: string; title: string; msgs: Msg[]; loaded: boolean; model?: string };
 type ModelInfo = { id: string; label: string; tier: string };
 type MeInfo = { role: "admin" | "user"; super_admin?: boolean; models: { default: string; available: ModelInfo[] } };
@@ -27,6 +27,57 @@ function App() {
   const [historySearch, setHistorySearch] = useState<string>("");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [input, setInput] = useState("");
+  const [anexos, setAnexos] = useState<string[]>([]);
+  const [planilha, setPlanilha] = useState<{nome: string; b64: string} | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const MAX_ANEXO_MB = 20;
+
+  function addAnexos(files: FileList | null) {
+    if (!files) return;
+    const novos: string[] = [];
+    let pendentes = files.length;
+    Array.from(files).forEach((f) => {
+      if (f.size > MAX_ANEXO_MB * 1024 * 1024) {
+        setError(`${f.name} tem ${(f.size/1024/1024).toFixed(1)} MB — limite ${MAX_ANEXO_MB} MB.`);
+        pendentes--; return;
+      }
+      if (/\.(xlsx|xls|csv)$/i.test(f.name)) {
+        const rp = new FileReader();
+        rp.onload = () => {
+          setPlanilha({ nome: f.name, b64: String(rp.result) });
+          if (--pendentes === 0 && novos.length) setAnexos((a) => [...a, ...novos].slice(0, 5));
+        };
+        rp.onerror = () => { setError(`Nao consegui ler ${f.name}.`); pendentes--; };
+        rp.readAsDataURL(f);
+        return;
+      }
+      if (!f.type.startsWith("image/") && !/\.(heic|heif)$/i.test(f.name)) {
+        setError("Aceito imagem (PNG, JPG) e planilha (XLSX, CSV).");
+        pendentes--; return;
+      }
+      const r = new FileReader();
+      r.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const MAX = 1568;
+          const esc = Math.min(1, MAX / Math.max(img.width, img.height));
+          const c = document.createElement("canvas");
+          c.width = Math.round(img.width * esc);
+          c.height = Math.round(img.height * esc);
+          c.getContext("2d")?.drawImage(img, 0, 0, c.width, c.height);
+          novos.push(c.toDataURL("image/jpeg", 0.85));
+          if (--pendentes === 0) setAnexos((a) => [...a, ...novos].slice(0, 5));
+        };
+        img.onerror = () => {
+          novos.push(String(r.result));
+          if (--pendentes === 0) setAnexos((a) => [...a, ...novos].slice(0, 5));
+        };
+        img.src = String(r.result);
+      };
+      r.onerror = () => { setError(`Nao consegui ler ${f.name}.`); pendentes--; };
+      r.readAsDataURL(f);
+    });
+  }
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [me, setMe] = useState<MeInfo | null>(null);
@@ -89,6 +140,8 @@ function App() {
   async function openThread(id: string) {
     setActiveId(id);
     setInput("");
+    setAnexos([]);
+    setPlanilha(null);
     const t = threads.find((x) => x.id === id);
     if (t && t.loaded) return;
     try {
@@ -183,7 +236,9 @@ function App() {
 
   async function send(presetQuestion?: string) {
     const question = (presetQuestion ?? input).trim();
-    if (!question || busy) return;
+    const imgs = anexos;
+    const pl = planilha;
+    if ((!question && anexos.length === 0 && !planilha) || busy) return;
     setError(null);
     setInput("");
     if (taRef.current) taRef.current.style.height = "auto";
@@ -204,7 +259,8 @@ function App() {
 
     pushMsgs((m) => [
       ...m,
-      { role: "user", text: question },
+      { role: "user", text: question, imagens: imgs.length ? imgs : undefined,
+        anexo: pl ? { nome: pl.nome, tipo: "planilha" } : undefined },
       { role: "assistant", text: "", status: "Pensando", tools: [] },
     ]);
 
@@ -215,7 +271,7 @@ function App() {
       const resp = await fetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${tok}` },
-        body: JSON.stringify({ message: question, conversation_id: isNew ? null : activeId, model: selectedModel }),
+        body: JSON.stringify({ message: question, conversation_id: isNew ? null : activeId, model: selectedModel, imagens: imgs.length ? imgs : undefined, planilha_b64: pl ? pl.b64 : undefined, planilha_nome: pl ? pl.nome : undefined }),
         signal: controller.signal,
       });
       if (!resp.ok || !resp.body) {
@@ -454,6 +510,22 @@ function App() {
                       </div>
                       <div className="content">
                         <div className="who-line">{m.role === "assistant" ? "Dealer.ia" : firstName}</div>
+                        {m.anexo && (
+                          <div className="msg-anexo">
+                            <span className="msg-anexo-icone">▦</span>
+                            <span className="msg-anexo-nome">{m.anexo.nome}</span>
+                            <span className="msg-anexo-tag">salvo</span>
+                          </div>
+                        )}
+                        {m.imagens && m.imagens.length > 0 && (
+                          <div className="msg-imagens">
+                            {m.imagens.map((src, k) => (
+                              <a href={src} target="_blank" rel="noreferrer" key={k}>
+                                <img src={src} alt={`imagem ${k + 1}`} />
+                              </a>
+                            ))}
+                          </div>
+                        )}
                         {m.role === "assistant" && m.tools && m.tools.length > 0 && (
                           <div className="tools">{(() => {
                             const ts = m.tools || [];
@@ -492,11 +564,48 @@ function App() {
 
             <div className="composer-wrap">
               <div className="composer">
+                {planilha && (
+                  <div className="anexos-preview">
+                    <div className="anexo-planilha">
+                      <span className="anexo-planilha-icone">▦</span>
+                      <span className="anexo-planilha-nome">{planilha.nome}</span>
+                      <button type="button" className="anexo-remove"
+                              onClick={() => setPlanilha(null)} title="Remover">×</button>
+                    </div>
+                  </div>
+                )}
+                {anexos.length > 0 && (
+                  <div className="anexos-preview">
+                    {anexos.map((src, i) => (
+                      <div className="anexo-thumb" key={i}>
+                        <img src={src} alt={`anexo ${i + 1}`} />
+                        <button type="button" className="anexo-remove"
+                                onClick={() => setAnexos((a) => a.filter((_, j) => j !== i))}
+                                title="Remover">×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <input ref={fileRef} type="file" accept="image/*,.heic,.heif,.xlsx,.xls,.csv"
+                       multiple style={{ display: "none" }}
+                       onChange={(e) => { addAnexos(e.target.files); e.target.value = ""; }} />
+                <button type="button" className="chip chip-btn"
+                        onClick={() => fileRef.current?.click()} disabled={busy}
+                        title="Anexar imagem ou planilha (ate 20 MB)">📎 Anexo</button>
                 <textarea
                   ref={taRef}
                   value={input}
                   onChange={(e) => { setInput(e.target.value); autosize(); }}
                   onKeyDown={onKey}
+                  onPaste={(e) => {
+                    const imgs = Array.from(e.clipboardData.files).filter((f) => f.type.startsWith("image/"));
+                    if (imgs.length) {
+                      e.preventDefault();
+                      const dt = new DataTransfer();
+                      imgs.forEach((f) => dt.items.add(f));
+                      addAnexos(dt.files);
+                    }
+                  }}
                   placeholder="Pergunte ao Dealer.ia…"
                   rows={1}
                   disabled={busy}
@@ -549,7 +658,7 @@ function App() {
                   {busy ? (
                     <button className="send stop" onClick={stop} title="Parar">■</button>
                   ) : (
-                    <button className="send" onClick={() => send()} disabled={!input.trim()}>↑</button>
+                    <button className="send" onClick={() => send()} disabled={!input.trim() && anexos.length === 0 && !planilha}>↑</button>
                   )}
                 </div>
               </div>

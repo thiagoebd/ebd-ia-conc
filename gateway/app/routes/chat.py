@@ -46,6 +46,10 @@ class ChatRequest(BaseModel):
     conversation_id: str | None = None
     model: str | None = None
     history: list | None = None  # compat (ignorado, janela vem do banco)
+    # anexos no MESMO corpo JSON — sem multipart, sem rota separada
+    imagens: list[str] | None = None
+    planilha_b64: str | None = None
+    planilha_nome: str | None = None
 
 
 def _sse(payload: dict) -> str:
@@ -71,6 +75,53 @@ def _e_uuid(valor) -> bool:
         return True
     except (ValueError, AttributeError, TypeError):
         return False
+
+
+MAX_IMAGENS = 5
+
+
+def _core_no_path():
+    import sys as _s
+    from pathlib import Path as _P
+    c = str(_P(__file__).resolve().parents[3] / "core")
+    if c not in _s.path:
+        _s.path.insert(0, c)
+
+
+def _prepara_imagens(brutas):
+    """data URL ou base64 -> blocos. (blocos, erro para o usuario)"""
+    if not brutas:
+        return [], None
+    if len(brutas) > MAX_IMAGENS:
+        return [], f"Manda no maximo {MAX_IMAGENS} imagens por mensagem."
+    import base64 as _b64
+    _core_no_path()
+    from app.anexos import AnexoInvalido, prepara_imagem
+    blocos = []
+    for bruto in brutas:
+        try:
+            mime = "image/jpeg"
+            if bruto.startswith("data:"):
+                cab, _, dados = bruto.partition(",")
+                mime = cab[5:].split(";")[0] or mime
+            else:
+                dados = bruto
+            blocos.append(prepara_imagem(_b64.b64decode(dados), mime))
+        except AnexoInvalido as e:
+            return [], str(e)
+        except Exception:
+            return [], "Nao consegui ler essa imagem."
+    return blocos, None
+
+
+def _titulo_da_planilha(pl, nome_arquivo: str) -> str:
+    """Titulo pelo CONTEUDO — 'frota-2026.xlsx' vira 'Placa, Modelo (30 linhas)'."""
+    cols = [c.nome.replace("_", " ").title() for c in pl.colunas
+            if c.preenchidas > 0 and not c.nome.startswith("COLUNA_")][:3]
+    if cols:
+        return f"{', '.join(cols)} ({pl.total} linhas)"[:42]
+    return (nome_arquivo or "Planilha")[:42]
+
 
 
 @router.post("/chat")
@@ -99,11 +150,11 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                 conv = await db.get_conversation(conv_id, user_id)
                 if not conv:
                     model_used = resolve_model(body.model, user_id)
-                    conv = await db.create_conversation(user_id, _title_from(body.message), model_used)
+                    conv = await db.create_conversation(user_id, _titulo, model_used)
                     new_conv = True
             else:
                 model_used = resolve_model(body.model, user_id)
-                conv = await db.create_conversation(user_id, _title_from(body.message), model_used)
+                conv = await db.create_conversation(user_id, _titulo, model_used)
                 new_conv = True
 
             conv_id = str(conv["id"])
@@ -116,7 +167,13 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
 
             window = await db.build_model_window(conv_id, user_id)
             _lap('window pronta')
-            await db.add_message(conv_id, "user", {"text": body.message})
+            _cont_user = {"text": body.message}
+            if _imgs:
+                _cont_user["imagens"] = body.imagens[:len(_imgs)]
+            if _pl_pendente is not None:
+                _cont_user["anexo"] = {"nome": body.planilha_nome or "planilha",
+                                       "tipo": "planilha"}
+            await db.add_message(conv_id, "user", _cont_user)
             _lap('user msg gravada')
 
             # ---- comandos de curadoria da KB: nao passam pelo agente ----
@@ -141,6 +198,61 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                 yield _sse({"type": "done", "stop_reason": "comando_kb"})
                 return
 
+            _imgs, _erro_img = _prepara_imagens(body.imagens)
+            _pl_pendente = None
+            _erro_pl = None
+            if body.planilha_b64:
+                try:
+                    import base64 as _b64p
+                    _core_no_path()
+                    from app.planilhas import PlanilhaInvalida, le_planilha
+                    bruto = body.planilha_b64
+                    if bruto.startswith("data:"):
+                        bruto = bruto.partition(",")[2]
+                    _pl_pendente = le_planilha(
+                        _b64p.b64decode(bruto),
+                        body.planilha_nome or "planilha.xlsx")
+                    logger.info("chat: planilha %s com %d linhas",
+                                body.planilha_nome, _pl_pendente.total)
+                except PlanilhaInvalida as e:
+                    _erro_pl = str(e)
+                except Exception as e:
+                    logger.warning("planilha falhou: %s", type(e).__name__)
+                    _erro_pl = "Nao consegui ler essa planilha."
+            if _erro_img or _erro_pl:
+                yield _sse({"type": "token", "text": f"⚠️ {_erro_img or _erro_pl}"})
+                yield _sse({"type": "done", "stop_reason": "anexo_invalido"})
+                return
+
+            _titulo = (_title_from(body.message) if body.message.strip()
+                       else (_titulo_da_planilha(_pl_pendente,
+                                                 body.planilha_nome or "")
+                             if _pl_pendente is not None else "Nova conversa"))
+
+            _pl_ctx = _aviso_pl = None
+            if conv_id:
+                if _pl_pendente is not None:
+                    _core_no_path()
+                    from app.tools.planilha_exec import grava as _grava_pl
+                    await _grava_pl(db._pool_or_raise(), conv_id, user_id,
+                                    body.planilha_nome or "planilha.xlsx",
+                                    _pl_pendente)
+                    _cols = ", ".join(c.nome for c in _pl_pendente.colunas)
+                    _abas = ""
+                    if len(_pl_pendente.abas) > 1:
+                        _lista = " · ".join(f"{a['nome']} ({a['linhas']} linhas)"
+                                            for a in _pl_pendente.abas)
+                        _abas = (f" O ARQUIVO TEM {len(_pl_pendente.abas)} ABAS: "
+                                 f"{_lista}. Estou mostrando '{_pl_pendente.aba}'. "
+                                 f"DIGA ao usuario quais sao as outras.")
+                    _aviso_pl = (f"[O usuario anexou a planilha "
+                                 f"'{body.planilha_nome}' com "
+                                 f"{_pl_pendente.total} linhas e as colunas: "
+                                 f"{_cols}.{_abas} Use planilha_resumo e diga o "
+                                 f"que entendeu antes de perguntar o que fazer.]")
+                _pl_ctx = {"pool": db._pool_or_raise(),
+                           "conversation_id": conv_id, "user_oid": user_id}
+
             assistant_text = ""
             tools_used = []          # so tools com SUCESSO (controla badge)
             tool_outcomes = []       # [(name, success)] reportado pelo agent
@@ -156,6 +268,9 @@ async def chat(body: ChatRequest, claims: dict = Depends(verify_token)):
                     channel="web",
                     user_email=_email,
                     model=model_used,
+                    imagens=_imgs or None,
+                    planilha_ctx=_pl_ctx,
+                    aviso_planilha=_aviso_pl,
                 ):
                     etype = ev.get("type")
                     if etype == "token":

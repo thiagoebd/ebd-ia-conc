@@ -43,8 +43,14 @@ def _importa_isolado(raiz_pkg, dotted):
         sys.modules.update(salvos)
 
 
-SERVER = _importa_isolado(RAIZ / "mcps" / "oracle", "app.server")
+# este projeto tem mcps/nbs e mcps/dealernet — "oracle" era residuo do
+# clone do EBD.ia e quebrava a coleta INTEIRA dos testes
+_MCP = next((d for d in ("nbs", "dealernet")
+             if (RAIZ / "mcps" / d / "app" / "server.py").exists()), None)
+SERVER = _importa_isolado(RAIZ / "mcps" / _MCP, "app.server") if _MCP else None
 BRIDGE = _importa_isolado(RAIZ / "core", "app.tools.oracle_bridge")
+PLANILHA_MATCH = _importa_isolado(RAIZ / "core", "app.planilha_match")
+PLANILHAS = _importa_isolado(RAIZ / "core", "app.planilhas")
 
 HOJE = datetime.datetime.now()
 RECENTE = HOJE - datetime.timedelta(days=17)
