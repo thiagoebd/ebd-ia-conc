@@ -181,3 +181,30 @@ Criada pelo time de dados EBD. **Snapshot único por dia** (Data_Estoque = data 
 3. Não tentar classificar por natureza — está nula; a nota precisa de classificação manual.
 
 **Impacto:** em ago/2026, ignorar a op 32 subestima os veículos do NBS em 1 unidade e R$ 477 mil (de 21 para 20 un / R$ 3,58 para 4,06 mi).
+
+
+<!-- AUTO-APPEND PROP-3B13B4A9 aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Operação 32 no NBS — é DEMONSTRAÇÃO, não venda de veículo (verificado 14/09/2026) — ⚠️ CORRIGE PROP-D5F243CA
+
+A cicatriz anterior (PROP-D5F243CA, 11/09/2026) classificou `NBS.VENDAS.COD_OPERACAO = 32` como *venda de veículo* e mandou incluí-la no bloco de veículos junto com as operações 4, 9 e 129. **Está errado.**
+
+### Prova 1 — o cadastro da operação é explícito
+`NBS.OPERACOES` (empresa 1) — colunas `COD_OPERACAO`, `OPERACAO`, `GRUPO` (a descrição está em `OPERACAO`, **não** em `DESCRICAO`):
+
+| Cód | Operação | Grupo |
+| --- | --- | --- |
+| 32 | **Demonstracao Veiculos (Saida)** | 9 |
+| 33 | **Demonstracao Veiculos (entrada)** | 9 |
+
+### Prova 2 — o par saída/entrada existe e casa
+- `VENDAS` op 32: **38 notas · R$ 14.481.940,73** (jan/2025–ago/2026)
+- `COMPRA` op 33: **37 notas · R$ 14.004.925,63** (mesmo período)
+
+### Por que o erro era plausível
+A op 32 traz `TOTAL_PRODUTOS` cheio, `CHASSI_RESUMIDO` preenchido, produto de veículo (`PRODUTOS.NOVO_USADO='N'`) e `COD_NATUREZA`/`GRUPO` nulos — **exatamente igual a uma venda de veículo**. Essas colunas não distinguem remessa de venda; só o cadastro da operação distingue. É o equivalente NBS da natureza **64** do DealerNet (remessa para demonstração), que a regra R5 manda deixar **fora** do faturamento.
+
+### Como tratar
+1. **Op 32 NÃO entra em faturamento de veículos.** Ao montar o bloco de veículos do NBS, usar **apenas** op 4 (novos), 9 e 129 (usados).
+2. Se o gestor quiser medir demonstração (carro na rua para test drive), reportar **à parte**, nunca somado a venda.
+3. Impacto de continuar errado: ~R$ 14,5 mi inflados em 20 meses (R$ 477 mil só em ago/26).
