@@ -22,6 +22,36 @@ inteiro e mostra a quebra por marca.
 
 ---
 
+## Anexos — imagem e planilha
+
+**Foto de veículo.** O gestor manda a foto e pergunta se o carro está no
+estoque. O agente identifica marca e modelo, lê **placa** e **chassi** quando
+visíveis, e consulta o DMS: é nosso? está no pátio? novo ou seminovo? já
+passou pela oficina? Se a placa for de campanha ou a foto for de divulgação,
+ele diz isso em vez de fingir que achou.
+
+A placa é reconhecida nos dois formatos — `ABC1234` (antigo) e `ABC1D23`
+(Mercosul) — e o agente descobre sozinho se recebeu placa, chassi, código ou
+nome.
+
+**Planilha (xlsx, csv, multi-aba).** A planilha **nunca entra no prompt**: vai
+para o Postgres e o agente recebe só o resumo — colunas, tipos, contagem e
+três exemplos, cerca de 200 tokens seja de 50 ou 50.000 linhas.
+
+O cruzamento acontece em Python, em blocos de 1.000 chaves (limite do `IN` do
+Oracle), com normalização do que o Excel destrói: zero à esquerda comido,
+EAN em notação científica, inteiro virando `123.0`.
+
+Arquivo com várias abas: o agente mostra quais são, com o tamanho de cada, e
+pergunta em qual trabalhar.
+
+**Resolução de nome.** Planilha com *"joão silva"* em vez do código: a busca é
+por tokens e casa com *"JOÃO PEDRO SILVA"*. O resultado vem em três grupos —
+resolvido, ambíguo e não achado. **Com mais de um candidato o agente mostra e
+pergunta**, nunca escolhe. E sempre diz quantas linhas casaram e quantas não.
+
+---
+
 ## Cobertura
 
 **31 concessionárias · 7 marcas · 5 estados · 2 DMS**
@@ -123,6 +153,7 @@ Indicadores sem validação ficam marcados como exploratórios, e o agente avisa
 - **Voz** — `faster-whisper` (STT) + Piper pt-BR (TTS), 100% local
 - **Observabilidade** — Grafana, Prometheus, Loki, Tempo
 - **Artefatos** — Excel, PDF, PPTX, gráficos, mapas
+- **Anexos** — imagem (visão do `deepseek-flash`) e planilha (pandas + calamine)
 
 ---
 
@@ -138,6 +169,68 @@ Pergunta falada não pode esperar em silêncio. A resposta vem em duas etapas:
    as duas saídas separadamente.
 
 Transcrição e síntese rodam no servidor. Nenhum áudio sai da rede.
+
+---
+
+## Operação
+
+### Reiniciar o gateway
+
+`systemctl restart` sozinho **não basta**. O processo antigo pode continuar
+segurando a porta 8000, o novo morre com `address already in use`, e o systemd
+reporta `active` enquanto o código velho responde.
+
+```bash
+sudo systemctl stop concia-gateway
+sudo pkill -f "uvicorn gateway.app.main"
+sleep 3
+sudo systemctl start concia-gateway
+sleep 8
+systemctl is-active concia-gateway
+sudo lsof -i :8000 -sTCP:LISTEN -P -n    # um PID só
+```
+
+O gateway **não roda em container** — é serviço systemd com o Python do
+sistema. Biblioteca nova precisa de
+`sudo pip3 install --break-system-packages`.
+
+### Depois de mexer no frontend
+
+```bash
+cd frontend && npm run build
+```
+
+E `Ctrl+Shift+R` no navegador — o bundle muda de nome, mas o `index.html` fica
+em cache.
+
+### Trocar o modelo
+
+O nome do modelo vive em cinco arquivos (`core/.env`, `models_catalog.py`,
+`config.py`, o `DEFAULT` da coluna em `db.py` e o `App.tsx`). Trocar em um só
+deixa o sistema inconsistente.
+
+```bash
+bash scripts/troca_modelo.sh                   # só diagnostica
+bash scripts/troca_modelo.sh deepseek-flash    # troca em todos
+```
+
+| Modelo | Lê imagem |
+| --- | --- |
+| `deepseek-flash` | **sim** — padrão |
+| `deepseek-v4-pro` | não |
+
+> **14/09/2026** — o `deepseek-flash` parou de responder por horas:
+> requisição travando sem erro nem timeout, enquanto o `v4-pro` respondia em
+> 1,7s. O painel de status do DeepSeek mostrava tudo verde. Se o agente travar
+> em "Pensando…", rode o `troca_modelo.sh` sem argumento antes de procurar bug
+> no código.
+
+### Logs
+
+```bash
+journalctl -u concia-gateway --since "10 min ago" --no-pager
+docker compose logs --tail 50 mcp-nbs
+```
 
 ---
 
