@@ -208,3 +208,54 @@ A op 32 traz `TOTAL_PRODUTOS` cheio, `CHASSI_RESUMIDO` preenchido, produto de ve
 1. **Op 32 NÃO entra em faturamento de veículos.** Ao montar o bloco de veículos do NBS, usar **apenas** op 4 (novos), 9 e 129 (usados).
 2. Se o gestor quiser medir demonstração (carro na rua para test drive), reportar **à parte**, nunca somado a venda.
 3. Impacto de continuar errado: ~R$ 14,5 mi inflados em 20 meses (R$ 477 mil só em ago/26).
+
+
+<!-- AUTO-APPEND PROP-E698F52E aprovado por thiago.parreira@ebdgrupo.com.br -->
+
+## Estoque DealerNet — o que a view `VW_EBDDEV_ESTOQUEVEICULOS_ATUAL` inclui e o que ela esconde (verificado 01/10/2026)
+
+Confirmado lendo a **definição da própria view** (`OBJECT_DEFINITION`), não por inferência.
+
+### 1. `TransitoEstoque` — metade das linhas não está na loja
+A view monta o campo assim:
+- `'Estoque'` → quando a **nota fiscal de compra** do veículo (`VeiculoEstoque_NotaFiscalCodCompra` → `NotaFiscal`, `Status='EMI'`) tem `NotaFiscal_DataMovimento` preenchida
+- `'Transito'` → quando essa data é **nula**
+
+Ou seja: linha `'Transito'` = veículo **faturado pela fábrica e ainda não recebido** na concessionária. `DiasTransito` = dias desde a emissão da NF de compra; `DiasEstoque` vem 0 nesses casos.
+
+**Nunca somar as duas como "estoque físico".** Em 01/10/2026, grupo: 1.505 `Estoque` + 404 `Transito` = 1.909 linhas na view.
+
+### 2. Códigos de estoque fora do filtro da view
+O `WHERE` tem `Estoque.Estoque_Codigo IN (9,10,11,12,13,23,19,21,28,27)`. Ficam de fora posições **abertas** (grupo, 01/10/2026):
+
+| Cód | Descrição | Un | Valor venda |
+| --- | --- | --- | --- |
+| **2** | **DI - VENDA DIRETA** | **295** | **R$ 33,5 mi** |
+| 29 | VDI - Veículo imobilizado em demonstração | 14 | — |
+| 18 | UT - Usado de terceiros em demonstração | 10 | — |
+| 20 | Veículos em consignação | 8 | — |
+| 24 | ENT - Entrega venda direta | 7 | R$ 0,99 mi |
+| 26 | VF - Veículo futuro | 1 | — |
+| | **Total fora da view** | **335** | |
+
+O filtro de tipo da view (`Estoque_Tipo IN ('VN','VD','VI','VU','VM')`) **aceita VD**, mas os dois códigos VD que existem (2 e 24) estão fora da lista de códigos — o efeito prático é que **nenhuma venda direta entra**. Não há como saber só pela view se é intencional.
+
+A view também exclui as empresas **22, 25 e 26** (Depósito Manaus, Barão, Paragominas).
+
+### 3. Código sintético de RAM
+`Empresa_Codigo` é reescrito como `CONCAT(Empresa_Codigo,'1')` quando `Marca='RAM'` e `Estoque_Tipo IN ('VN','VD')` → aparecem empresas **111, 141, 161**... que não existem no cadastro. Quem consolida por `Empresa_Codigo` acha que está vendo loja inexistente.
+
+### 4. `Valor_Venda` = 0 não significa carro barato
+493 das 1.909 linhas do grupo têm `Valor_Venda` = 0 (437 recebidos + 56 em trânsito) — preço de tabela/opcional não cadastrado. `Valor_Compra` continua preenchido. Não usar `Valor_Venda` como valor de estoque sem declarar quantos ficaram fora.
+
+### 5. Caso que expôs tudo — Leapmotor Manaus (empresa 30), 01/10/2026
+- View: **41 un** (19 recebidos + 22 em trânsito), sendo 33 Leapmotor
+- Cadastro (`VeiculoEstoque` com `VeiculoEstoque_VeiculoMovCodSaida IS NULL`): **56 un**
+- Diferença: 14 em DI - VENDA DIRETA + 1 em VF - Veículo futuro, todos Leapmotor
+- Leapmotor **fisicamente recebido: 11 un** (9 novos + 2 usados show room) — não 33
+
+### Como consultar estoque daqui pra frente
+1. Declarar sempre **recebido x em trânsito**, nunca o total da view como pátio.
+2. Se o indicador precisa de tudo que está alocado à loja, usar `VeiculoEstoque` (`VeiculoEstoque_EmpresaCod` + `VeiculoEstoque_VeiculoMovCodSaida IS NULL`) e quebrar por `Estoque_Descricao` — a view serve para valor e envelhecimento, não para contagem.
+3. `Fisicamente` (bit) **não serve** como filtro: vem `1` em 100% das linhas, inclusive posições já encerradas.
+
